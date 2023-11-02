@@ -9,6 +9,7 @@ import BottomTabNavigator from './navigators/BottomTabNavigator'
 
 import HolaMundo from './src/screens/HolaMundo';
 import EditProfile from './src/components/EditProfile';
+import Reels from './src/screens/Reels';
 
 
 const Stack = createNativeStackNavigator();
@@ -17,7 +18,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        creenOptions={{
+        screenOptions={{
           contentStyle: { backgroundColor: '#FFF' },
           headerBackVisible: false,
         }}
@@ -28,6 +29,10 @@ export default function App() {
         />
         <Stack.Screen
           name="EditProfile" component={EditProfile}
+        />
+
+        <Stack.Screen
+          name="Reels" component={Reels}
         />
       </Stack.Navigator>
     </NavigationContainer>
