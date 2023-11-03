@@ -5,7 +5,7 @@ import Ionic from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 
-const SingleReel = ({uri_image}) => {
+const SingleContentImage = ({uri_image}) => {
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
 
@@ -18,57 +18,35 @@ const SingleReel = ({uri_image}) => {
         console.log('error', error);
     };
 
-    const [mute, setMute] = useState(false);
 
     const [like, setLike] = useState(false);
 
     return (
         <View
             style={{
-                width: windowWidth,
-                height: windowHeight,
-                position: 'relative',
+                flex: 1, 
                 justifyContent: 'center',
                 alignItems: 'center',
+                //backgroundColor: 'yellow'
             }}>
             <TouchableOpacity
                 activeOpacity={0.9}
-                onPress={() => setMute(!mute)}
                 style={{
                     width: '100%',
                     height: '100%',
                     position: 'absolute',
                 }}>
-                <ImageBackground
+                <Image
                     style={{
-                        //resizeMode:"cover",
+                        resizeMode:"stretch", //cover
                         width: '100%',
                         height: '100%',
                         position: 'absolute',
+                        //backgroundColor: 'red'
                     }}
                     source={uri_image}
                 />
             </TouchableOpacity>
-            <Ionic
-                name="volume-mute"
-                style={{
-                    fontSize: mute ? 20 : 0,
-                    color: 'white',
-                    position: 'absolute',
-                    backgroundColor: 'rgba(52,52,52,0.6)',
-                    borderRadius: 100,
-                    padding: mute ? 20 : 0,
-                }}
-            />
-            <View
-                style={{
-                    position: 'absolute',
-                    width: windowWidth,
-                    zIndex: 1,
-                    bottom: 0, //edited
-                    padding: 10,
-                }}>
-            </View>
             <View
                 style={{
                     position: 'absolute',
@@ -93,4 +71,4 @@ const SingleReel = ({uri_image}) => {
     );
 };
 
-export default SingleReel;
+export default SingleContentImage;

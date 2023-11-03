@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
 //import Video from 'react-native-video';
-import vd from '../storage/videos/video1.mp4'
+//import vd from '../storage/videos/video1.mp4'
 import { Video, ResizeMode } from 'expo-av';
 
 

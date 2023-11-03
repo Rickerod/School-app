@@ -9,7 +9,8 @@ import BottomTabNavigator from './navigators/BottomTabNavigator'
 
 import HolaMundo from './src/screens/HolaMundo';
 import EditProfile from './src/components/EditProfile';
-import Reels from './src/screens/Reels';
+import ContentImage from './src/screens/ContentImage';
+import SingleContentVideo from './src/components/SingleContentVideo';
 
 
 const Stack = createNativeStackNavigator();
@@ -24,15 +25,19 @@ export default function App() {
         }}
         initialRouteName="Home"
       >
+
         <Stack.Screen
           name="TabScreen" component={BottomTabNavigator}
+        />
+        <Stack.Screen
+          name="SingleContentVideo" component={SingleContentVideo}
         />
         <Stack.Screen
           name="EditProfile" component={EditProfile}
         />
 
         <Stack.Screen
-          name="Reels" component={Reels}
+          name="ContentImage" component={ContentImage}
         />
       </Stack.Navigator>
     </NavigationContainer>

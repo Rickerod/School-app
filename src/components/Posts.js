@@ -57,7 +57,7 @@ export default function Posts({navigation}) {
                                     return (
                                         <TouchableOpacity
                                             key={imgIndex}
-                                            onPress={() => navigation.push('Reels', {
+                                            onPress={() => navigation.push('ContentImage', {
                                                 uri_image : imageData
                                             })}
                                             style={{ paddingBottom: 2, width: '33%' }}>
