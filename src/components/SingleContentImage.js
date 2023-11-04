@@ -38,7 +38,7 @@ const SingleContentImage = ({uri_image}) => {
                 }}>
                 <Image
                     style={{
-                        resizeMode:"stretch", //cover
+                        resizeMode:"cover", //cover
                         width: '100%',
                         height: '100%',
                         position: 'absolute',

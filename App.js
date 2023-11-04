@@ -20,8 +20,10 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
+          title : "Hola",
           contentStyle: { backgroundColor: '#FFF' },
-          headerBackVisible: false,
+          headerShown: false,
+          headerMode: 'screen'
         }}
         initialRouteName="Home"
       >

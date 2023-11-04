@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Profile from '../src/screens/Profile'
 import HomeScreen from '../src/screens/HomeScreen';
+import { getHeaderTitle } from '@react-navigation/elements';
 
 export default function TabNavigator() {
 
