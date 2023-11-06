@@ -25,7 +25,6 @@ const SingleContentVideo = ({ }) => {
     const [like, setLike] = useState(false);
 
     const isPlayingVideo = () => {
-        console.log("Paso por aca")
         if(status.isPlaying) videoRef.current.pauseAsync()
         else videoRef.current.playAsync()
         setMute(!mute)
@@ -51,14 +50,14 @@ const SingleContentVideo = ({ }) => {
                 }}>
                 <Video
                     ref={videoRef}
-                    source={require('../storage/videos/video4.mp4')}
-                    /*source={{
+                    //source={require('../storage/videos/video4.mp4')}
+                    source={{
                         uri: 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
-                      }}*/
+                      }}
                     style={{ position: 'absolute', width: '100%', height: '100%', backgroundColor: 'black' }}
                     //useNativeControls
                     isLooping
-                    resizeMode={ResizeMode.COVER} //Change contain 
+                    resizeMode={ResizeMode.CONTAIN} //Change contain 
                     onPlaybackStatusUpdate={status => setStatus(() => status)}
             />
             </TouchableOpacity>

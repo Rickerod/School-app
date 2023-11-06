@@ -45,8 +45,8 @@ export default function Profile() {
             {/* ----Header ----*/}
             <View style={{ width: '100%', padding: 10 }}>
                 <ProfileBody
-                    name="Mr Peobody"
-                    accountName="mr_peobody"
+                    name="Diterod"
+                    accountName="ditero_d"
                     profileImage={require('../storage/images/userProfile.png')}
                     followers="3.6M"
                     following="35"
@@ -54,8 +54,8 @@ export default function Profile() {
                 />
                 <ProfileButtons
                     id={1}
-                    name="Mr Peobody"
-                    accountName="mr_peobody"
+                    name="Diterod"
+                    accountName="ditero_d"
                     profileImage={require('../storage/images/userProfile.png')}
                 />
             </View>

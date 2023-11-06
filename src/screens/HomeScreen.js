@@ -8,11 +8,11 @@ import Fontisto from '@expo/vector-icons/Fontisto';
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
   const storyInfo = [
     {
       id: 1,
-      name: 'Your Story',
+      name: 'Diterod',
       image: require('../storage/images/userProfile.png'),
     },
     {
@@ -96,8 +96,11 @@ export default function HomeScreen() {
             <TouchableOpacity
               key={index}
               onPress={() =>
-                console.log("Holanda")
-              }>
+                navigation.navigate("ProfileStudent", {
+                  uri_image: data.image,
+                  name: data.name
+                })}
+            >
               <View
                 style={{
                   flexDirection: 'column',
