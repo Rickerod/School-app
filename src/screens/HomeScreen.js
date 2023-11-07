@@ -6,7 +6,8 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Fontisto from '@expo/vector-icons/Fontisto';
 //import Ionicons from '@expo/vector-icons/Ionicons';
 import { SafeAreaView } from 'react-native-safe-area-context'
-
+import Students from '../components/Students';
+import PostHome from '../components/PostHome';
 
 export default function HomeScreen({ navigation }) {
   const storyInfo = [
@@ -87,58 +88,9 @@ export default function HomeScreen({ navigation }) {
         </View>
       </SafeAreaView>
       {/* ----Header ----*/}
-      <ScrollView
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        style={{ paddingVertical: 20, backgroundColor: 'white' }}>
-        {storyInfo.map((data, index) => {
-          return (
-            <TouchableOpacity
-              key={index}
-              onPress={() =>
-                navigation.navigate("ProfileStudent", {
-                  uri_image: data.image,
-                  name: data.name
-                })}
-            >
-              <View
-                style={{
-                  flexDirection: 'column',
-                  paddingHorizontal: 8,
-                }}>
-                <View
-                  style={{
-                    width: 68,
-                    height: 68,
-                    backgroundColor: 'white',
-                    borderWidth: 1.8,
-                    borderRadius: 100,
-                    borderColor: '#c13584',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <Image
-                    source={data.image}
-                    style={{
-                      resizeMode: 'cover',
-                      width: '92%',
-                      height: '92%',
-                      borderRadius: 100,
-                      backgroundColor: 'orange',
-                    }}
-                  />
-                </View>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    fontSize: 10,
-                  }}>
-                  {data.name}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          );
-        })}
+      <ScrollView>
+          <Students/>
+          <PostHome/>
       </ScrollView>
     </View>
   );

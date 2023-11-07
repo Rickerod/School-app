@@ -16,6 +16,8 @@ import SingleContentVideo from './src/components/SingleContentVideo';
 import ImageComments from './src/components/ImageComments';
 import BottomTabView from './src/components/BottomTabView'
 import ProfileStudent from './src/components/ProfileStudent';
+import Students from './src/components/Students';
+import ForoComments from './src/components/ForoComments';
 
 import {
   BottomSheetModalProvider,
@@ -60,6 +62,12 @@ export default function App() {
             />
             <Stack.Screen
               name="ProfileStudent" component={ProfileStudent}
+            />
+            <Stack.Screen
+              name="Students" component={Students}
+            />
+            <Stack.Screen
+              name="ForoComments" component={ForoComments}
             />
           </Stack.Navigator>
         </BottomSheetModalProvider>

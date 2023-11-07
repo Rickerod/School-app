@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react';
-import { View, Text, Dimensions, TouchableOpacity, Image, ImageBackground } from 'react-native';
+import React, { useRef, useState, useEffect, useCallback} from 'react';
+import { View, Text, Dimensions, TouchableOpacity, Image, ImageBackground, BackHandler } from 'react-native';
 //import Video from 'react-native-video';
 import Ionic from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -10,36 +10,55 @@ import {
 } from "@gorhom/bottom-sheet";
 import comments from '../storage/data/comments.json'
 import ImageComments from './ImageComments';
+import { useFocusEffect } from '@react-navigation/native';
 
 const SingleContentImage = ({ route, navigation }) => {
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
 
     const commentsSheetRef = useRef(null);
+    
+    const [isShowing, setIsShowing] = useState(false);
+    //Back action of the commentSheetRef for Android
+    useEffect(() => {
+        const backAction = () => {
+            if(isShowing){
+                commentsSheetRef.current.close()
+                return true;
+            }
+            return false
+        };
+        const backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+        );
 
-    const videoRef = useRef(null);
+        return () => backHandler.remove();
+    }, [isShowing]);
 
     const openComments = () => {
         commentsSheetRef.current?.present();
+        setIsShowing(true)
     };
 
-    const onBuffer = buffer => {
-        console.log('buffring', buffer);
-    };
-    const onError = error => {
-        console.log('error', error);
-    };
-
+    const handleSheetChanges = (index) => {
+        console.log('handleSheetChanges', index)
+        if(index >= 0){
+            setIsShowing(true)
+        }else{
+            setIsShowing(false)
+        }
+    }
 
     const [like, setLike] = useState(false);
     const [count, setCount] = useState(230)
 
     const handleClickLike = () => {
         setLike(!like)
-        if(like){
-            setCount( (prev) => prev - 1)
-        } else{
-            setCount( (prev) => prev + 1)
+        if (like) {
+            setCount((prev) => prev - 1)
+        } else {
+            setCount((prev) => prev + 1)
         }
     }
 
@@ -92,10 +111,11 @@ const SingleContentImage = ({ route, navigation }) => {
             {/*} All comments */}
             <BottomSheetModal
                 ref={commentsSheetRef}
-                snapPoints={["70%"]}
+                snapPoints={["70%", '100%']}
                 index={0}
+                onChange={handleSheetChanges}
                 backgroundComponent={({ style }) => (
-                    <View style={[style, { backgroundColor: "#fff"}]} />
+                    <View style={[style, { backgroundColor: "#fff" }]} />
                 )}
             >
                 <ImageComments comments={comments} />

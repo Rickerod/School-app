@@ -6,6 +6,7 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import Foundation from 'react-native-vector-icons/Foundation';
 import Posts from './Posts';
 import Videos from './Videos';
+import Foro from './Foro'
 
 const BottomTabView = () => {
   const Tab = createMaterialTopTabNavigator();
@@ -103,30 +104,6 @@ const BottomTabView = () => {
   };
 
   const Board = () => {
-    return (
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{
-          width: '100%',
-          height: '100%',
-        }}>
-        <View
-          style={{
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'white',
-            flexWrap: 'wrap',
-            flexDirection: 'row',
-            paddingVertical: 5,
-            justifyContent: 'space-between',
-          }}>
-          {squares}
-        </View>
-      </ScrollView>
-    );
-  };
-
-  const Foro = () => {
     return (
       <ScrollView
         showsVerticalScrollIndicator={false}
