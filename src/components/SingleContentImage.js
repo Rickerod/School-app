@@ -1,9 +1,11 @@
-import React, { useRef, useState, useEffect, useCallback} from 'react';
-import { View, Text, Dimensions, TouchableOpacity, Image, ImageBackground, BackHandler } from 'react-native';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
+import { View, Text, Dimensions, TouchableOpacity, Image, ImageBackground, BackHandler, Pressable } from 'react-native';
 //import Video from 'react-native-video';
 import Ionic from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
 import {
     BottomSheetModalProvider,
     BottomSheetModal,
@@ -17,12 +19,15 @@ const SingleContentImage = ({ route, navigation }) => {
     const windowHeight = Dimensions.get('window').height;
 
     const commentsSheetRef = useRef(null);
-    
+
     const [isShowing, setIsShowing] = useState(false);
+
+    //console.log("isShowing2", isShowing)
+
     //Back action of the commentSheetRef for Android
     useEffect(() => {
         const backAction = () => {
-            if(isShowing){
+            if (isShowing) {
                 commentsSheetRef.current.close()
                 return true;
             }
@@ -43,9 +48,9 @@ const SingleContentImage = ({ route, navigation }) => {
 
     const handleSheetChanges = (index) => {
         console.log('handleSheetChanges', index)
-        if(index >= 0){
+        if (index >= 0) {
             setIsShowing(true)
-        }else{
+        } else {
             setIsShowing(false)
         }
     }
@@ -70,6 +75,25 @@ const SingleContentImage = ({ route, navigation }) => {
                 alignItems: 'center',
                 //backgroundColor: 'yellow'
             }}>
+            <View
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    flexDirection: 'row',
+                    //justifyContent: 'space-between',
+                    alignItems: 'center',
+                    zIndex: 1,
+                    padding: 10,
+                }}>
+                <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.goBack()}>
+                    <Ionic name="arrow-back" style={{ fontSize: 25, color: 'white', paddingRight: 20 }} />
+                </TouchableOpacity>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>
+                    Image
+                </Text>
+            </View>
             <TouchableOpacity
                 activeOpacity={0.9}
                 style={{
@@ -108,7 +132,7 @@ const SingleContentImage = ({ route, navigation }) => {
                     />
                 </TouchableOpacity>
             </View>
-            {/*} All comments */}
+            {/* All comments */}
             <BottomSheetModal
                 ref={commentsSheetRef}
                 snapPoints={["70%", '100%']}

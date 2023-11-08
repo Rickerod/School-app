@@ -18,6 +18,9 @@ import BottomTabView from './src/components/BottomTabView'
 import ProfileStudent from './src/components/ProfileStudent';
 import Students from './src/components/Students';
 import ForoComments from './src/components/ForoComments';
+import Header from './src/components/Header';
+import Login from './src/screens/Login';
+import Register from './src/screens/Register'
 
 import {
   BottomSheetModalProvider,
@@ -44,6 +47,9 @@ export default function App() {
             {/*<Stack.Screen
               name="SingleContentVideo" component={SingleContentVideo}
           />*/}
+           {/* <Stack.Screen
+              name="Login" component={Login}
+            /> */}
             <Stack.Screen
               name="TabScreen" component={BottomTabNavigator}
             />
@@ -68,6 +74,9 @@ export default function App() {
             />
             <Stack.Screen
               name="ForoComments" component={ForoComments}
+            />
+            <Stack.Screen
+              name="Register" component={Register}
             />
           </Stack.Navigator>
         </BottomSheetModalProvider>

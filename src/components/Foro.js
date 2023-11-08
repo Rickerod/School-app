@@ -12,7 +12,9 @@ const PostForum = ({ data }) => {
 
   return (
     <View style={styles.containerPostForum} >
-      <TouchableOpacity onPress= {() => navigation.navigate("ForoComments")}>
+      <TouchableOpacity onPress= {() => navigation.navigate("ForoComments", {
+        data : data
+      })}>
         <View
           style={{
             flexDirection: 'row',

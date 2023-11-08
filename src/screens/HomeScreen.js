@@ -1,97 +1,18 @@
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Image, StatusBar } from 'react-native';
-import Entypo from 'react-native-vector-icons/Entypo';
-import Feather from '@expo/vector-icons/Feather';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import Fontisto from '@expo/vector-icons/Fontisto';
-//import Ionicons from '@expo/vector-icons/Ionicons';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Students from '../components/Students';
 import PostHome from '../components/PostHome';
+import Header from '../components/Header';
 
 export default function HomeScreen({ navigation }) {
-  const storyInfo = [
-    {
-      id: 1,
-      name: 'Diterod',
-      image: require('../storage/images/userProfile.png'),
-    },
-    {
-      id: 0,
-      name: 'Ram_Charan',
-      image: require('../storage/images/profile1.jpg'),
-    },
-    {
-      id: 0,
-      name: 'Tom',
-      image: require('../storage/images/profile2.jpg'),
-    },
-    {
-      id: 0,
-      name: 'The_Groot',
-      image: require('../storage/images/profile3.jpg'),
-    },
-    ,
-    {
-      id: 0,
-      name: 'loverland',
-      image: require('../storage/images/profile4.jpg'),
-    },
-    ,
-    {
-      id: 0,
-      name: 'chillhouse',
-      image: require('../storage/images/profile5.jpg'),
-    },
-  ];
-
-
   return (
-
-    <View style={{ backgroundColor: 'white', height: '100%' }}>
-      <StatusBar
-        backgroundColor="white"
-        barStyle="dark-content"
-        animated={true}
-      />
-      {/* ----Header ----*/}
-      <SafeAreaView
-        style={{
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          paddingTop: 15,
-          paddingHorizontal: 15,
-          alignItems: 'center',
-        }}>
-        {/*<FontAwesome name="plus-square-o" style={{ fontSize: 24 }} />*/}
-        <Text
-          style={{
-            //fontFamily: 'Cochin',
-            fontSize: 20,
-            fontWeight: '500',
-          }}>
-          Home
-        </Text>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            onPress={() => console.log("Click on bell...")}
-          >
-            <Fontisto name="bell" style={{ fontSize: 24 }} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            onPress={() => console.log("Click on cog...")}
-          >
-            <Entypo name="cog" style={{ fontSize: 24, paddingLeft: 20 }} />
-          </TouchableOpacity>
-        </View>
-      </SafeAreaView>
-      {/* ----Header ----*/}
+    <SafeAreaView style={{ backgroundColor: 'white', height: '100%' }}>
+      <Header title="Home" id={0}/>
       <ScrollView>
           <Students/>
           <PostHome/>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }

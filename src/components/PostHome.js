@@ -7,6 +7,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 
 import ImageComments from './ImageComments';
 import comments from '../storage/data/comments.json';
+import { useNavigation } from '@react-navigation/native';
 
 import {
     BottomSheetModal,
@@ -14,11 +15,19 @@ import {
 
 export default function PostHome() {
     const commentsSheetRef = useRef(null);
+    const [isShowing, setIsShowing] = useState(false);
+
+    const navigation = useNavigation();
+
+    //console.log("isShowing", isShowing)
 
     useEffect(() => {
         const backAction = () => {
-            commentsSheetRef.current.close()
-            return true;
+            if (isShowing) {
+                commentsSheetRef.current.close()
+                return true;
+            }
+            return false
         };
 
         const backHandler = BackHandler.addEventListener(
@@ -27,7 +36,16 @@ export default function PostHome() {
         );
 
         return () => backHandler.remove();
-    }, []);
+    }, [commentsSheetRef, isShowing]);
+
+    const handleSheetChanges = (index) => {
+        console.log('handleSheetChanges', index)
+        if (index >= 0) {
+            setIsShowing(true)
+        } else {
+            setIsShowing(false)
+        }
+    }
 
     const postInfo = [
         {
@@ -92,17 +110,21 @@ export default function PostHome() {
                             </View>
                             <Feather name="more-vertical" style={{ fontSize: 20 }} />
                         </View>
-                        <View
-                            style={{
-                                position: 'relative',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                            }}>
-                            <Image
-                                source={data.postImage}
-                                style={{ width: '100%', height: 400 }}
-                            />
-                        </View>
+                        <TouchableOpacity onPress={() => navigation.navigate('SingleContentImage', {
+                            uri_image: data.postImage
+                        })}>
+                            <View
+                                style={{
+                                    position: 'relative',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}>
+                                <Image
+                                    source={data.postImage}
+                                    style={{ width: '100%', height: 400 }}
+                                />
+                            </View>
+                        </TouchableOpacity>
                         <View
                             style={{
                                 flexDirection: 'row',
@@ -156,6 +178,7 @@ export default function PostHome() {
                             ref={commentsSheetRef}
                             snapPoints={["90%", "70%"]}
                             index={0}
+                            onChange={handleSheetChanges}
                             backgroundComponent={({ style }) => (
                                 <View style={[style, { backgroundColor: "#fff" }]} />
                             )}
