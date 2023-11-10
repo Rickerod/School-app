@@ -1,5 +1,5 @@
 import { View, Text, Image , Pressable, TextInput, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox"
@@ -11,6 +11,12 @@ import Register from './Register'
 const Login = ({ navigation }) => {
     const [isPasswordShown, setIsPasswordShown] = useState(true);
     const [isChecked, setIsChecked] = useState(false);
+    const [email, setChangeEmail] = useState("");
+    const [password, setChangePassword] = useState("");
+
+    const Logearse = () => {
+        if(email === 'prob@prob.com' && password === '123456') navigation.navigate("TabScreen")
+    }
 
     const COLORS = {
       white: "#FFFFFF",
@@ -52,7 +58,11 @@ const Login = ({ navigation }) => {
                         paddingLeft: 22
                     }}>
                         <TextInput
+                            autoCapitalize='none'
+                            caretHidden={false}
+                            autoFocus={true}
                             placeholder='Ingrese su email'
+                            onChangeText={setChangeEmail}
                             placeholderTextColor={COLORS.black}
                             keyboardType='email-address'
                             style={{
@@ -81,6 +91,7 @@ const Login = ({ navigation }) => {
                     }}>
                         <TextInput
                             placeholder='Ingrese su contraseña'
+                            onChangeText={setChangePassword}
                             placeholderTextColor={COLORS.black}
                             secureTextEntry={isPasswordShown}
                             style={{
@@ -124,6 +135,7 @@ const Login = ({ navigation }) => {
                 <Button
                     title="Ingresar"
                     filled
+                    onPress={Logearse}
                     style={{
                         marginTop: 18,
                         marginBottom: 4,

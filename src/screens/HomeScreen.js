@@ -8,7 +8,7 @@ import Header from '../components/Header';
 export default function HomeScreen({ navigation }) {
   return (
     <SafeAreaView style={{ backgroundColor: 'white', height: '100%' }}>
-      <Header title="Home" id={0}/>
+      <Header title="Home" id={0} wd={0}/>
       <ScrollView>
           <Students/>
           <PostHome/>

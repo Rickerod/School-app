@@ -133,7 +133,7 @@ export default function ForoComments({ route }) {
 
   return (
     <View style={styles.container}>
-      <Header title="ditero_d" id={1}/>
+      <Header title="ditero_d" id={1} wd={0}/>
       <FlatList
         data={dataComments}
         renderItem={({ item }) => <PostComments data={item}></PostComments>}

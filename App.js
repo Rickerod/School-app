@@ -44,10 +44,13 @@ export default function App() {
             }}
             initialRouteName="Home"
           >
-            {/*<Stack.Screen
+            {/* <Stack.Screen
+              name="HolaMundo" component={HolaMundo}
+            /> */}
+            {/* <Stack.Screen
               name="SingleContentVideo" component={SingleContentVideo}
-          />*/}
-           {/* <Stack.Screen
+            /> */}
+            {/* <Stack.Screen
               name="Login" component={Login}
             /> */}
             <Stack.Screen

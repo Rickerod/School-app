@@ -36,7 +36,12 @@ export default function PostHome() {
         );
 
         return () => backHandler.remove();
-    }, [commentsSheetRef, isShowing]);
+    }, [isShowing]);
+
+    const openComments = () => {
+        commentsSheetRef.current?.present();
+        setIsShowing(true)
+    };
 
     const handleSheetChanges = (index) => {
         console.log('handleSheetChanges', index)
@@ -144,7 +149,7 @@ export default function PostHome() {
                                         }}
                                     />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => commentsSheetRef.current?.present()}>
+                                <TouchableOpacity onPress={openComments}>
                                     <Ionic
                                         name="ios-chatbubble-outline"
                                         style={{ fontSize: 20, paddingRight: 10 }}

@@ -9,7 +9,7 @@ import Header from '../components/Header';
 export default function Profile() {
     return (
         <SafeAreaView style={styles.container}>
-            <Header title="ditero_d" id={0}/>
+            <Header title="ditero_d" id={0} wd={1}/>
             <View style={{ width: '100%', padding: 10 }}>
                 <ProfileBody
                     name="Diterod"
