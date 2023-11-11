@@ -7,7 +7,7 @@ const ImageComment = ({ comment }) => {
 
   return (
     <View
-      style={{ flexDirection: "row", alignItems: "center", marginVertical: 10 }}
+      style={{ flexDirection: "row", alignItems: "center", marginVertical: 10, paddingLeft: 5 }}
     >
       <Image
         style={{ width: 35, height: 35, borderRadius: 20 }}

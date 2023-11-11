@@ -20,7 +20,7 @@ export default function Profile() {
                     post="458"
                 />
                 <ProfileButtons
-                    id={1}
+                    id={0}
                     name="Diterod"
                     accountName="ditero_d"
                     profileImage={require('../storage/images/userProfile.png')}

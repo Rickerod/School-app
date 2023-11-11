@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, TextInput, BackHandler } from 'react-native';
+import { View, Text, Image, TouchableOpacity, TextInput, BackHandler, Pressable } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionic from 'react-native-vector-icons/Ionicons';
@@ -16,6 +16,12 @@ import {
 export default function PostHome() {
     const commentsSheetRef = useRef(null);
     const [isShowing, setIsShowing] = useState(false);
+
+    const [newComment, setNewComment] = useState("");
+
+    const sendComment = async () => {
+        console.log("Enviando comentario...")
+    };
 
     const navigation = useNavigation();
 
@@ -159,7 +165,6 @@ export default function PostHome() {
                                     <Feather name="navigation" style={{ fontSize: 20 }} />
                                 </TouchableOpacity>
                             </View>
-                            <Feather name="bookmark" style={{ fontSize: 20 }} />
                         </View>
                         <View style={{ paddingHorizontal: 15 }}>
                             <Text>
@@ -181,7 +186,7 @@ export default function PostHome() {
                         </View>
                         <BottomSheetModal
                             ref={commentsSheetRef}
-                            snapPoints={["90%", "70%"]}
+                            snapPoints={["100%"]}
                             index={0}
                             onChange={handleSheetChanges}
                             backgroundComponent={({ style }) => (

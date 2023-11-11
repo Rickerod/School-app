@@ -135,7 +135,7 @@ const SingleContentImage = ({ route, navigation }) => {
             {/* All comments */}
             <BottomSheetModal
                 ref={commentsSheetRef}
-                snapPoints={["70%", '100%']}
+                snapPoints={['100%']}
                 index={0}
                 onChange={handleSheetChanges}
                 backgroundComponent={({ style }) => (

@@ -21,6 +21,7 @@ import ForoComments from './src/components/ForoComments';
 import Header from './src/components/Header';
 import Login from './src/screens/Login';
 import Register from './src/screens/Register'
+import EditPost from './src/components/EditPost';
 
 import {
   BottomSheetModalProvider,
@@ -80,6 +81,9 @@ export default function App() {
             />
             <Stack.Screen
               name="Register" component={Register}
+            />
+            <Stack.Screen
+              name="EditPost" component={EditPost}
             />
           </Stack.Navigator>
         </BottomSheetModalProvider>

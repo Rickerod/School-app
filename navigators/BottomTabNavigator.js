@@ -44,10 +44,10 @@ export default function TabNavigator() {
                 component={HomeScreen}
 
             />
-            {/*<Tab.Screen
+            <Tab.Screen
                 name="Post"
                 component={Post}
-        />*/}
+            />
             <Tab.Screen name="person" component={Profile} />
         </Tab.Navigator>
     )

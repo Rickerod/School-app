@@ -12,27 +12,6 @@ export default function Header({ title, id, wd }) {
     const navigation = useNavigation();
     const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 
-    const pickImage = async () => {
-        const { status } = await requestPermission();
-        // No permissions request is necessary for launching the image library
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-        });
-
-        if (!result.canceled) {
-            console.log("Tipo de datos", result.assets[0].type)
-            if (result.assets[0].type === "image") {
-                //Logica agregar imagen en el dispositivo y en la nube
-            }
-            else {
-                //Logica agregar video en el dispositivo y en la nube
-            }
-          }
-    }
-
     return (
         <View backgroundColor={id === 0 ? "white" : "purple"}>
             <StatusBar
@@ -70,7 +49,7 @@ export default function Header({ title, id, wd }) {
                     {wd === 1 &&
                         <TouchableOpacity
                             activeOpacity={0.5}
-                            onPress={pickImage}
+                            onPress={ () => navigation.navigate("Post")}
                         >
                             <Feather name="plus-square" style={{ fontSize: 28, borderRadius: 30 }} />
                         </TouchableOpacity>
