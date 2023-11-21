@@ -1,16 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { ProfileBody, ProfileButtons } from '../components/ProfileBody';
+import React, {useState, useEffect} from 'react';
+import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
+import ProfileStudent from './ProfileStudent';
+import Header from './Header';
+import { ProfileBody, ProfileButtons } from './ProfileBody';
 import BottomTabView from '../components/BottomTabView'
-import { SafeAreaView } from 'react-native-safe-area-context'
 
-import Header from '../components/Header';
-import ProfileStudent from '../components/ProfileStudent';
-
-export default function Profile({ route }) {
+export default function ProfileGuest({route}) {
     const [data, setData] = useState([])
-
-    //{id_user_profile, type_user_profile} = route.params
 
     useEffect(() => {
         const fetchData = async () => {
@@ -30,10 +26,10 @@ export default function Profile({ route }) {
         );
     }
 
-    console.log(route.params)
-
     return (
         <View>
+            
+            {/* {1 == 1 ? */}
             {route.params.type_user_profile == 1 ?
                 <SafeAreaView style={styles.container}>
                     <Header title="ditero_d" id={0} wd={1} />
@@ -44,7 +40,7 @@ export default function Profile({ route }) {
                             profileImage={require('../storage/images/userProfile.png')}
                         />
                         <ProfileButtons
-                            id={0} //Perfil del usuario
+                            id={1} //Ver perfir como invitado
                             name="Diterod"
                             accountName="ditero_d"
                             profileImage={require('../storage/images/userProfile.png')}
@@ -56,7 +52,7 @@ export default function Profile({ route }) {
                 <View>
                     <ProfileStudent
                         username={data[0].username}
-                        firsntame={data[0].firstname}
+                        firsntame={data[0].firsntame}
                         lastname={data[0].lastname}
                         uri_image_profile={data[0].uri_image_profile}
                         user_description={data[0].user_description}
@@ -74,4 +70,3 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
 });
-

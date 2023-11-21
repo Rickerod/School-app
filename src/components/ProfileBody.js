@@ -1,22 +1,66 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, Modal, Pressable, TextInput, Dimensions, Alert } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 //import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
+import useUser from '../hooks/useUser';
 
 export const ProfileBody = ({
+    id_user,
     name,
-    accountName,
     profileImage,
     post,
-    followers,
-    following,
 }) => {
 
     const [modalVisible, setModalVisible] = useState(false);
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
+    const [data, setData] = useState([])
+    const [text, setText] = useState('');
+
+    const user = useUser()
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await fetch(`http://192.168.0.14:3000/profile/numPosts/${id_user}`)
+            const dataResponse = await response.json();
+            setData(dataResponse)
+        }
+
+        fetchData()
+    }, [])
+
+    const handleTextChange = enteredText => {
+        setText(enteredText);
+    }
+
+    //Insertar reporte
+    const sendReport = async () => {
+        const body = { report_description: text };
+
+        const response = await fetch(`http://192.168.0.14:3000/report/${user.id_user}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        });
+
+        const data = await response.json();
+
+        if (data.ok) {
+            setModalVisible(!modalVisible)
+        } else {
+            console.log(data.message, data.err)
+        }
+    }
+
+    if (data.length === 0) {
+        return (
+            <View></View>
+        );
+    }
 
     return (
         <View>
@@ -52,7 +96,7 @@ export const ProfileBody = ({
                         </Text>
                     </View>
                     <View style={{ alignItems: 'center', paddingLeft: 20 }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{post}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{data[0].num_posts}</Text>
                         <Text>Publicaciones</Text>
                     </View>
                 </View>
@@ -61,6 +105,9 @@ export const ProfileBody = ({
                         <Octicons name="report" style={{ fontSize: 30 }} />
                     </TouchableOpacity>
                 </View>
+            </View>
+            <View style={{ width: windowWidth / 1.5 }}>
+                <Text> Septimo Basico B. </Text>
             </View>
             <View style={styles.centeredView}>
                 <Modal
@@ -82,10 +129,12 @@ export const ProfileBody = ({
                                 multiline={true}
                                 maxLength={200}
                                 numberOfLines={4}
+                                onChangeText={handleTextChange}
+                                value={text}
                             />
                             <Pressable
                                 style={[styles.button]}
-                                onPress={() => setModalVisible(!modalVisible)}>
+                                onPress={sendReport}>
                                 <Text style={styles.textStyle}> Reportar </Text>
                             </Pressable>
                         </View>

@@ -29,11 +29,6 @@ const Signup = ({ navigation }) => {
                     }}>
                         Crear una cuenta
                     </Text>
-
-                    <Text style={{
-                        fontSize: 16,
-                        color: COLORS.black
-                    }}> Contecta con tus clase hoy!</Text>
                 </View>
 
                 <View style={{ marginBottom: 12 }}>

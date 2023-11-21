@@ -36,7 +36,7 @@ const Login = ({ navigation }) => {
                         marginVertical: 12,
                         color: COLORS.black
                     }}>
-                        Bienvenido ! 👋
+                        Bienvenido !
                   </Text>
                 </View>
 

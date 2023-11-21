@@ -1,98 +1,92 @@
-import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Image} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { FlatList } from 'react-native-gesture-handler';
 
 export default function Students() {
     const navigation = useNavigation();
-    
-    const storyInfo = [
-        {
-            id: 1,
-            name: 'Diterod',
-            image: require('../storage/images/userProfile.png'),
-        },
-        {
-            id: 0,
-            name: 'Ram_Charan',
-            image: require('../storage/images/profile1.jpg'),
-        },
-        {
-            id: 0,
-            name: 'Tom',
-            image: require('../storage/images/profile2.jpg'),
-        },
-        {
-            id: 0,
-            name: 'The_Groot',
-            image: require('../storage/images/profile3.jpg'),
-        },
-        ,
-        {
-            id: 0,
-            name: 'loverland',
-            image: require('../storage/images/profile4.jpg'),
-        },
-        ,
-        {
-            id: 0,
-            name: 'chillhouse',
-            image: require('../storage/images/profile5.jpg'),
-        },
-    ];
+    const [data, setData] = useState([])
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            const idUsuario = 1
+            const response = await fetch(`http://192.168.0.14:3000/students/${idUsuario}`)
+            /* [
+                {
+                  "id_user": 2,
+                  "uri_image_profile": "https://raw.githubusercontent.com/Rickerod/School-app/master/src/storage/images/profile1.jpg",
+                  "type_user": 0
+                },
+                {
+                  "id_user": 3,
+                  "uri_image_profile": "https://raw.githubusercontent.com/Rickerod/School-app/master/src/storage/images/profile2.jpg",
+                  "type_user": 0
+                },...] */
+            const dataResponse = await response.json();
+            setData(dataResponse)
+        }
+
+        fetchUsers()
+    }, [])
+
+
+    if (data == []) {
+        return <View></View>
+    }
+
+    console.log(data)
 
     return (
-        <ScrollView
+        <FlatList
             horizontal={true}
             showsHorizontalScrollIndicator={false}
-            style={{ paddingVertical: 20, backgroundColor: 'white' }}>
-            {storyInfo.map((data, index) => {
-                return (
-                    <TouchableOpacity
-                        key={index}
-                        onPress={() =>
-                            navigation.navigate("ProfileStudent", {
-                                uri_image: data.image,
-                                name: data.name
-                            })}
-                    >
+            data={data}
+            renderItem={({ item }) =>
+                <TouchableOpacity
+                    onPress={() =>
+                        navigation.navigate("ProfileGuest", {
+                            id_user_profile: item.id_user,
+                            type_user_profile: item.type_user
+                        })}
+                >
+                    <View
+                        style={{
+                            flexDirection: 'column',
+                            paddingHorizontal: 8,
+                        }}>
                         <View
                             style={{
-                                flexDirection: 'column',
-                                paddingHorizontal: 8,
+                                width: 68,
+                                height: 68,
+                                backgroundColor: 'white',
+                                borderWidth: 1.8,
+                                borderRadius: 100,
+                                borderColor: '#c13584',
+                                justifyContent: 'center',
+                                alignItems: 'center',
                             }}>
-                            <View
+                            <Image
+                                source={{ uri: item.uri_image_profile }}
                                 style={{
-                                    width: 68,
-                                    height: 68,
-                                    backgroundColor: 'white',
-                                    borderWidth: 1.8,
+                                    resizeMode: 'cover',
+                                    width: '92%',
+                                    height: '92%',
                                     borderRadius: 100,
-                                    borderColor: '#c13584',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                }}>
-                                <Image
-                                    source={data.image}
-                                    style={{
-                                        resizeMode: 'cover',
-                                        width: '92%',
-                                        height: '92%',
-                                        borderRadius: 100,
-                                        backgroundColor: 'orange',
-                                    }}
-                                />
-                            </View>
-                            <Text
-                                style={{
-                                    textAlign: 'center',
-                                    fontSize: 10,
-                                }}>
-                                {data.name}
-                            </Text>
+                                    backgroundColor: 'orange',
+                                }}
+                            />
                         </View>
-                    </TouchableOpacity>
-                );
-            })}
-        </ScrollView>
+                        <Text
+                            style={{
+                                textAlign: 'center',
+                                fontSize: 10,
+                            }}>
+                            {item.firstname}
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+            }
+
+        />
     );
 }

@@ -17,12 +17,15 @@ import { useFocusEffect } from '@react-navigation/native';
 const SingleContentImage = ({ route, navigation }) => {
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
+    const {uri_image, id_post, islike, num_likes} = route.params
 
     const commentsSheetRef = useRef(null);
+    const [like, setLike] = useState(islike);
+    const [count, setCount] = useState(num_likes)
 
     const [isShowing, setIsShowing] = useState(false);
 
-    //console.log("isShowing2", isShowing)
+    console.log("isShowing2", like)
 
     //Back action of the commentSheetRef for Android
     useEffect(() => {
@@ -54,9 +57,6 @@ const SingleContentImage = ({ route, navigation }) => {
             setIsShowing(false)
         }
     }
-
-    const [like, setLike] = useState(false);
-    const [count, setCount] = useState(230)
 
     const handleClickLike = () => {
         setLike(!like)
@@ -109,7 +109,7 @@ const SingleContentImage = ({ route, navigation }) => {
                         position: 'absolute',
                         //backgroundColor: 'red'
                     }}
-                    source={route.params.uri_image}
+                    source={{uri: uri_image}}
                 />
             </TouchableOpacity>
             <View

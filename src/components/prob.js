@@ -3,15 +3,34 @@ import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
 import Header from '../components/Header';
 import Profile from '../screens/Profile';
 
-export default function ProfileStudent({ username, firstname, lastname, uri_image_profile, user_description }) {
+export default function ProfileStudent({ route }) {
+  const [data, setData] = useState([])
 
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
-  //const { username, firstname, lastname, uri_image_profile, user_description } = route.params
-  console.log(username)
+  const { profile, id_user_profile, type_user_profile } = route.params
+
+  console.log(id_user_profile, type_user_profile)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(`http://192.168.0.14:3000/profile/post/${id_user_profile}/${type_user_profile}}`)
+      const dataResponse = await response.json();
+      setData(dataResponse)
+    }
+
+    fetchData()
+  }, [])
+
+  if (data.length === 0) {
+    return (
+      <View></View>
+    );
+  }
 
   return (
     <View>
+      {type_user_profile == 0 ?
         <View style={styles.container}>
           <Header title="Perfil" id={1} wd={0} />
           <View style={{
@@ -31,7 +50,7 @@ export default function ProfileStudent({ username, firstname, lastname, uri_imag
                 alignItems: 'center',
               }}>
               <Image
-                source={{ uri: uri_image_profile }}
+                source={{ uri: data[0].uri_image_profile }}
                 style={{
                   resizeMode: 'cover',
                   width: '95%',
@@ -62,7 +81,7 @@ export default function ProfileStudent({ username, firstname, lastname, uri_imag
                 textAlign: 'center',
                 paddingBottom: 40,
                 //marginHorizontal: 20,
-              }}> {user_description}
+              }}> {data[0].user_description}
             </Text>
 
             <View>
@@ -74,7 +93,7 @@ export default function ProfileStudent({ username, firstname, lastname, uri_imag
               <Text style={{
                 opacity: 0.5
               }}>
-                {firstname} {lastname}
+                {data[0].firstname} {data[0].lastname}
               </Text>
             </View>
             <View>
@@ -106,6 +125,10 @@ export default function ProfileStudent({ username, firstname, lastname, uri_imag
 
           </View>
         </View >
+        :
+        null
+
+      }
     </View >
   )
 }

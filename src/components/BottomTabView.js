@@ -8,7 +8,7 @@ import Posts from './Posts';
 import Videos from './Videos';
 import Foro from './Foro'
 
-const BottomTabView = () => {
+const BottomTabView = ({id_user}) => {
   const Tab = createMaterialTopTabNavigator();
 
   let squares = [];
@@ -79,7 +79,10 @@ const BottomTabView = () => {
   };
   */
 
-  const Graph = () => {
+  const Graph = ({route}) => {
+
+    const {id_user} = route.params
+
     return (
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -103,7 +106,10 @@ const BottomTabView = () => {
     );
   };
 
-  const Board = () => {
+  const Board = ({route}) => {
+  
+    const {id_user} = route.params
+
     return (
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -161,11 +167,11 @@ const BottomTabView = () => {
           return <Ionic name={iconName} color={colour} size={22} />;
         },
       })}>
-      <Tab.Screen name="Posts" component={Posts} />
-      <Tab.Screen name="Video" component={Videos} />
-      <Tab.Screen name="Graph" component={Graph} />
-      <Tab.Screen name="Board" component={Board} />
-      <Tab.Screen name="Foro" component={Foro} />
+      <Tab.Screen name="Posts" component={Posts} initialParams={{id_user: id_user}} />
+      <Tab.Screen name="Video" component={Videos} initialParams={{id_user: id_user}}/>
+      <Tab.Screen name="Graph" component={Graph} initialParams={{id_user: id_user}}/>
+      <Tab.Screen name="Board" component={Board} initialParams={{id_user: id_user}}/>
+      <Tab.Screen name="Foro" component={Foro} initialParams={{id_user: id_user}}/>
     </Tab.Navigator>
   );
 };

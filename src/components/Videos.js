@@ -5,9 +5,12 @@ import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { Video, ResizeMode } from 'expo-av';
 
 
-export default function Videos() {
+export default function Videos({route}) {
     const video = React.useRef(null);
     const [status, setStatus] = React.useState({});
+
+    const {id_user} = route.params
+    
     const searchData = [
         {
             id: 0,

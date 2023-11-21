@@ -10,18 +10,8 @@ import BottomTabNavigator from './navigators/BottomTabNavigator'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 import HolaMundo from './src/screens/HolaMundo';
-import EditProfile from './src/components/EditProfile';
-import SingleContentImage from './src/components/SingleContentImage';
-import SingleContentVideo from './src/components/SingleContentVideo';
-import ImageComments from './src/components/ImageComments';
-import BottomTabView from './src/components/BottomTabView'
-import ProfileStudent from './src/components/ProfileStudent';
-import Students from './src/components/Students';
-import ForoComments from './src/components/ForoComments';
-import Header from './src/components/Header';
-import Login from './src/screens/Login';
-import Register from './src/screens/Register'
-import EditPost from './src/components/EditPost';
+import LoginNavigator from './navigators/LoginNavigator';
+import HolaMundo2 from './src/components/HolaMundo2';
 
 import {
   BottomSheetModalProvider,
@@ -45,46 +35,18 @@ export default function App() {
             }}
             initialRouteName="Home"
           >
-            {/* <Stack.Screen
-              name="HolaMundo" component={HolaMundo}
-            /> */}
-            {/* <Stack.Screen
-              name="SingleContentVideo" component={SingleContentVideo}
-            /> */}
+            
+            {/*  <Stack.Screen
+              name="HolaMundo2" component={HolaMundo2}
+            />  */}
             {/* <Stack.Screen
               name="Login" component={Login}
             /> */}
-            <Stack.Screen
-              name="TabScreen" component={BottomTabNavigator}
-            />
-            <Stack.Screen
-              name="EditProfile" component={EditProfile}
-            />
 
             <Stack.Screen
-              name="SingleContentImage" component={SingleContentImage}
+               name="LoginStack" component={LoginNavigator}
             />
-            <Stack.Screen
-              name="ImageComments" component={ImageComments}
-            />
-            <Stack.Screen
-              name="BottomTabView" component={BottomTabView}
-            />
-            <Stack.Screen
-              name="ProfileStudent" component={ProfileStudent}
-            />
-            <Stack.Screen
-              name="Students" component={Students}
-            />
-            <Stack.Screen
-              name="ForoComments" component={ForoComments}
-            />
-            <Stack.Screen
-              name="Register" component={Register}
-            />
-            <Stack.Screen
-              name="EditPost" component={EditPost}
-            />
+  
           </Stack.Navigator>
         </BottomSheetModalProvider>
       </NavigationContainer>

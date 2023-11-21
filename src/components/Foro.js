@@ -62,7 +62,9 @@ const renderSeparator = () => (
 );
 
 
-export default function Foro() {
+export default function Foro({route}) {
+
+  const {id_user} = route.params
 
   const dataForum = [
     {

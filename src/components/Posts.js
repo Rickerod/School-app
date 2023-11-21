@@ -1,78 +1,52 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, Image, ScrollView} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
+import useUser from '../hooks/useUser';
 
-export default function Posts({navigation}) {
-    const searchData = [
-        {
-            id: 0,
-            images: [
-                require('../storage/images/post1.jpg'),
-                require('../storage/images/post2.jpg'),
-                require('../storage/images/post7.jpg'),
-                require('../storage/images/post4.jpg'),
-                require('../storage/images/post5.jpg'),
-                require('../storage/images/post6.jpg'),
-                require('../storage/images/post7.jpg'),
-                require('../storage/images/post8.jpg'),
-                require('../storage/images/post9.jpg'),
-                require('../storage/images/post10.jpg'),
-                require('../storage/images/post11.jpg'),
-                require('../storage/images/post12.jpg'),
-            ],
-        },
-        {
-            id: 1,
-            images: [
-                require('../storage/images/post7.jpg'),
-                require('../storage/images/post8.jpg'),
-                require('../storage/images/post9.jpg'),
-                require('../storage/images/post10.jpg'),
-                require('../storage/images/post11.jpg'),
-                require('../storage/images/post12.jpg'),
-            ],
-        },
-        {
-            id: 2,
-            images: [
-                require('../storage/images/post13.jpg'),
-                require('../storage/images/post14.jpg'),
-                require('../storage/images/post15.jpg'),
-            ],
-        },
-    ];
+export default function Posts({ route, navigation }) {
+    const [data, setData] = useState([])
+    const {id_user} = route.params
+
+    const user = useUser()
+
+    useEffect(() => {
+
+        const fetchPost = async () => {
+            const response = await fetch(`http://192.168.0.14:3000/profile/post/${user.id_user}/${id_user}`) //(userProfile, id_user)
+            const dataResponse = await response.json();
+            setData(dataResponse)
+        }
+
+        fetchPost()
+
+    }, [])
+    
+    if (data == []) {
+        return <View></View>
+    }
     return (
-        <ScrollView>
-            {searchData.map((data, index) => {
-                return (
-                    <View key={index}>
-                        {data.id === 0 ? (
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    flexWrap: 'wrap',
-                                    justifyContent: 'space-between',
-                                    width: '100%'
-                                }}>
-                                {data.images.map((imageData, imgIndex) => {
-                                    return (
-                                        <TouchableOpacity
-                                            key={imgIndex}
-                                            onPress={() => navigation.navigate('SingleContentImage', {
-                                                uri_image : imageData
-                                            })}
-                                            style={{ paddingBottom: 2, width: '33%' }}>
-                                            <Image
-                                                source={imageData}
-                                                style={{ width: '100%', height: 150 }}
-                                            />
-                                        </TouchableOpacity>
-                                    );
-                                })}
-                            </View>
-                        ) : null}
-                    </View>
-                );
-            })}
-        </ScrollView>
+        <FlatList
+            key={'_'}
+            data={data}
+            numColumns={3}
+            //horizontal={true}
+            contentcontainerstyle={{ justifyContent: 'space-between', alignItems: 'space-between', flexdirection: 'row', flexwrap: 'wrap' }}
+            renderItem={({ item }) =>
+                <TouchableOpacity
+                    //key={imgIndex}
+                    onPress={() => navigation.navigate('SingleContentImage', {
+                        uri_image: item.images[0].url_image,
+                        id_post: item.id_post,
+                        islike: item.is_liked,
+                        num_likes: item.num_likes
+                    })}
+                    style={{ paddingBottom: 2, width: '33%' }}>
+                    <Image
+                        source={{ uri: item.images[0].url_image }}
+                        style={{ width: '100%', height: 150 }}
+                    />
+                </TouchableOpacity>
+            }
+        />
     );
 }
