@@ -1,22 +1,27 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Feather from '@expo/vector-icons/Feather';
 
-import Profile from '../src/screens/Profile'
-import HomeScreen from '../src/screens/HomeScreen';
-import Post from '../src/components/Post';
-import ProfileGuest from '../src/components/ProfileGuest';
+import Profile from '../screens/Profile'
+import HomeScreen from '../screens/HomeScreen';
+import NewPost from '../components/NewPost';
+import ProfileGuest from '../screens/ProfileGuest';
+import ProfileStudent from '../components/ProfileStudent';
+import ScreenReport from '../screens/ScreenReports';
 
-import { getHeaderTitle } from '@react-navigation/elements';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import ProfileStudent from '../src/components/ProfileStudent';
-import useUser from '../src/hooks/useUser'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+import useUser from '../hooks/useUser'
+import { useNavigation } from '@react-navigation/native';
 
 
 const HomeStack = () => {
     const HomeStack = createNativeStackNavigator()
+
+    const navigation = useNavigation();
+    const user = useUser()
 
     return (
         <HomeStack.Navigator
@@ -66,6 +71,9 @@ export default function TabNavigator() {
                         iconName = focused ? 'person' : 'person-outline';
                     } else if (route.name === "Post") {
                         return <Feather name="plus-square" size={size} color={colour} />;
+                    } else if (route.name === "Report") {
+                        iconName = focused ? 'megaphone' : 'megaphone-outline';
+                        colour = focused ? 'black' : 'gray';
                     }
 
 
@@ -75,17 +83,27 @@ export default function TabNavigator() {
             <Tab.Screen
                 name="Home"
                 component={HomeStack}
-
             />
+
+            { (user.type_user == 1 || user.type_user == 2) &&
+                <Tab.Screen
+                    name="Post"
+                    component={NewPost}
+
+                />
+            }
             <Tab.Screen
-                name="Post"
-                component={Post}
-
-            />
-            <Tab.Screen name="person"
+                name="person"
                 component={Profile}
-                initialParams={{id_user_profile: user.id_user, type_user_profile: user.type_user}}
+                initialParams={{ id_user_profile: user.id_user, type_user_profile: user.type_user }}
             />
+
+            {user.type_user == 1 &&
+                <Tab.Screen
+                    name="Report"
+                    component={ScreenReport}
+                />
+            }
         </Tab.Navigator>
     )
 }

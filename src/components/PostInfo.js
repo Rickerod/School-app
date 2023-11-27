@@ -1,25 +1,31 @@
-import React, {useState, useRef, useEffect} from 'react';
-import { View, Text, Image, TouchableOpacity,  BackHandler} from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { View, Text, Image, TouchableOpacity, BackHandler, Dimensions } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionic from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
+import axios from "axios"
 
 import { useNavigation } from '@react-navigation/native';
 
 import ImageComments from './ImageComments';
-import comments from '../storage/data/comments.json';
+//import comments from '../storage/data/comments.json';
 
 import {
     BottomSheetModal,
 } from "@gorhom/bottom-sheet";
+import { FlatList } from 'react-native-gesture-handler';
 
-export default function PostInfo({data}) {
+export default function PostInfo({ data }) {
+    const windowWidth = Dimensions.get('window').width;
     const commentsSheetRef = useRef(null);
     const [like, setLike] = useState(data.is_liked);
     const [isShowing, setIsShowing] = useState(false);
+    const [comments, setComments] = useState("");
 
     const navigation = useNavigation();
+
+    const apiUrl = process.env.HOST;
 
     useEffect(() => {
         const backAction = () => {
@@ -43,9 +49,25 @@ export default function PostInfo({data}) {
         setIsShowing(true)
     };
 
+    const handleLike = () => {
+        setLike(!like)
+    }
+
+    //Cargar comentarios al post
+    const loadComments = async () => {
+        try {
+            const response = await axios.get(`http://${apiUrl}/comments/${data.id_post}`);
+            setComments(response.data)
+
+        } catch (error) {
+            console.log("Error", error);
+        }
+    }
+
     const handleSheetChanges = (index) => {
         console.log('handleSheetChanges', index)
         if (index >= 0) {
+            loadComments()
             setIsShowing(true)
         } else {
             setIsShowing(false)
@@ -55,7 +77,7 @@ export default function PostInfo({data}) {
     const sendComment = async () => {
         console.log("Enviando comentario...")
     };
-    
+
     return (
         <View
             //key={index}
@@ -73,7 +95,7 @@ export default function PostInfo({data}) {
                 }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Image
-                        source={{uri: data.uri_image_profile}}
+                        source={{ uri: data.uri_image_profile }}
                         style={{ width: 40, height: 40, borderRadius: 100 }}
                     />
                     <View style={{ paddingLeft: 5 }}>
@@ -85,10 +107,10 @@ export default function PostInfo({data}) {
                 <Feather name="more-vertical" style={{ fontSize: 20 }} />
             </View>
             <TouchableOpacity onPress={() => navigation.navigate('SingleContentImage', {
-                uri_image: data.images[0].url_image,
+                uri_images: data.images,
                 id_post: data.id_post,
                 islike: like,
-                num_likes: like ? data.num_likes + 1 : data.num_likes
+                num_likes: like ? data.num_likes + 1 : data.num_likes,
             })}>
                 <View
                     style={{
@@ -96,9 +118,25 @@ export default function PostInfo({data}) {
                         justifyContent: 'center',
                         alignItems: 'center',
                     }}>
-                    <Image
-                        source={{uri: data.images[0].url_image}}
-                        style={{ width: '100%', height: 400 }}
+
+                    <FlatList
+                        data={data.images}
+                        horizontal={true}
+                        renderItem={({ item }) =>
+                            <View>
+                                <Image
+                                    source={{ uri: item.url_image }}
+                                    style={{
+                                        resizeMode: "cover",
+                                        width: windowWidth,
+                                        height: 400
+
+                                    }}
+                                />
+                            </View>
+
+                        }
+                        pagingEnabled
                     />
                 </View>
             </TouchableOpacity>
@@ -111,7 +149,7 @@ export default function PostInfo({data}) {
                     paddingVertical: 15,
                 }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <TouchableOpacity onPress={() => setLike(!like)}>
+                    <TouchableOpacity onPress={handleLike}>
                         <AntDesign
                             name={like ? 'heart' : 'hearto'}
                             style={{
@@ -126,9 +164,6 @@ export default function PostInfo({data}) {
                             name="ios-chatbubble-outline"
                             style={{ fontSize: 20, paddingRight: 10 }}
                         />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Feather name="navigation" style={{ fontSize: 20 }} />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -159,8 +194,12 @@ export default function PostInfo({data}) {
                     <View style={[style, { backgroundColor: "#fff" }]} />
                 )}
             >
-                <ImageComments comments={comments} />
+                <ImageComments
+                    id_post={data.id_post} 
+                    comments={comments} 
+                    
+                />
             </BottomSheetModal>
         </View>
-  );
+    );
 }

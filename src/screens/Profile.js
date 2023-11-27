@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { ProfileBody, ProfileButtons } from '../components/ProfileBody';
-import BottomTabView from '../components/BottomTabView'
+import BottomTabView  from '../navigators/BottomTabView'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import Header from '../components/Header';
@@ -11,11 +11,12 @@ export default function Profile({ route }) {
     const [data, setData] = useState([])
 
     //{id_user_profile, type_user_profile} = route.params
+    const apiUrl = process.env.HOST;
 
     useEffect(() => {
         const fetchData = async () => {
             //console.log(route.params['type_user_profile'])
-            const response = await fetch(`http://192.168.0.14:3000/profile/${route.params.id_user_profile}`)
+            const response = await fetch(`http://${apiUrl}/profile/${route.params.id_user_profile}`)
             const dataResponse = await response.json();
             setData(dataResponse)
         }
@@ -34,11 +35,12 @@ export default function Profile({ route }) {
 
     return (
         <View>
-            {route.params.type_user_profile == 1 ?
+            {route.params.type_user_profile == 1 || route.params.type_user_profile == 2  ?
                 <SafeAreaView style={styles.container}>
                     <Header title="ditero_d" id={0} wd={1} />
                     <View style={{ width: '100%', padding: 10 }}>
                         <ProfileBody
+                            id={0} //Perfil del usuario
                             id_user={route.params.id_user_profile}
                             name="Diterod"
                             profileImage={require('../storage/images/userProfile.png')}

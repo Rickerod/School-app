@@ -7,10 +7,12 @@ export default function Students() {
     const navigation = useNavigation();
     const [data, setData] = useState([])
 
+    const apiUrl = process.env.HOST;
+
     useEffect(() => {
         const fetchUsers = async () => {
             const idUsuario = 1
-            const response = await fetch(`http://192.168.0.14:3000/students/${idUsuario}`)
+            const response = await fetch(`http://${apiUrl}/students/${idUsuario}`)
             /* [
                 {
                   "id_user": 2,
@@ -33,8 +35,6 @@ export default function Students() {
     if (data == []) {
         return <View></View>
     }
-
-    console.log(data)
 
     return (
         <FlatList

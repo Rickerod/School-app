@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, Modal, Pressable, TextInput, Dimensions, Alert } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+
 import { useNavigation } from '@react-navigation/native';
-//import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Octicons from 'react-native-vector-icons/Octicons';
 import useUser from '../hooks/useUser';
+//import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export const ProfileBody = ({
+    id,
     id_user,
     name,
     profileImage,
@@ -20,10 +23,11 @@ export const ProfileBody = ({
     const [text, setText] = useState('');
 
     const user = useUser()
+    const apiUrl = process.env.HOST;
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await fetch(`http://192.168.0.14:3000/profile/numPosts/${id_user}`)
+            const response = await fetch(`http://${apiUrl}/profile/numPosts/${id_user}`)
             const dataResponse = await response.json();
             setData(dataResponse)
         }
@@ -39,7 +43,7 @@ export const ProfileBody = ({
     const sendReport = async () => {
         const body = { report_description: text };
 
-        const response = await fetch(`http://192.168.0.14:3000/report/${user.id_user}`, {
+        const response = await fetch(`http://${apiUrl}/report/${user.id_user}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -100,11 +104,13 @@ export const ProfileBody = ({
                         <Text>Publicaciones</Text>
                     </View>
                 </View>
-                <View style={{ paddingRight: 40 }}>
-                    <TouchableOpacity onPress={() => setModalVisible(true)}>
-                        <Octicons name="report" style={{ fontSize: 30 }} />
-                    </TouchableOpacity>
-                </View>
+                {id == 1 &&
+                    <View style={{ paddingRight: 40 }}>
+                        <TouchableOpacity onPress={() => setModalVisible(true)}>
+                            <Ionicons name="megaphone" style={{ fontSize: 30 }} />
+                        </TouchableOpacity>
+                    </View>
+                }
             </View>
             <View style={{ width: windowWidth / 1.5 }}>
                 <Text> Septimo Basico B. </Text>

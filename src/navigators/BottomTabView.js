@@ -1,12 +1,14 @@
 import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+
 import Ionic from 'react-native-vector-icons/Ionicons';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Foundation from 'react-native-vector-icons/Foundation';
-import Posts from './Posts';
-import Videos from './Videos';
-import Foro from './Foro'
+
+import Posts from '../components/Posts';
+import Videos from '../components/Videos';
+import Foro from '../components/Foro'
 
 const BottomTabView = ({id_user}) => {
   const Tab = createMaterialTopTabNavigator();
@@ -171,7 +173,7 @@ const BottomTabView = ({id_user}) => {
       <Tab.Screen name="Video" component={Videos} initialParams={{id_user: id_user}}/>
       <Tab.Screen name="Graph" component={Graph} initialParams={{id_user: id_user}}/>
       <Tab.Screen name="Board" component={Board} initialParams={{id_user: id_user}}/>
-      <Tab.Screen name="Foro" component={Foro} initialParams={{id_user: id_user}}/>
+      {/* <Tab.Screen name="Foro" component={Foro} initialParams={{id_user: id_user}}/> */}
     </Tab.Navigator>
   );
 };

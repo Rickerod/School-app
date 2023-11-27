@@ -2,30 +2,31 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import HolaMundo from '../src/screens/HolaMundo';
-import EditProfile from '../src/components/EditProfile';
-import SingleContentImage from '../src/components/SingleContentImage';
-import SingleContentVideo from '../src/components/SingleContentVideo';
-import ImageComments from '../src/components/ImageComments';
-import BottomTabView from '../src/components/BottomTabView'
-import ProfileStudent from '../src/components/ProfileStudent';
-import Students from '../src/components/Students';
-import ForoComments from '../src/components/ForoComments';
-import Header from '../src/components/Header';
-import Register from '../src/screens/Register'
-import EditPost from '../src/components/EditPost';
-import BottomTabNavigator from './BottomTabNavigator'
-import UserContext from '../src/context/UserContext';
-import Profile from '../src/screens/Profile';
+import EditProfile from '../components/EditProfile';
+import SingleContentImage from '../components/SingleContentImage';
+import SingleContentVideo from '../components/SingleContentVideo';
+import ImageComments from '../components/ImageComments';
+import ProfileStudent from '../components/ProfileStudent';
+import Students from '../components/Students';
+import ForoComments from '../components/ForoComments';
+import EditPost from '../components/EditPost';
 
-export default function LoginNavigator() {
+import HolaMundo from '../screens/HolaMundo';
+import Register from '../screens/Register'
+
+import BottomTabView from '../navigators/BottomTabView'
+import BottomTabNavigator from './BottomTabNavigator'
+
+import UserContext from '../context/UserContext';
+
+export default function LoginNavigator({route}) {
 
     const Stack = createNativeStackNavigator();
 
     const userData = {
-        id_user: 1,
-        type_user: 1,
-    }
+        id_user: route.params.id_user,
+        type_user: route.params.type_user,
+    } 
     return (
         <UserContext.Provider value={userData}>
             <Stack.Navigator
@@ -69,7 +70,7 @@ export default function LoginNavigator() {
                 <Stack.Screen
                     name="EditPost" component={EditPost}
                 />
-{/*                 <Stack.Screen
+                {/* <Stack.Screen
                     name="ProfileHome" component={Profile}
                 /> */}
             </Stack.Navigator>

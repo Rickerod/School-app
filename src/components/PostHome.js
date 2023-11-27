@@ -1,61 +1,61 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, TextInput, BackHandler, Pressable } from 'react-native';
+import axios from 'axios';
 
 import PostInfo from './PostInfo';
 
 import { FlatList } from 'react-native-gesture-handler';
-
+import { useFocusEffect } from '@react-navigation/native';
+import useUser from '../hooks/useUser';
 
 export default function PostHome() {
     const [data, setData] = useState([])
+    const [loading, setLoading] = useState(false)
+    
+    const user = useUser()
 
-    const postInfo = [
-        {
-            postTitle: 'mr shermon',
-            postPersonImage: require('../storage/images/userProfile.png'),
-            postImage: require('../storage/images/post1.jpg'),
-            likes: 765,
-            isLiked: false,
-        },
-        {
-            postTitle: 'chillhouse',
-            postPersonImage: require('../storage/images/profile5.jpg'),
-            postImage: require('../storage/images/post2.jpg'),
-            likes: 345,
-            isLiked: false,
-        },
-        {
-            postTitle: 'Tom',
-            postPersonImage: require('../storage/images/profile4.jpg'),
-            postImage: require('../storage/images/post3.jpg'),
-            likes: 734,
-            isLiked: false,
-        },
-        {
-            postTitle: 'The_Groot',
-            postPersonImage: require('../storage/images/profile3.jpg'),
-            postImage: require('../storage/images/post4.jpg'),
-            likes: 875,
-            isLiked: false,
-        },
-    ];
+    const apiUrl = process.env.HOST;
+
 
     //Obtener las 6 publicaciones mas recientes
-    useEffect(() => {
-        const fetchPost = async () => {
-            const idUsuario = 1
-            const response = await fetch(`http://192.168.0.14:3000/home/${idUsuario}`)
-            const dataResponse = await response.json();
-            setData(dataResponse)
-        }
+    /*  useEffect(() => {
+         const fetchPost = async () => {
+             const idUsuario = 1
+             const response = await fetch(`http://192.168.0.14:3000/home/${idUsuario}`)
+             const dataResponse = await response.json();
+             setData(dataResponse)
+         }
+ 
+         fetchPost()
+     }, []) */
 
-        fetchPost()
-    }, [])
+    //Obtener las 6 publicaciones mas recientes
+    useFocusEffect(
+        React.useCallback(() => {
 
-    if (data == []) {
+            async function fetchPost() {
+
+                //Enviar el id del usuario como query para obtener las publicaciones a las que les dió like...
+                const params = {
+                    id : user.id_user
+                }
+                try {
+                    const response = await axios.get(`http://${apiUrl}/home`, { params: params });
+                    setData(response.data)
+                    setLoading(true)
+                } catch {
+                    console.log("Error", error);
+                }
+            }
+
+            fetchPost()
+        }, [])
+    );
+
+    if (!loading) {
         return <View></View>
     }
-    
+
     return (
         <FlatList
             scrollEnabled={false}

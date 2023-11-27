@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-    View,
-    Text,
-    TouchableOpacity,
-    ToastAndroid,
-    Image,
-    TextInput,
-} from 'react-native';
+import { View, Text, TouchableOpacity, ToastAndroid, Image, TextInput } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 

@@ -1,17 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
-import ProfileStudent from './ProfileStudent';
-import Header from './Header';
-import { ProfileBody, ProfileButtons } from './ProfileBody';
-import BottomTabView from '../components/BottomTabView'
+import ProfileStudent from '../components/ProfileStudent';
+import Header from '../components/Header';
+import { ProfileBody, ProfileButtons } from '../components/ProfileBody';
+import BottomTabView  from '../navigators/BottomTabView'
 
 export default function ProfileGuest({route}) {
     const [data, setData] = useState([])
+    const apiUrl = process.env.HOST;
 
     useEffect(() => {
         const fetchData = async () => {
             //console.log(route.params['type_user_profile'])
-            const response = await fetch(`http://192.168.0.14:3000/profile/${route.params.id_user_profile}`)
+            const response = await fetch(`http://${apiUrl}/profile/${route.params.id_user_profile}`)
             const dataResponse = await response.json();
             setData(dataResponse)
         }
@@ -32,9 +33,10 @@ export default function ProfileGuest({route}) {
             {/* {1 == 1 ? */}
             {route.params.type_user_profile == 1 ?
                 <SafeAreaView style={styles.container}>
-                    <Header title="ditero_d" id={0} wd={1} />
+                    <Header title={data[0].username} id={1} wd={0} />
                     <View style={{ width: '100%', padding: 10 }}>
                         <ProfileBody
+                            id = {1}
                             id_user={route.params.id_user_profile}
                             name="Diterod"
                             profileImage={require('../storage/images/userProfile.png')}

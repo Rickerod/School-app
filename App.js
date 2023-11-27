@@ -1,17 +1,12 @@
 import 'react-native-gesture-handler'
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { ScreenStack } from 'react-native-screens';
-import BottomTabNavigator from './navigators/BottomTabNavigator'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
+import LoginNavigator from './src/navigators/LoginNavigator';
 import HolaMundo from './src/screens/HolaMundo';
-import LoginNavigator from './navigators/LoginNavigator';
 import HolaMundo2 from './src/components/HolaMundo2';
+import LoginAuth from './src/screens/LoginAuth';
 
 import {
   BottomSheetModalProvider,
@@ -35,7 +30,9 @@ export default function App() {
             }}
             initialRouteName="Home"
           >
-            
+            <Stack.Screen 
+              name="LoginAuth" component={LoginAuth}
+            />
             {/*  <Stack.Screen
               name="HolaMundo2" component={HolaMundo2}
             />  */}
@@ -44,21 +41,12 @@ export default function App() {
             /> */}
 
             <Stack.Screen
-               name="LoginStack" component={LoginNavigator}
+              name="LoginStack" component={LoginNavigator}
             />
-  
+
           </Stack.Navigator>
         </BottomSheetModalProvider>
       </NavigationContainer>
     </GestureHandlerRootView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

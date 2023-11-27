@@ -16,7 +16,7 @@ import comments from '../storage/data/comments.json'
 import { FlatList } from 'react-native-gesture-handler';
 import { ImagePicker } from 'expo-image-multiple-picker'
 
-export default function Post() {
+export default function NewPost() {
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
   //const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
@@ -60,7 +60,11 @@ export default function Post() {
               </TouchableOpacity>
               <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Editar publicación</Text>
               <TouchableOpacity
-                onPress={() => navigation.navigate("EditPost")}>
+                onPress={() => navigation.navigate("EditPost", {
+                    assets : assets,
+                    fileType : "image"
+                  }
+                )}>
                 <Ionic name="checkmark" style={{ fontSize: 35, color: '#3493D9' }} />
               </TouchableOpacity>
             </View>

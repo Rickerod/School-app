@@ -1,10 +1,9 @@
 import React from 'react';
 import { View, Text, FlatList, StyleSheet, Image } from 'react-native';
+
 import Feather from 'react-native-vector-icons/Feather';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Ionic from 'react-native-vector-icons/Ionicons';
-import Entypo from 'react-native-vector-icons/Entypo';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+
 import { useNavigation } from '@react-navigation/native';
 
 const PostForum = ({ data }) => {

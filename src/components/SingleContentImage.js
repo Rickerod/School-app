@@ -5,6 +5,7 @@ import Ionic from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import axios from "axios"
 
 import {
     BottomSheetModalProvider,
@@ -13,19 +14,23 @@ import {
 import comments from '../storage/data/comments.json'
 import ImageComments from './ImageComments';
 import { useFocusEffect } from '@react-navigation/native';
+import { FlatList } from 'react-native-gesture-handler';
 
 const SingleContentImage = ({ route, navigation }) => {
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
-    const {uri_image, id_post, islike, num_likes} = route.params
+    const { uri_images, id_post, islike, num_likes } = route.params
 
     const commentsSheetRef = useRef(null);
     const [like, setLike] = useState(islike);
     const [count, setCount] = useState(num_likes)
+    const [comments, setComments] = useState("");
 
     const [isShowing, setIsShowing] = useState(false);
 
-    console.log("isShowing2", like)
+    const uri_image = uri_images[0].url_image
+
+    const apiUrl = process.env.HOST;
 
     //Back action of the commentSheetRef for Android
     useEffect(() => {
@@ -49,10 +54,23 @@ const SingleContentImage = ({ route, navigation }) => {
         setIsShowing(true)
     };
 
+    //Cargar comentarios al post
+    const loadComments = async () => {
+        try {
+            const response = await axios.get(`http://${apiUrl}/comments/${id_post}`);
+            setComments(response.data)
+
+        } catch (error) {
+            console.log("Error", error);
+        }
+    }
+
     const handleSheetChanges = (index) => {
-        console.log('handleSheetChanges', index)
+        //console.log('handleSheetChanges', index)
         if (index >= 0) {
+            loadComments()
             setIsShowing(true)
+            
         } else {
             setIsShowing(false)
         }
@@ -67,13 +85,28 @@ const SingleContentImage = ({ route, navigation }) => {
         }
     }
 
+    const postInfo = [
+        {
+            postTitle: 'mr shermon',
+            postPersonImage: require('../storage/images/userProfile.png'),
+            postImage: require('../storage/images/post1.jpg'),
+            likes: 765,
+            isLiked: false,
+        },
+        {
+            postTitle: 'chillhouse',
+            postPersonImage: require('../storage/images/profile5.jpg'),
+            postImage: require('../storage/images/post2.jpg'),
+            likes: 345,
+            isLiked: false,
+        }]
+
     return (
         <View
             style={{
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
-                //backgroundColor: 'yellow'
             }}>
             <View
                 style={{
@@ -94,24 +127,35 @@ const SingleContentImage = ({ route, navigation }) => {
                     Image
                 </Text>
             </View>
-            <TouchableOpacity
-                activeOpacity={0.9}
+            {/* <Image
+                source={{ uri: "https://raw.githubusercontent.com/Rickerod/School-app/master/src/storage/images/post2.jpg" }}
                 style={{
+                    resizeMode: "cover", //cover
+                    //backgroundColor: 'red',
                     width: '100%',
                     height: '100%',
-                    position: 'absolute',
-                }}>
-                <Image
-                    style={{
-                        resizeMode: "cover", //cover
-                        width: '100%',
-                        height: '100%',
-                        position: 'absolute',
-                        //backgroundColor: 'red'
-                    }}
-                    source={{uri: uri_image}}
-                />
-            </TouchableOpacity>
+                }}
+            /> */}
+            <FlatList
+                data={uri_images}
+                horizontal={true}
+                renderItem={({ item }) =>
+                    <View>
+                        <Image
+                            source={{uri: item.url_image}}
+                            style={{
+                                resizeMode: "cover",
+                                width: windowWidth,
+                                height: windowHeight
+
+                            }}
+                        />
+                    </View>
+
+                }
+                pagingEnabled
+            />
+
             <View
                 style={{
                     position: 'absolute',
