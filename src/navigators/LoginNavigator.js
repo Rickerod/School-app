@@ -10,6 +10,10 @@ import ProfileStudent from '../components/ProfileStudent';
 import Students from '../components/Students';
 import ForoComments from '../components/ForoComments';
 import EditPost from '../components/EditPost';
+import CreateBitacora from '../components/CreateBitacora';
+import BitacoraQuestions from '../components/BitatoraQuestions';
+import NewSurvey from '../components/NewSurvey';
+import BitacoraAnswers from '../screens/BitacoraAnswers';
 
 import HolaMundo from '../screens/HolaMundo';
 import Register from '../screens/Register'
@@ -18,62 +22,82 @@ import BottomTabView from '../navigators/BottomTabView'
 import BottomTabNavigator from './BottomTabNavigator'
 
 import UserContext from '../context/UserContext';
+import { LikeProvider } from '../context/LikeContext';
+import { ScreenStackHeaderCenterView } from 'react-native-screens';
 
-export default function LoginNavigator({route}) {
+export default function LoginNavigator({ route }) {
 
     const Stack = createNativeStackNavigator();
 
     const userData = {
         id_user: route.params.id_user,
         type_user: route.params.type_user,
-    } 
+    }
     return (
         <UserContext.Provider value={userData}>
-            <Stack.Navigator
-                screenOptions={{
-                    contentStyle: { backgroundColor: '#FFF' },
-                    headerShown: false,
-                    headerMode: 'screen'
-                }}
-                initialRouteName="LoginHome"
-            >
-                <Stack.Screen
-                    name="TabScreen" component={BottomTabNavigator}
-                />
-                <Stack.Screen
-                    name="EditProfile" component={EditProfile}
-                />
+            <LikeProvider>
+                <Stack.Navigator
+                    screenOptions={{
+                        contentStyle: { backgroundColor: '#FFF' },
+                        headerShown: false,
+                        headerMode: 'screen'
+                    }}
+                    initialRouteName="LoginHome"
+                >
 
-                <Stack.Screen
-                    name="ProfileStudent" component={ProfileStudent}
-                />
+                    <Stack.Screen
+                        name="SingleContentVideo" component={SingleContentVideo}
+                    />
+                    <Stack.Screen
+                        name="TabScreen" component={BottomTabNavigator}
+                    />
+                    <Stack.Screen
+                        name="EditProfile" component={EditProfile}
+                    />
 
-                <Stack.Screen
-                    name="SingleContentImage" component={SingleContentImage}
-                />
-                <Stack.Screen
-                    name="ImageComments" component={ImageComments}
-                />
-                <Stack.Screen
-                    name="BottomTabView" component={BottomTabView}
-                />
+                    <Stack.Screen
+                        name="ProfileStudent" component={ProfileStudent}
+                    />
 
-                <Stack.Screen
-                    name="Students" component={Students}
-                />
-                <Stack.Screen
-                    name="ForoComments" component={ForoComments}
-                />
-                <Stack.Screen
-                    name="Register" component={Register}
-                />
-                <Stack.Screen
-                    name="EditPost" component={EditPost}
-                />
-                {/* <Stack.Screen
+                    <Stack.Screen
+                        name="SingleContentImage" component={SingleContentImage}
+                    />
+                    <Stack.Screen
+                        name="ImageComments" component={ImageComments}
+                    />
+                    <Stack.Screen
+                        name="BottomTabView" component={BottomTabView}
+                    />
+
+                    <Stack.Screen
+                        name="Students" component={Students}
+                    />
+                    <Stack.Screen
+                        name="ForoComments" component={ForoComments}
+                    />
+                    <Stack.Screen
+                        name="Register" component={Register}
+                    />
+                    <Stack.Screen
+                        name="EditPost" component={EditPost}
+                    />
+                    <Stack.Screen
+                        name="CreateBitacora" component={CreateBitacora}
+                    />
+                    <Stack.Screen
+                        name="BitacoraQuestions" component={BitacoraQuestions}
+                    />
+                    <Stack.Screen
+                        name="NewSurvey" component={NewSurvey}
+                    />
+                    <Stack.Screen
+                        name="BitacoraAnswers" component={BitacoraAnswers}
+                    />
+                    {/* <Stack.Screen
                     name="ProfileHome" component={Profile}
                 /> */}
-            </Stack.Navigator>
+                </Stack.Navigator>
+            </LikeProvider>
         </UserContext.Provider>
     );
 }

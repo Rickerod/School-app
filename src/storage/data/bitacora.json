@@ -1,0 +1,184 @@
+[
+    {
+        "name": "Encuesta 1: Conociendo la aplicación",
+        "titulo": "¿Que te parecio la clase de hoy?",
+        "preguntas": [
+            {
+                "pregunta": "Como te sentiste hoy en la clase",
+                "type": "slider",
+                "scale": 10
+            },
+            {
+                "pregunta": "Define en una escala cuanto aprendiste de la actividad",
+                "type": "slider",
+                "scale": 10
+            },
+            {
+                "pregunta": "Define en una escala con que motivacion te vas hoy :)",
+                "type": "slider",
+                "scale": 10
+            },
+            {
+                "pregunta": "¿Que aprendiste de la actividad?",
+                "type": "description",
+                "numMaxWord": 200
+            }
+        ]
+    },
+    {
+        "name": "Encuesta 2: ¿Que es la empatia?",
+        "titulo": "¿Que te parecio la clase de hoy?",
+        "preguntas": [
+            {
+                "pregunta": "Como te sentiste hoy en la clase",
+                "type": "slider",
+                "scale": 10
+            },
+            {
+                "pregunta": "Define en una escala cuanto aprendiste de la actividad",
+                "type": "slider",
+                "scale": 10
+            },
+            {
+                "pregunta": "Define en una escala con que motivacion te vas hoy :)",
+                "type": "slider",
+                "scale": 10
+            },
+            {
+                "pregunta": "¿Que aprendiste de la actividad?",
+                "type": "description",
+                "numMaxWord": 200
+            }
+        ]
+    },
+    {
+        "name": "Encuesta 3: ¿Porque debemos seguir aprendiendo en la vida?",
+        "titulo": "¿Que te parecio la clase de hoy?",
+        "preguntas": [
+            {
+                "pregunta": "Como te sentiste hoy en la clase",
+                "type": "slider",
+                "scale": 10
+            },
+            {
+                "pregunta": "Define en una escala cuanto aprendiste de la actividad",
+                "type": "slider",
+                "scale": 10
+            },
+            {
+                "pregunta": "Define en una escala con que motivacion te vas hoy :)",
+                "type": "slider",
+                "scale": 10
+            },
+            {
+                "pregunta": "¿Que aprendiste de la actividad?",
+                "type": "description",
+                "numMaxWord": 200
+            }
+        ]
+    },
+    {
+        "name": "Encuesta 4: ¿Porque debemos seguir aprendiendo en la vida?",
+        "titulo": "¿Que te parecio la clase de hoy?",
+        "preguntas": [
+            {
+                "pregunta": "Como te sentiste hoy en la clase",
+                "type": "slider",
+                "scale": 10
+            },
+            {
+                "pregunta": "Define en una escala cuanto aprendiste de la actividad",
+                "type": "slider",
+                "scale": 10
+            },
+            {
+                "pregunta": "Define en una escala con que motivacion te vas hoy :)",
+                "type": "slider",
+                "scale": 10
+            },
+            {
+                "pregunta": "¿Que aprendiste de la actividad?",
+                "type": "description",
+                "numMaxWord": 200
+            }
+        ]
+    },
+    {
+        "name": "Encuesta 5: ¿Porque debemos seguir aprendiendo en la vida?",
+        "titulo": "¿Que te parecio la clase de hoy?",
+        "preguntas": [
+            {
+                "pregunta": "Como te sentiste hoy en la clase",
+                "type": "slider",
+                "scale": 10
+            },
+            {
+                "pregunta": "Define en una escala cuanto aprendiste de la actividad",
+                "type": "slider",
+                "scale": 10
+            },
+            {
+                "pregunta": "Define en una escala con que motivacion te vas hoy :)",
+                "type": "slider",
+                "scale": 10
+            },
+            {
+                "pregunta": "¿Que aprendiste de la actividad?",
+                "type": "description",
+                "numMaxWord": 200
+            }
+        ]
+    },
+    {
+        "name": "Encuesta 6: ¿Porque debemos seguir aprendiendo en la vida?",
+        "titulo": "¿Que te parecio la clase de hoy?",
+        "preguntas": [
+            {
+                "pregunta": "Como te sentiste hoy en la clase",
+                "type": "slider",
+                "scale": 10
+            },
+            {
+                "pregunta": "Define en una escala cuanto aprendiste de la actividad",
+                "type": "slider",
+                "scale": 10
+            },
+            {
+                "pregunta": "Define en una escala con que motivacion te vas hoy :)",
+                "type": "slider",
+                "scale": 10
+            },
+            {
+                "pregunta": "¿Que aprendiste de la actividad?",
+                "type": "description",
+                "numMaxWord": 200
+            }
+        ]
+    },
+    {
+        "name": "Encuesta 7: ¿Porque debemos seguir aprendiendo en la vida?",
+        "titulo": "¿Que te parecio la clase de hoy?",
+        "preguntas": [
+            {
+                "pregunta": "Como te sentiste hoy en la clase",
+                "type": "slider",
+                "scale": 10
+            },
+            {
+                "pregunta": "Define en una escala cuanto aprendiste de la actividad",
+                "type": "slider",
+                "scale": 10
+            },
+            {
+                "pregunta": "Define en una escala con que motivacion te vas hoy :)",
+                "type": "slider",
+                "scale": 10
+            },
+            {
+                "pregunta": "¿Que aprendiste de la actividad?",
+                "type": "description",
+                "numMaxWord": 200
+            }
+        ]
+    }
+]

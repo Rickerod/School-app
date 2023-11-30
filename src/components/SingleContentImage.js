@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react';
 import { View, Text, Dimensions, TouchableOpacity, Image, ImageBackground, BackHandler, Pressable } from 'react-native';
 //import Video from 'react-native-video';
 import Ionic from 'react-native-vector-icons/Ionicons';
@@ -15,15 +15,18 @@ import comments from '../storage/data/comments.json'
 import ImageComments from './ImageComments';
 import { useFocusEffect } from '@react-navigation/native';
 import { FlatList } from 'react-native-gesture-handler';
+import { useLike } from '../context/LikeContext';
+import useUser from '../hooks/useUser';
 
 const SingleContentImage = ({ route, navigation }) => {
+    const { likes, toggleLike } = useLike();
+    const user = useUser()
+
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
-    const { uri_images, id_post, islike, num_likes } = route.params
+    const { uri_images, id_post, num_likes } = route.params
 
     const commentsSheetRef = useRef(null);
-    const [like, setLike] = useState(islike);
-    const [count, setCount] = useState(num_likes)
     const [comments, setComments] = useState("");
 
     const [isShowing, setIsShowing] = useState(false);
@@ -31,6 +34,7 @@ const SingleContentImage = ({ route, navigation }) => {
     const uri_image = uri_images[0].url_image
 
     const apiUrl = process.env.HOST;
+
 
     //Back action of the commentSheetRef for Android
     useEffect(() => {
@@ -68,38 +72,38 @@ const SingleContentImage = ({ route, navigation }) => {
     const handleSheetChanges = (index) => {
         //console.log('handleSheetChanges', index)
         if (index >= 0) {
-            loadComments()
+            //loadComments()
             setIsShowing(true)
-            
+
         } else {
             setIsShowing(false)
         }
     }
 
-    const handleClickLike = () => {
-        setLike(!like)
-        if (like) {
-            setCount((prev) => prev - 1)
-        } else {
-            setCount((prev) => prev + 1)
+    const insertLike = async (is_liked) => {
+
+        //console.log("IS_liked", is_liked)
+
+        const body = {
+            is_liked: is_liked,
+        }
+
+        try {
+            const response = await fetch(`http://${apiUrl}/like/${id_post}/${user.id_user}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            });
+
+            const response_json = await response.json();
+            console.log(response_json)
+
+        } catch (error) {
+            console.error(error);
         }
     }
-
-    const postInfo = [
-        {
-            postTitle: 'mr shermon',
-            postPersonImage: require('../storage/images/userProfile.png'),
-            postImage: require('../storage/images/post1.jpg'),
-            likes: 765,
-            isLiked: false,
-        },
-        {
-            postTitle: 'chillhouse',
-            postPersonImage: require('../storage/images/profile5.jpg'),
-            postImage: require('../storage/images/post2.jpg'),
-            likes: 345,
-            isLiked: false,
-        }]
 
     return (
         <View
@@ -142,9 +146,9 @@ const SingleContentImage = ({ route, navigation }) => {
                 renderItem={({ item }) =>
                     <View>
                         <Image
-                            source={{uri: item.url_image}}
+                            source={{ uri: item.url_image }}
                             style={{
-                                resizeMode: "cover",
+                                resizeMode: "contain",
                                 width: windowWidth,
                                 height: windowHeight
 
@@ -162,12 +166,17 @@ const SingleContentImage = ({ route, navigation }) => {
                     bottom: windowHeight / 6, //edited
                     right: 8,
                 }}>
-                <TouchableOpacity onPress={handleClickLike} style={{ padding: 10 }}>
+                <TouchableOpacity onPress={() => {
+                    toggleLike(id_post)
+                    insertLike(!likes[id_post])
+                }
+                }
+                    style={{ padding: 10 }}>
                     <AntDesign
-                        name={like ? 'heart' : 'hearto'}
-                        style={{ color: like ? 'red' : 'white', fontSize: 25 }}
+                        name={likes[id_post] ? 'heart' : 'hearto'}
+                        style={{ color: likes[id_post] ? 'red' : 'white', fontSize: 25 }}
                     />
-                    <Text style={{ color: 'white' }}> {count} </Text>
+                    <Text style={{ color: 'white' }}> {likes[id_post] ? num_likes + 1 : num_likes} </Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={openComments} style={{ padding: 10 }}>
                     <Ionic
@@ -186,7 +195,7 @@ const SingleContentImage = ({ route, navigation }) => {
                     <View style={[style, { backgroundColor: "#fff" }]} />
                 )}
             >
-                <ImageComments comments={comments} />
+                <ImageComments id_post={id_post} />
             </BottomSheetModal>
         </View>
     );

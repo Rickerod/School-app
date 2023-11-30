@@ -7,6 +7,8 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import axios from "axios"
 
 import { useNavigation } from '@react-navigation/native';
+import { useLike } from '../context/LikeContext';
+import useUser from '../hooks/useUser';
 
 import ImageComments from './ImageComments';
 //import comments from '../storage/data/comments.json';
@@ -17,13 +19,16 @@ import {
 import { FlatList } from 'react-native-gesture-handler';
 
 export default function PostInfo({ data }) {
+    const { likes, toggleLike } = useLike();
+
     const windowWidth = Dimensions.get('window').width;
     const commentsSheetRef = useRef(null);
-    const [like, setLike] = useState(data.is_liked);
     const [isShowing, setIsShowing] = useState(false);
-    const [comments, setComments] = useState("");
+    const [comments, setComments] = useState([]);
 
     const navigation = useNavigation();
+    const user = useUser()
+
 
     const apiUrl = process.env.HOST;
 
@@ -49,9 +54,6 @@ export default function PostInfo({ data }) {
         setIsShowing(true)
     };
 
-    const handleLike = () => {
-        setLike(!like)
-    }
 
     //Cargar comentarios al post
     const loadComments = async () => {
@@ -65,9 +67,9 @@ export default function PostInfo({ data }) {
     }
 
     const handleSheetChanges = (index) => {
-        console.log('handleSheetChanges', index)
+        //console.log('handleSheetChanges', index)
         if (index >= 0) {
-            loadComments()
+            //loadComments()
             setIsShowing(true)
         } else {
             setIsShowing(false)
@@ -77,6 +79,31 @@ export default function PostInfo({ data }) {
     const sendComment = async () => {
         console.log("Enviando comentario...")
     };
+
+    const insertLike = async (is_liked) => {
+
+        //console.log("IS_liked", is_liked)
+
+        const body = {
+            is_liked: is_liked,
+        }
+
+        try {
+            const response = await fetch(`http://${apiUrl}/like/${data.id_post}/${user.id_user}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            });
+
+            const response_json = await response.json();
+            //console.log(response_json)
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     return (
         <View
@@ -109,8 +136,7 @@ export default function PostInfo({ data }) {
             <TouchableOpacity onPress={() => navigation.navigate('SingleContentImage', {
                 uri_images: data.images,
                 id_post: data.id_post,
-                islike: like,
-                num_likes: like ? data.num_likes + 1 : data.num_likes,
+                num_likes: data.num_likes,
             })}>
                 <View
                     style={{
@@ -149,13 +175,16 @@ export default function PostInfo({ data }) {
                     paddingVertical: 15,
                 }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <TouchableOpacity onPress={handleLike}>
+                    <TouchableOpacity onPress={() => {
+                        toggleLike(data.id_post)
+                        insertLike(!likes[data.id_post])
+                    }}>
                         <AntDesign
-                            name={like ? 'heart' : 'hearto'}
+                            name={likes[data.id_post] ? 'heart' : 'hearto'}
                             style={{
                                 paddingRight: 10,
                                 fontSize: 20,
-                                color: like ? 'red' : 'black',
+                                color: likes[data.id_post] ? 'red' : 'black',
                             }}
                         />
                     </TouchableOpacity>
@@ -169,7 +198,7 @@ export default function PostInfo({ data }) {
             </View>
             <View style={{ paddingHorizontal: 15 }}>
                 <Text>
-                    Le gusta a {like ? data.num_likes + 1 : data.num_likes} personas más
+                    Le gusta a {likes[data.id_post] ? data.num_likes + 1 : data.num_likes} personas más
                 </Text>
                 <Text
                     style={{
@@ -194,10 +223,9 @@ export default function PostInfo({ data }) {
                     <View style={[style, { backgroundColor: "#fff" }]} />
                 )}
             >
+
                 <ImageComments
-                    id_post={data.id_post} 
-                    comments={comments} 
-                    
+                    id_post={data.id_post}
                 />
             </BottomSheetModal>
         </View>

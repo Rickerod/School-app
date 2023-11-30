@@ -14,7 +14,7 @@ const ImageComment = ({ comment }) => {
         source={{uri: comment.uri_image_profile }}
       />
       <View>
-        <Text style={{ color: "gray", marginLeft: 10 }}>{comment.userrname}</Text>
+        <Text style={{ color: "gray", marginLeft: 10 }}>{comment.username}</Text>
         <Text style={{ color: "black", marginLeft: 10 }}>
           {comment.comment}
         </Text>

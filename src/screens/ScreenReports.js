@@ -3,6 +3,16 @@ import { View, Text, Image } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Feather from 'react-native-vector-icons/Feather';
 import axios from "axios"
+import Header from '../components/Header';
+
+const renderSeparator = () => (
+  <View
+    style={{
+      backgroundColor: '#E3E3E3',
+      height: 1,
+    }}
+  />
+)
 
 export default function ScreenReport() {
 
@@ -24,9 +34,11 @@ export default function ScreenReport() {
 
   return (
     <View>
+      <Header title="Home" id={0} wd={0} />
       <FlatList
         key={'_'}
         data={reports}
+        ItemSeparatorComponent={renderSeparator}
         renderItem={({ item }) =>
           <View style={{ padding: 15 }}>
             <View

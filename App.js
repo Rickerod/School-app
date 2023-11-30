@@ -5,8 +5,9 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 import LoginNavigator from './src/navigators/LoginNavigator';
 import HolaMundo from './src/screens/HolaMundo';
-import HolaMundo2 from './src/components/HolaMundo2';
 import LoginAuth from './src/screens/LoginAuth';
+import NewSurvey from './src/components/NewSurvey';
+import SingleContentVideo from './src/components/SingleContentVideo';
 
 import {
   BottomSheetModalProvider,
@@ -30,7 +31,10 @@ export default function App() {
             }}
             initialRouteName="Home"
           >
-            <Stack.Screen 
+            {/* <Stack.Screen
+              name="NewSurvey" component={NewSurvey}
+            />   */}
+             <Stack.Screen 
               name="LoginAuth" component={LoginAuth}
             />
             {/*  <Stack.Screen

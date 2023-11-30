@@ -2,6 +2,7 @@ import React from 'react';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Feather from '@expo/vector-icons/Feather';
+import Foundation from 'react-native-vector-icons/Foundation';
 
 import Profile from '../screens/Profile'
 import HomeScreen from '../screens/HomeScreen';
@@ -9,6 +10,7 @@ import NewPost from '../components/NewPost';
 import ProfileGuest from '../screens/ProfileGuest';
 import ProfileStudent from '../components/ProfileStudent';
 import ScreenReport from '../screens/ScreenReports';
+import InfoBitacora from '../screens/InfoBitacora';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -74,6 +76,11 @@ export default function TabNavigator() {
                     } else if (route.name === "Report") {
                         iconName = focused ? 'megaphone' : 'megaphone-outline';
                         colour = focused ? 'black' : 'gray';
+                    } else if (route.name === "InfoBitacora") {
+                        iconName = focused ? 'clipboard-pencil' : 'clipboard-pencil';
+                        colour = focused ? 'black' : 'gray';
+
+                        return <Foundation name={iconName} color={colour} size={22} />
                     }
 
 
@@ -85,7 +92,7 @@ export default function TabNavigator() {
                 component={HomeStack}
             />
 
-            { (user.type_user == 1 || user.type_user == 2) &&
+            {(user.type_user == 1 || user.type_user == 2) &&
                 <Tab.Screen
                     name="Post"
                     component={NewPost}
@@ -102,6 +109,13 @@ export default function TabNavigator() {
                 <Tab.Screen
                     name="Report"
                     component={ScreenReport}
+                />
+            }
+
+            {user.type_user == 1 &&
+                <Tab.Screen
+                    name="InfoBitacora"
+                    component={InfoBitacora}
                 />
             }
         </Tab.Navigator>

@@ -30,9 +30,7 @@ export default function Profile({ route }) {
             <View></View>
         );
     }
-
-    console.log(route.params)
-
+    
     return (
         <View>
             {route.params.type_user_profile == 1 || route.params.type_user_profile == 2  ?
