@@ -58,17 +58,6 @@ const SingleContentImage = ({ route, navigation }) => {
         setIsShowing(true)
     };
 
-    //Cargar comentarios al post
-    const loadComments = async () => {
-        try {
-            const response = await axios.get(`http://${apiUrl}/comments/${id_post}`);
-            setComments(response.data)
-
-        } catch (error) {
-            console.log("Error", error);
-        }
-    }
-
     const handleSheetChanges = (index) => {
         //console.log('handleSheetChanges', index)
         if (index >= 0) {
@@ -98,7 +87,6 @@ const SingleContentImage = ({ route, navigation }) => {
             });
 
             const response_json = await response.json();
-            console.log(response_json)
 
         } catch (error) {
             console.error(error);
@@ -125,9 +113,9 @@ const SingleContentImage = ({ route, navigation }) => {
                     padding: 10,
                 }}>
                 <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.goBack()}>
-                    <Ionic name="arrow-back" style={{ fontSize: 25, color: 'white', paddingRight: 20 }} />
+                    <Ionic name="arrow-back" style={{ fontSize: 25, paddingRight: 20 }} />
                 </TouchableOpacity>
-                <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
                     Image
                 </Text>
             </View>
@@ -143,17 +131,36 @@ const SingleContentImage = ({ route, navigation }) => {
             <FlatList
                 data={uri_images}
                 horizontal={true}
-                renderItem={({ item }) =>
-                    <View>
+                renderItem={({ item , index}) =>
+                    <View style={{position: 'relative'}}>
                         <Image
                             source={{ uri: item.url_image }}
                             style={{
                                 resizeMode: "contain",
                                 width: windowWidth,
-                                height: windowHeight
+                                height: windowHeight,
+                                alignSelf: 'center'
 
                             }}
                         />
+                        {
+                            uri_images.length > 1 &&
+                            <View style={{
+                                position: "absolute",
+                                top: 8,
+                                right: 8,
+                                backgroundColor: 'black',
+                                borderRadius: 50,
+                                padding: 5,
+                                opacity: 0.8
+
+
+                            }}>
+
+                                <Text style={{ fontSize: 13, color: 'white' }}> {index + 1}/{uri_images.length} </Text>
+
+                            </View>
+                        }
                     </View>
 
                 }
@@ -165,23 +172,24 @@ const SingleContentImage = ({ route, navigation }) => {
                     position: 'absolute',
                     bottom: windowHeight / 6, //edited
                     right: 8,
+                    alignItems: 'center',
                 }}>
                 <TouchableOpacity onPress={() => {
                     toggleLike(id_post)
                     insertLike(!likes[id_post])
                 }
                 }
-                    style={{ padding: 10 }}>
+                    style={{ paddingTop: 5 }}>
                     <AntDesign
                         name={likes[id_post] ? 'heart' : 'hearto'}
-                        style={{ color: likes[id_post] ? 'red' : 'white', fontSize: 25 }}
+                        style={{ color: likes[id_post] ? 'red' : 'black', fontSize: 25 }}
                     />
-                    <Text style={{ color: 'white' }}> {likes[id_post] ? num_likes + 1 : num_likes} </Text>
                 </TouchableOpacity>
+                <Text> {likes[id_post] ? num_likes + 1 : num_likes} </Text>
                 <TouchableOpacity onPress={openComments} style={{ padding: 10 }}>
                     <Ionic
                         name="ios-chatbubble-outline"
-                        style={{ color: 'white', fontSize: 25 }}
+                        style={{ fontSize: 25 }}
                     />
                 </TouchableOpacity>
             </View>

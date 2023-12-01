@@ -4,6 +4,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import useUser from '../hooks/useUser';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 export default function Posts({ route, navigation }) {
     const [data, setData] = useState([])
@@ -60,9 +61,10 @@ export default function Posts({ route, navigation }) {
                                 style={{ width: '100%', height: 150 }}
                             />
                             <View style= {{position: "absolute", top: 5, left: windowWidth/3 - 30, right: 0}}>
-                                <FontAwesome
+                                <Ionicons
                                     size={20}
-                                    name='folder'
+                                    style={{opacity: 0.9}}
+                                    name='images'
                                 />
                             </View>
                         </View>

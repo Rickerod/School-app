@@ -24,10 +24,13 @@ import BottomTabNavigator from './BottomTabNavigator'
 import UserContext from '../context/UserContext';
 import { LikeProvider } from '../context/LikeContext';
 import { ScreenStackHeaderCenterView } from 'react-native-screens';
+import { MenuProvider } from 'react-native-popup-menu';
 
 export default function LoginNavigator({ route }) {
 
     const Stack = createNativeStackNavigator();
+
+
 
     const userData = {
         id_user: route.params.id_user,
@@ -35,69 +38,78 @@ export default function LoginNavigator({ route }) {
     }
     return (
         <UserContext.Provider value={userData}>
-            <LikeProvider>
-                <Stack.Navigator
-                    screenOptions={{
-                        contentStyle: { backgroundColor: '#FFF' },
-                        headerShown: false,
-                        headerMode: 'screen'
-                    }}
-                    initialRouteName="LoginHome"
-                >
+            <MenuProvider>
+                <LikeProvider>
+                    <Stack.Navigator
+                        screenOptions={{
+                            contentStyle: { backgroundColor: '#FFF' },
+                            headerShown: false,
+                            headerMode: 'screen'
+                        }}
+                        initialRouteName="LoginHome"
+                    >
 
-                    <Stack.Screen
-                        name="SingleContentVideo" component={SingleContentVideo}
-                    />
-                    <Stack.Screen
-                        name="TabScreen" component={BottomTabNavigator}
-                    />
-                    <Stack.Screen
-                        name="EditProfile" component={EditProfile}
-                    />
+                        {/* <Stack.Screen
+                            name="HolaMundo" component={HolaMundo}
+                        /> */}
+                        {/* <Stack.Screen
+                            name="HolaMundo" component={HolaMundo}
+                        /> */}
+                        <Stack.Screen
+                            name="TabScreen" component={BottomTabNavigator}
+                        />
+                        <Stack.Screen
+                            name="EditProfile" component={EditProfile}
+                        />
 
-                    <Stack.Screen
-                        name="ProfileStudent" component={ProfileStudent}
-                    />
+                        <Stack.Screen
+                            name="ProfileStudent" component={ProfileStudent}
+                        />
 
-                    <Stack.Screen
-                        name="SingleContentImage" component={SingleContentImage}
-                    />
-                    <Stack.Screen
-                        name="ImageComments" component={ImageComments}
-                    />
-                    <Stack.Screen
-                        name="BottomTabView" component={BottomTabView}
-                    />
+                        <Stack.Screen
+                            name="SingleContentImage" component={SingleContentImage}
+                        />
 
-                    <Stack.Screen
-                        name="Students" component={Students}
-                    />
-                    <Stack.Screen
-                        name="ForoComments" component={ForoComments}
-                    />
-                    <Stack.Screen
-                        name="Register" component={Register}
-                    />
-                    <Stack.Screen
-                        name="EditPost" component={EditPost}
-                    />
-                    <Stack.Screen
-                        name="CreateBitacora" component={CreateBitacora}
-                    />
-                    <Stack.Screen
-                        name="BitacoraQuestions" component={BitacoraQuestions}
-                    />
-                    <Stack.Screen
-                        name="NewSurvey" component={NewSurvey}
-                    />
-                    <Stack.Screen
-                        name="BitacoraAnswers" component={BitacoraAnswers}
-                    />
-                    {/* <Stack.Screen
+                        <Stack.Screen
+                            name="SingleContentVideo" component={SingleContentVideo}
+                        />
+                        <Stack.Screen
+                            name="ImageComments" component={ImageComments}
+                        />
+                        <Stack.Screen
+                            name="BottomTabView" component={BottomTabView}
+                        />
+
+                        <Stack.Screen
+                            name="Students" component={Students}
+                        />
+                        <Stack.Screen
+                            name="ForoComments" component={ForoComments}
+                        />
+                        <Stack.Screen
+                            name="Register" component={Register}
+                        />
+                        <Stack.Screen
+                            name="EditPost" component={EditPost}
+                        />
+                        <Stack.Screen
+                            name="CreateBitacora" component={CreateBitacora}
+                        />
+                        <Stack.Screen
+                            name="BitacoraQuestions" component={BitacoraQuestions}
+                        />
+                        <Stack.Screen
+                            name="NewSurvey" component={NewSurvey}
+                        />
+                        <Stack.Screen
+                            name="BitacoraAnswers" component={BitacoraAnswers}
+                        />
+                        {/* <Stack.Screen
                     name="ProfileHome" component={Profile}
                 /> */}
-                </Stack.Navigator>
-            </LikeProvider>
+                    </Stack.Navigator>
+                </LikeProvider>
+            </MenuProvider>
         </UserContext.Provider>
     );
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useTransition } from 'react';
 import { View, ScrollView } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
@@ -11,105 +11,14 @@ import Videos from '../components/Videos';
 import Foro from '../components/Foro'
 import Survey from '../components/Survey';
 import Bitacora from '../components/Bitacora';
+import useUser from '../hooks/useUser';
 
-const BottomTabView = ({id_user}) => {
+const BottomTabView = ({id, id_user}) => {
   const Tab = createMaterialTopTabNavigator();
 
-  let squares = [];
-  let numberOfSquare = 7;
+  const user = useUser()
 
-  for (let index = 0; index < numberOfSquare; index++) {
-    squares.push(
-      <View key={index}>
-        <View
-          style={{
-            width: 130,
-            height: 150,
-            marginVertical: 0.5,
-            backgroundColor: 'black',
-            opacity: 0.1,
-          }}></View>
-      </View>,
-    );
-  }
-  /*
-  const Posts = () => {
-    return (
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{
-          width: '100%',
-          height: '100%',
-        }}>
-        <View
-          style={{
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'white',
-            flexWrap: 'wrap',
-            flexDirection: 'row',
-            paddingVertical: 5,
-            justifyContent: 'space-between',
-          }}>
-          {squares}
-        </View>
-      </ScrollView>
-    );
-  };*/
-
-  /*
-  const Video = () => {
-    return (
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{
-          width: '100%',
-          height: '100%',
-        }}>
-        <View
-          style={{
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'white',
-            flexWrap: 'wrap',
-            flexDirection: 'row',
-            paddingVertical: 5,
-            justifyContent: 'space-between',
-          }}>
-          {squares}
-        </View>
-      </ScrollView>
-    );
-  };
-  */
-
-  const Board = ({route}) => {
-  
-    const {id_user} = route.params
-
-    return (
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{
-          width: '100%',
-          height: '100%',
-        }}>
-        <View
-          style={{
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'white',
-            flexWrap: 'wrap',
-            flexDirection: 'row',
-            paddingVertical: 5,
-            justifyContent: 'space-between',
-          }}>
-          {squares}
-        </View>
-      </ScrollView>
-    );
-  };
-
+  console.log("type_user", user.type_user)
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -146,8 +55,12 @@ const BottomTabView = ({id_user}) => {
       })}>
       <Tab.Screen name="Posts" component={Posts} initialParams={{id_user: id_user}} />
       <Tab.Screen name="Video" component={Videos} initialParams={{id_user: id_user}}/>
-      <Tab.Screen name="Survey" component={Survey} initialParams={{id_user: id_user}}/>
-      <Tab.Screen name="Bitacora" component={Bitacora} initialParams={{id_user: id_user}}/>
+      <Tab.Screen name="Survey" component={Survey} initialParams={{id: id, id_user: id_user}}/>
+
+      {
+        user.type_user === 1 &&
+        <Tab.Screen name="Bitacora" component={Bitacora} initialParams={{id: id, id_user: id_user}}/>
+      }
       {/* <Tab.Screen name="Foro" component={Foro} initialParams={{id_user: id_user}}/> */}
     </Tab.Navigator>
   );

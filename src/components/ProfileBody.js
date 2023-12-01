@@ -7,6 +7,7 @@ import useUser from '../hooks/useUser';
 //import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Report from './Report';
 
 export const ProfileBody = ({
     id,
@@ -22,7 +23,6 @@ export const ProfileBody = ({
     const [data, setData] = useState([])
     const [text, setText] = useState('');
 
-    const user = useUser()
     const apiUrl = process.env.HOST;
 
     useEffect(() => {
@@ -35,31 +35,6 @@ export const ProfileBody = ({
         fetchData()
     }, [])
 
-    const handleTextChange = enteredText => {
-        setText(enteredText);
-    }
-
-    //Insertar reporte
-    const sendReport = async () => {
-        const body = { report_description: text };
-
-        const response = await fetch(`http://${apiUrl}/report/${user.id_user}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(body)
-        });
-
-        const data = await response.json();
-
-        if (data.ok) {
-            setModalVisible(!modalVisible)
-        } else {
-            console.log(data.message, data.err)
-        }
-    }
-
     if (data.length === 0) {
         return (
             <View></View>
@@ -69,8 +44,7 @@ export const ProfileBody = ({
     return (
         <View>
             <View style={{
-                flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'
-                , paddingTop: 20,
+                flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingTop: 20,
             }}>
                 <View
                     style={{
@@ -105,7 +79,7 @@ export const ProfileBody = ({
                     </View>
                 </View>
                 {id == 1 &&
-                    <View style={{ paddingRight: 40 }}>
+                    <View style={{flex: 1, flexDirection:'row', justifyContent:'center'}}>
                         <TouchableOpacity onPress={() => setModalVisible(true)}>
                             <Ionicons name="megaphone" style={{ fontSize: 30 }} />
                         </TouchableOpacity>
@@ -115,39 +89,9 @@ export const ProfileBody = ({
             <View style={{ width: windowWidth / 1.5 }}>
                 <Text> Septimo Basico B. </Text>
             </View>
-            <View style={styles.centeredView}>
-                <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={modalVisible}
-                    onRequestClose={() => {
-                        Alert.alert('Modal has been closed.');
-                        setModalVisible(!modalVisible);
-                    }}>
-                    <View style={styles.centeredView}>
-                        <View style={[styles.modalView, { width: windowWidth - windowWidth / 10, height: windowHeight - windowWidth / 0.5 }]}>
-                            <Text style={styles.modalText}> ¿Porque quieres reportar? </Text>
-                            <Text style={{ color: 'gray' }}> Tu reporte es anonimo. Si alguien se encuentra en peligro
-                                inminente, llama a los servicios de emergencia locales. No esperes. </Text>
-                            <TextInput
-                                style={styles.textInput}
-                                placeholder="Escribe aquí..."
-                                multiline={true}
-                                maxLength={200}
-                                numberOfLines={4}
-                                onChangeText={handleTextChange}
-                                value={text}
-                            />
-                            <Pressable
-                                style={[styles.button]}
-                                onPress={sendReport}>
-                                <Text style={styles.textStyle}> Reportar </Text>
-                            </Pressable>
-                        </View>
-                    </View>
-                </Modal>
-            </View>
-        </View>
+            
+            <Report modalVisible={modalVisible} fModalVisible={setModalVisible}/>
+        </View >
     );
 };
 
@@ -163,22 +107,13 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 20,
         padding: 35,
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
+        //shadowOpacity: 0.25,
+        //shadowRadius: 4,
     },
     button: {
         borderRadius: 20,
         padding: 10,
-        elevation: 2,
         backgroundColor: 'purple',
-        width: '50%'
     },
     textStyle: {
         fontWeight: 'bold',
@@ -191,14 +126,13 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     textInput: {
-        width: 300, // Establece el ancho deseado aquí
         paddingBottom: 20,
-        //height: 150, // Establece la altura deseada aquí
         borderWidth: 0.5,
         borderColor: 'gray',
         borderRadius: 5,
         paddingHorizontal: 10,
-        marginVertical: 10
+        marginVertical: 10,
+        backgroundColor: 'red'
     },
 });
 

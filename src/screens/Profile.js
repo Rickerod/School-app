@@ -50,7 +50,7 @@ export default function Profile({ route }) {
                             profileImage={require('../storage/images/userProfile.png')}
                         />
                     </View>
-                    <BottomTabView id_user={data[0].id_user}/>
+                    <BottomTabView id={0} id_user={data[0].id_user}/>
                 </SafeAreaView>
                 :
                 <View>

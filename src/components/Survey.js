@@ -16,7 +16,12 @@ const RadioButton = ({ label, isSelected, onPress }) => {
   );
 };
 
-export default function Survey() {
+export default function Survey({ route }) {
+
+  const { id, id_user } = route.params
+
+
+  console.log("Survey", id)
 
   const [selectedId, setSelectedId] = useState();
   const [selectedIdButton, setSelectedIdButton] = useState("1");
@@ -47,7 +52,7 @@ export default function Survey() {
   const onPressAction = (name) => {
     console.log(`Botón presionado: ${name}`);
     // Aquí puedes implementar la lógica asociada a cada botón
-    if(name === "Encuesta"){
+    if (name === "Encuesta") {
       navigation.navigate("NewSurvey")
     }
   };
@@ -63,7 +68,6 @@ export default function Survey() {
     }
   };
 
-  console.log(value)
   return (
     <View style={{ flex: 1, padding: 10, backgroundColor: 'white' }}>
       <Text style={{ fontSize: 16, fontWeight: 500 }}> ¿Donde vamos a comer?</Text>
@@ -126,13 +130,15 @@ export default function Survey() {
           enabled={false}
         />
       </View>
-      <FloatingAction
-        actions={actions}
-        onPressItem={(name) => onPressAction(name)}
-        floatingIcon={<Ionicons name="add" size={30} color="white" />}
-        color="purple" // Color del botón flotante
-        overlayColor="rgba(255, 255, 255, 0.8)" // Color del fondo cuando se presiona el botón flotante
-      />
+      {id === 0 &&
+        <FloatingAction
+          actions={actions}
+          onPressItem={(name) => onPressAction(name)}
+          floatingIcon={<Ionicons name="add" size={30} color="white" />}
+          color="purple" // Color del botón flotante
+          overlayColor="rgba(255, 255, 255, 0.8)" // Color del fondo cuando se presiona el botón flotante
+        />
+      }
     </View>
   );
 }

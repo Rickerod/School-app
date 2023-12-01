@@ -33,10 +33,11 @@ export default function ScreenReport() {
   }, [])
 
   return (
-    <View>
+    <View style={{flex: 1}}>
       <Header title="Home" id={0} wd={0} />
       <FlatList
         key={'_'}
+        scrollEnabled
         data={reports}
         ItemSeparatorComponent={renderSeparator}
         renderItem={({ item }) =>

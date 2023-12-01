@@ -1,80 +1,79 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, Image, ScrollView, Dimensions} from 'react-native';
 //import Video from 'react-native-video';
 //import vd from '../storage/videos/video1.mp4'
 import { Video, ResizeMode } from 'expo-av';
+import Octicons from 'react-native-vector-icons/Octicons';
+import { FlatList } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 
 
-export default function Videos({route}) {
+
+export default function Videos({ route }) {
     const video = React.useRef(null);
     const [status, setStatus] = React.useState({});
 
-    const {id_user} = route.params
-    
+    const windowWidth = Dimensions.get('window').width;
+    const windowHeight = Dimensions.get('window').height;
+
+    const { id_user } = route.params
+
+    const navigation = useNavigation()
+
     const searchData = [
         {
-            id: 0,
-            images: [
-                require('../storage/videos/video4.mp4'),
-                require('../storage/videos/video2.mp4'),
-            ],
+            id_post: 1,
+            thumbnailImage: require('../storage/images/post7.jpg'),
         },
         {
-            id: 1,
-            images: [
-                require('../storage/images/post7.jpg'),
-                require('../storage/images/post8.jpg'),
-                require('../storage/images/post9.jpg'),
-                require('../storage/images/post10.jpg'),
-                require('../storage/images/post11.jpg'),
-                require('../storage/images/post12.jpg'),
-            ],
+            id_post: 2,
+            thumbnailImage: require('../storage/images/post6.jpg'),
         },
         {
-            id: 2,
-            images: [
-                require('../storage/images/post13.jpg'),
-                require('../storage/images/post14.jpg'),
-                require('../storage/images/post15.jpg'),
-            ],
+            id_post: 3,
+            thumbnailImage: require('../storage/images/post5.jpg'),
         },
+        {
+            id_post: 4,
+            thumbnailImage: require('../storage/images/post4.jpg'),
+        },
+        {
+            id_post: 5,
+            thumbnailImage: require('../storage/images/post3.jpg'),
+        }
     ];
     return (
-        <ScrollView>
-            {searchData.map((data, index) => {
-                return (
-                    <View key={index}>
-                        {data.id === 0 ? (
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    flexWrap: 'wrap',
-                                    //justifyContent: 'space-between',
-                                    width: '100%'
-                                }}>
-                                {data.images.map((videoData, videoIndex) => {
-                                    return (
-                                        <TouchableOpacity
-                                            key={videoIndex}
-                                            onPress={() => console.log("Hola")}
-                                            style={{ paddingBottom: 2, width: '33%' }}>
-                                            <Video
-                                                ref={video}
-                                                source={videoData}
-                                                style={{ width: '100%', height: 150, backgroundColor: 'gray' }}
-                                                useNativeControls
-                                                resizeMode={ResizeMode.CONTAIN}
-                                                onPlaybackStatusUpdate={status => setStatus(() => status)}
-                                            />
-
-                                        </TouchableOpacity>
-                                    );
-                                })}
-                            </View>
-                        ) : null}
+        <FlatList
+            key={'_'}
+            data={searchData}
+            numColumns={3}
+            //horizontal={true}
+            renderItem={({ item }) =>
+                <TouchableOpacity
+                    //key={imgIndex}
+                    onPress={() => navigation.navigate('SingleContentVideo', {
+                        id_post: item.id_post,
+                        /* islike: item.is_liked, //Pasar estos parametros igualmente....
+                        num_likes: item.num_likes */
+                    })}
+                    style={{ paddingBottom: 2, width: '33%' }}>
+                    <View style={{ flex: 1 }}>
+                        <Image
+                            source={item.thumbnailImage}
+                            style={{ width: '100%', height: 150 }}
+                        />
+                        <View style={{ position: "absolute", top: 5, left: windowWidth / 3 - 30, right: 0 }}>
+                            <Octicons
+                                name="video"
+                                style={{opacity: 0.8, fontSize: 18}}
+                            />
+                        </View>
                     </View>
-                );
-            })}
-        </ScrollView>
+
+
+
+                </TouchableOpacity>
+            }
+        />
     );
 }

@@ -3,8 +3,15 @@ import { View, Text, Image, TouchableOpacity, BackHandler, Dimensions } from 're
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionic from 'react-native-vector-icons/Ionicons';
-import Entypo from 'react-native-vector-icons/Entypo';
+import Octicons from 'react-native-vector-icons/Octicons';
 import axios from "axios"
+
+import {
+    Menu,
+    MenuOptions,
+    MenuOption,
+    MenuTrigger,
+} from 'react-native-popup-menu';
 
 import { useNavigation } from '@react-navigation/native';
 import { useLike } from '../context/LikeContext';
@@ -17,6 +24,7 @@ import {
     BottomSheetModal,
 } from "@gorhom/bottom-sheet";
 import { FlatList } from 'react-native-gesture-handler';
+import Report from './Report';
 
 export default function PostInfo({ data }) {
     const { likes, toggleLike } = useLike();
@@ -25,6 +33,7 @@ export default function PostInfo({ data }) {
     const commentsSheetRef = useRef(null);
     const [isShowing, setIsShowing] = useState(false);
     const [comments, setComments] = useState([]);
+    const [modalVisible, setModalVisible] = useState(false);
 
     const navigation = useNavigation();
     const user = useUser()
@@ -75,10 +84,6 @@ export default function PostInfo({ data }) {
             setIsShowing(false)
         }
     }
-
-    const sendComment = async () => {
-        console.log("Enviando comentario...")
-    };
 
     const insertLike = async (is_liked) => {
 
@@ -131,7 +136,33 @@ export default function PostInfo({ data }) {
                         </Text>
                     </View>
                 </View>
-                <Feather name="more-vertical" style={{ fontSize: 20 }} />
+                <Menu>
+                    <MenuTrigger>
+                        <Feather name="more-vertical" style={{ fontSize: 20 }} />
+                    </MenuTrigger>
+                    <MenuOptions style={{ padding: 10 }}>
+
+                        {
+                            data.id_author_post === user.id_user ?
+                                <MenuOption onSelect={() => console.log("Eliminar post")} >
+                                    <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                                        <Octicons name="trash" style={{ fontSize: 20, color: 'red', paddingRight: 5 }}></Octicons>
+                                        <Text style={{ color: 'red', fontSize: 16 }}> Eliminar </Text>
+                                    </View>
+                                </MenuOption>
+                                :
+                                <MenuOption onSelect={() => setModalVisible(true)} >
+                                    <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                                        <Octicons name="report" style={{ fontSize: 20, color: 'red', paddingRight: 5 }}></Octicons>
+                                        <Text style={{ color: 'red', fontSize: 16 }}> Reportar</Text>
+                                    </View>
+                                </MenuOption>
+                        }
+                        {/* <MenuOption onSelect={() => console.log("Cancel!")}>
+                            <Text style={{ color: 'white', fontSize: 15, paddingLeft: 25 }}> Cancelar</Text>
+                        </MenuOption> */}
+                    </MenuOptions>
+                </Menu>
             </View>
             <TouchableOpacity onPress={() => navigation.navigate('SingleContentImage', {
                 uri_images: data.images,
@@ -148,21 +179,42 @@ export default function PostInfo({ data }) {
                     <FlatList
                         data={data.images}
                         horizontal={true}
-                        renderItem={({ item }) =>
-                            <View>
-                                <Image
-                                    source={{ uri: item.url_image }}
-                                    style={{
-                                        resizeMode: "cover",
-                                        width: windowWidth,
-                                        height: 400
-
-                                    }}
-                                />
-                            </View>
-
-                        }
                         pagingEnabled
+                        renderItem={({ item, index }) => {
+
+                            return (
+                                <View>
+                                    <Image
+                                        source={{ uri: item.url_image }}
+                                        style={{
+                                            resizeMode: "cover",
+                                            width: windowWidth,
+                                            height: 400
+
+                                        }}
+                                    />
+                                    {
+                                        data.images.length > 1 &&
+                                        <View style={{
+                                            position: "absolute",
+                                            top: 8,
+                                            right: 8,
+                                            backgroundColor: 'black',
+                                            borderRadius: 50,
+                                            padding: 5,
+                                            opacity: 0.8
+
+
+                                        }}>
+
+                                            <Text style={{ fontSize: 13, color: 'white' }}> {index + 1}/{data.images.length} </Text>
+
+                                        </View>
+                                    }
+                                </View>
+                            );
+                        }
+                        }
                     />
                 </View>
             </TouchableOpacity>
@@ -228,6 +280,7 @@ export default function PostInfo({ data }) {
                     id_post={data.id_post}
                 />
             </BottomSheetModal>
-        </View>
+            <Report modalVisible={modalVisible} fModalVisible={setModalVisible} />
+        </View >
     );
 }

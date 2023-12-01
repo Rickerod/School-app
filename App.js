@@ -34,11 +34,14 @@ export default function App() {
             {/* <Stack.Screen
               name="NewSurvey" component={NewSurvey}
             />   */}
-             <Stack.Screen 
+            {/*  <Stack.Screen
+              name="HolaMundo" component={HolaMundo}
+            />  */}
+            <Stack.Screen
               name="LoginAuth" component={LoginAuth}
             />
             {/*  <Stack.Screen
-              name="HolaMundo2" component={HolaMundo2}
+              name="HolaMundo" component={HolaMundo}
             />  */}
             {/* <Stack.Screen
               name="Login" component={Login}

@@ -42,13 +42,13 @@ export default function ProfileGuest({route}) {
                             profileImage={require('../storage/images/userProfile.png')}
                         />
                         <ProfileButtons
-                            id={1} //Ver perfir como invitado
+                            id={1} //Ver perfil como invitado
                             name="Diterod"
                             accountName="ditero_d"
                             profileImage={require('../storage/images/userProfile.png')}
                         />
                     </View>
-                    <BottomTabView id_user={data[0].id_user}/>
+                    <BottomTabView id = {1} id_user={data[0].id_user}/>
                 </SafeAreaView>
                 :
                 <View>

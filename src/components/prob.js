@@ -13,6 +13,8 @@ const SingleContentVideo = ({ }) => {
     const videoRef = useRef(null);
     const [status, setStatus] = React.useState({});
 
+    
+
     const onBuffer = buffer => {
         console.log('buffring', buffer);
     };

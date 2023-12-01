@@ -30,8 +30,8 @@ export default function LoginAuth() {
             <View
                 style={{
                     //backgroundColor: 'green',
-                    width: windowWidth / 2.5,
-                    height: windowHeight / 5,
+                    width: windowHeight / 6,
+                    height: windowHeight / 6,
                     borderWidth: 1.8,
                     borderRadius: 100,
                     borderColor: '#c13584',
@@ -57,9 +57,8 @@ export default function LoginAuth() {
             <TouchableOpacity onPress={() => userData(2)}>
             <View
                 style={{
-                    //backgroundColor: 'green',
-                    width: windowWidth / 2.5,
-                    height: windowHeight / 5,
+                    width: windowHeight / 6,
+                    height: windowHeight / 6,
                     borderWidth: 1.8,
                     borderRadius: 100,
                     borderColor: '#c13584',
@@ -76,7 +75,7 @@ export default function LoginAuth() {
                             //backgroundColor: 'green',
                             alignSelf: 'center'
                         }}
-                    />
+                    /> 
             </View>
             </TouchableOpacity >
             <Text style={{ marginVertical: 10 }}> Ministerio </Text>
@@ -85,8 +84,8 @@ export default function LoginAuth() {
                 <View
                     style={{
                         //backgroundColor: 'green',
-                        width: windowWidth / 2.5,
-                        height: windowHeight / 5,
+                        width: windowHeight / 6,
+                        height: windowHeight / 6,
                         borderWidth: 1.8,
                         borderRadius: 100,
                         borderColor: '#c13584',
