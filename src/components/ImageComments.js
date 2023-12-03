@@ -6,11 +6,12 @@ import ImageComment from "./ImageComment";
 
 import useUser from '../hooks/useUser';
 import axios from "axios"
+import { apiUrl } from "../../constants";
 
 
 
 
-const ImageComments = ({ id_post }) => {
+const ImageComments = ({ id_post, user }) => {
     const [newComment, setNewComment] = useState("");
     const [loading, setLoading] = useState(true)
     //const [comments, setComments] = useState("");
@@ -20,9 +21,7 @@ const ImageComments = ({ id_post }) => {
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
 
-    const apiUrl = process.env.HOST;
-
-    const user = useUser()
+    //const apiUrl = process.env.HOST;
 
 
     useEffect(() => {
@@ -59,8 +58,8 @@ const ImageComments = ({ id_post }) => {
             data = await response.json();
 
             const commentPostPush = commentsPost.push({
-                uri_image_profile: "https://raw.githubusercontent.com/Rickerod/School-app/master/src/storage/images/userProfile.png",
-                username: "johndoe",
+                uri_image_profile: user.uri_image_profile,
+                username: user.name,
                 comment: newComment,
                 fecha_comment: "2023-09-01T04:00:00.000Z"
             })

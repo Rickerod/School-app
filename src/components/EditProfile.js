@@ -36,7 +36,7 @@ const EditProfile = ({ route, navigation }) => {
             </View>
             <View style={{ padding: 20, alignItems: 'center' }}>
                 <Image
-                    source={profileImage}
+                    source={{uri: profileImage}}
                     style={{ width: 80, height: 80, borderRadius: 100 }}
                 />
                 <Text

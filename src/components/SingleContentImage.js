@@ -17,23 +17,25 @@ import { useFocusEffect } from '@react-navigation/native';
 import { FlatList } from 'react-native-gesture-handler';
 import { useLike } from '../context/LikeContext';
 import useUser from '../hooks/useUser';
+import { apiUrl } from '../../constants';
 
 const SingleContentImage = ({ route, navigation }) => {
-    const { likes, toggleLike } = useLike();
-    const user = useUser()
 
+    const { uri_images, id_post, islike, num_likes } = route.params
+    
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
-    const { uri_images, id_post, num_likes } = route.params
 
-    const commentsSheetRef = useRef(null);
-    const [comments, setComments] = useState("");
-
+    const { likes, toggleLike, toggleNumLikes} = useLike();
+    const user = useUser()
+    const [numLikes, setNumLikes] = useState(num_likes)
+    const [is_like, setLike] = useState(islike)
     const [isShowing, setIsShowing] = useState(false);
+    const commentsSheetRef = useRef(null);
 
-    const uri_image = uri_images[0].url_image
+   
 
-    const apiUrl = process.env.HOST;
+    //const apiUrl = process.env.HOST;
 
 
     //Back action of the commentSheetRef for Android
@@ -91,6 +93,9 @@ const SingleContentImage = ({ route, navigation }) => {
         } catch (error) {
             console.error(error);
         }
+
+        if(is_liked) setNumLikes((prev) => prev + 1)
+        else setNumLikes((prev) => prev - 1)
     }
 
     return (
@@ -175,17 +180,22 @@ const SingleContentImage = ({ route, navigation }) => {
                     alignItems: 'center',
                 }}>
                 <TouchableOpacity onPress={() => {
-                    toggleLike(id_post)
-                    insertLike(!likes[id_post])
+                    insertLike(!is_like)
+                    setLike((prev) => !prev)
+                    console.log("like_id_post", !is_like, likes[id_post])
+                    if(likes[id_post] !== undefined){
+                        toggleLike(id_post)
+                        toggleNumLikes(id_post, !is_like)
+                    }
                 }
                 }
                     style={{ paddingTop: 5 }}>
                     <AntDesign
-                        name={likes[id_post] ? 'heart' : 'hearto'}
-                        style={{ color: likes[id_post] ? 'red' : 'black', fontSize: 25 }}
+                        name={is_like ? 'heart' : 'hearto'}
+                        style={{ color: is_like ? 'red' : 'black', fontSize: 25 }}
                     />
                 </TouchableOpacity>
-                <Text> {likes[id_post] ? num_likes + 1 : num_likes} </Text>
+                <Text> {numLikes} </Text>
                 <TouchableOpacity onPress={openComments} style={{ padding: 10 }}>
                     <Ionic
                         name="ios-chatbubble-outline"
@@ -203,7 +213,7 @@ const SingleContentImage = ({ route, navigation }) => {
                     <View style={[style, { backgroundColor: "#fff" }]} />
                 )}
             >
-                <ImageComments id_post={id_post} />
+                <ImageComments id_post={id_post} user={user}/>
             </BottomSheetModal>
         </View>
     );

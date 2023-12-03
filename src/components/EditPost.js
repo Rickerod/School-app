@@ -11,6 +11,7 @@ import Ionic from 'react-native-vector-icons/Ionicons';
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { addDoc, collection, onSnapshot } from "firebase/firestore";
 import { db, storage } from "../config/firebaseConfig";
+import { apiUrl } from '../../constants';
 
 //import axios from 'axios';
 
@@ -24,7 +25,8 @@ export default function EditPost({ route }) {
     const windowHeight = Dimensions.get('window').height;
 
     const user = useUser()
-    const apiUrl = process.env.HOST;
+    console.log("USER", user)
+    //const apiUrl = process.env.HOST;
 
     const navigation = useNavigation()
 
@@ -69,6 +71,8 @@ export default function EditPost({ route }) {
         } catch (error) {
             console.error(error);
         }
+
+        //console.log(data)
 
         //text, value, user.id_user, date.time.now(), num_likes = 0
         //Upload images
@@ -177,7 +181,7 @@ export default function EditPost({ route }) {
 
     return (
         <View style={{ flex: 1 }}>
-            <Loader loading={isLoading} color="white" />
+            <Loader loading={isLoading} color="black" />
             <View
                 style={{
                     flexDirection: 'row',

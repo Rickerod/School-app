@@ -6,12 +6,13 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 import Header from '../components/Header';
 import ProfileStudent from '../components/ProfileStudent';
+import { apiUrl } from '../../constants';
 
 export default function Profile({ route }) {
     const [data, setData] = useState([])
 
     //{id_user_profile, type_user_profile} = route.params
-    const apiUrl = process.env.HOST;
+    //const apiUrl = process.env.HOST;
 
     useEffect(() => {
         const fetchData = async () => {
@@ -23,7 +24,6 @@ export default function Profile({ route }) {
 
         fetchData()
     }, [])
-
 
     if (data.length === 0) {
         return (
@@ -41,13 +41,13 @@ export default function Profile({ route }) {
                             id={0} //Perfil del usuario
                             id_user={route.params.id_user_profile}
                             name="Diterod"
-                            profileImage={require('../storage/images/userProfile.png')}
+                            profileImage={data[0].uri_image_profile}
                         />
                         <ProfileButtons
                             id={0} //Perfil del usuario
                             name="Diterod"
                             accountName="ditero_d"
-                            profileImage={require('../storage/images/userProfile.png')}
+                            profileImage={data[0].uri_image_profile}
                         />
                     </View>
                     <BottomTabView id={0} id_user={data[0].id_user}/>

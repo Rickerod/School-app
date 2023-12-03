@@ -3,8 +3,7 @@ import { View, Text, Image, Dimensions } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { useNavigation } from '@react-navigation/native';
-
-import useUser from '../hooks/useUser';
+import { apiUrl } from '../../constants';
 
 export default function LoginAuth() {
 
@@ -13,20 +12,20 @@ export default function LoginAuth() {
     
     const navigation = useNavigation()
     
-
-
-    const userData = (type_user) => {
+    const userData = (id_user, type_user, uri_image_profile, name) => {
 
         navigation.navigate("LoginStack", {
-            id_user : 1,
-            type_user: type_user
+            id_user : id_user,
+            type_user: type_user,
+            uri_image_profile: uri_image_profile,
+            name: name
         })
 
     }
 
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <TouchableOpacity onPress={() => userData(1)}>
+            <TouchableOpacity onPress={() => userData(1, 1, "https://raw.githubusercontent.com/Rickerod/School-app/master/src/storage/images/userProfile.png", "jhondoe")}>
             <View
                 style={{
                     //backgroundColor: 'green',
@@ -54,7 +53,7 @@ export default function LoginAuth() {
             </TouchableOpacity>
             <Text style={{ marginVertical: 10 }}> Administrador </Text>
             
-            <TouchableOpacity onPress={() => userData(2)}>
+            <TouchableOpacity onPress={() => userData(4, 2, "https://raw.githubusercontent.com/Rickerod/School-app/master/src/storage/images/profile3.jpg", "janedoe4")}>
             <View
                 style={{
                     width: windowHeight / 6,
@@ -80,7 +79,7 @@ export default function LoginAuth() {
             </TouchableOpacity >
             <Text style={{ marginVertical: 10 }}> Ministerio </Text>
 
-            <TouchableOpacity onPress={() => userData(0)}>
+            <TouchableOpacity onPress={() => userData(3, 0, "https://raw.githubusercontent.com/Rickerod/School-app/master/src/storage/images/profile5.jpg", "rabbit")}>
                 <View
                     style={{
                         //backgroundColor: 'green',

@@ -8,6 +8,7 @@ import useUser from '../hooks/useUser';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Report from './Report';
+import { apiUrl } from '../../constants';
 
 export const ProfileBody = ({
     id,
@@ -23,7 +24,7 @@ export const ProfileBody = ({
     const [data, setData] = useState([])
     const [text, setText] = useState('');
 
-    const apiUrl = process.env.HOST;
+    //const apiUrl = process.env.HOST;
 
     useEffect(() => {
         const fetchData = async () => {
@@ -34,6 +35,8 @@ export const ProfileBody = ({
 
         fetchData()
     }, [])
+
+    //console.log(data)
 
     if (data.length === 0) {
         return (
@@ -57,7 +60,7 @@ export const ProfileBody = ({
                             alignItems: 'center',
                         }}>
                         <Image
-                            source={profileImage}
+                            source={{uri: profileImage}}
                             style={{
                                 resizeMode: 'cover',
                                 width: 80,
@@ -140,6 +143,7 @@ export const ProfileButtons = ({ id, name, accountName, profileImage }) => {
     const navigation = useNavigation();
     const [follow, setFollow] = useState(follow);
     const [reported, setReported] = useState(true);
+
     return (
         <>
             {id === 0 ? (

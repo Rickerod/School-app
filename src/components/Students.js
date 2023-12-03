@@ -2,17 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { FlatList } from 'react-native-gesture-handler';
+import { apiUrl } from '../../constants';
 
 export default function Students() {
     const navigation = useNavigation();
     const [data, setData] = useState([])
 
-    const apiUrl = process.env.HOST;
+    //const apiUrl = process.env.HOST;
 
     useEffect(() => {
         const fetchUsers = async () => {
-            const idUsuario = 1
-            const response = await fetch(`http://${apiUrl}/students/${idUsuario}`)
+            const idSchool = 1
+            const response = await fetch(`http://${apiUrl}/students/${idSchool}`)
             /* [
                 {
                   "id_user": 2,
@@ -31,9 +32,11 @@ export default function Students() {
         fetchUsers()
     }, [])
 
-
     if (data == []) {
-        return <View></View>
+        return (
+            <View>
+            </View>
+        );
     }
 
     return (

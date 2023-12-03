@@ -8,6 +8,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import { useFocusEffect } from '@react-navigation/native';
 import useUser from '../hooks/useUser';
 import { useLike } from '../context/LikeContext';
+import { apiUrl } from '../../constants';
 
 export default function PostHome() {
     const [data, setData] = useState([])
@@ -16,28 +17,44 @@ export default function PostHome() {
 
     const user = useUser()
 
-    const apiUrl = process.env.HOST;
+    //const apiUrl = process.env.HOST;
+
+    //console.log("apiUrl", apiUrl)
 
     //Obtener las 6 publicaciones mas recientes
     useEffect(() => {
         //Enviar el id del usuario como query para obtener las publicaciones a las que les dió like...
         async function fetchPost() {
-            const params = {
-                id: user.id_user
-            }
-            try {
-                const response = await axios.get(`http://${apiUrl}/home`, { params: params });
-                setData(response.data)
 
-                const initializeLikes = response.data.reduce((result, post) => {
+            try {
+
+                const response = await fetch(`http://${apiUrl}/home/${user.id_user}`)
+                const dataResponse = await response.json();
+
+                setData(dataResponse)
+
+                /* const response = await axios.get(`http://${apiUrl}/home`, { params: params });
+                setData(response.data) */
+
+                //console.log(dataResponse)
+
+                const initializeLikes = dataResponse.reduce((result, post) => {
                     result[post.id_post] = post.is_liked;
                     return result;
                 }, {});
 
-                initializeLike(initializeLikes)
+                const initializeNumLikes = dataResponse.reduce((result, post) => {
+                    result[post.id_post] = post.num_likes;
+                    return result;
+                }, {});
+
+                //console.log(initializeLikes)
+                //console.log(initializeNumLikes)
+                
+                initializeLike(initializeLikes, initializeNumLikes)
 
                 setLoading(true)
-            } catch {
+            } catch(error) {
                 console.log("Error", error);
             }
         }

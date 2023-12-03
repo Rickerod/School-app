@@ -25,21 +25,22 @@ import {
 } from "@gorhom/bottom-sheet";
 import { FlatList } from 'react-native-gesture-handler';
 import Report from './Report';
+import { apiUrl } from '../../constants';
 
 export default function PostInfo({ data }) {
-    const { likes, toggleLike } = useLike();
+    const { numLikes, likes, toggleLike, toggleNumLikes } = useLike();
 
     const windowWidth = Dimensions.get('window').width;
     const commentsSheetRef = useRef(null);
     const [isShowing, setIsShowing] = useState(false);
     const [comments, setComments] = useState([]);
+    //const [numLikes, setNumLikes ] = useState(data.num_likes)
     const [modalVisible, setModalVisible] = useState(false);
 
     const navigation = useNavigation();
     const user = useUser()
 
-
-    const apiUrl = process.env.HOST;
+    //const apiUrl = process.env.HOST;
 
     useEffect(() => {
         const backAction = () => {
@@ -87,7 +88,7 @@ export default function PostInfo({ data }) {
 
     const insertLike = async (is_liked) => {
 
-        //console.log("IS_liked", is_liked)
+        //console.log("IS_liked", is_liked, data.id_post, user.id_user)
 
         const body = {
             is_liked: is_liked,
@@ -108,6 +109,9 @@ export default function PostInfo({ data }) {
         } catch (error) {
             console.error(error);
         }
+
+        /* if(is_liked) setNumLikes((prev) => prev + 1)
+        else setNumLikes((prev) => prev - 1) */
     }
 
     return (
@@ -167,7 +171,8 @@ export default function PostInfo({ data }) {
             <TouchableOpacity onPress={() => navigation.navigate('SingleContentImage', {
                 uri_images: data.images,
                 id_post: data.id_post,
-                num_likes: data.num_likes,
+                islike : likes[data.id_post],
+                num_likes: numLikes[data.id_post],
             })}>
                 <View
                     style={{
@@ -230,6 +235,7 @@ export default function PostInfo({ data }) {
                     <TouchableOpacity onPress={() => {
                         toggleLike(data.id_post)
                         insertLike(!likes[data.id_post])
+                        toggleNumLikes(data.id_post, !likes[data.id_post]) 
                     }}>
                         <AntDesign
                             name={likes[data.id_post] ? 'heart' : 'hearto'}
@@ -250,7 +256,7 @@ export default function PostInfo({ data }) {
             </View>
             <View style={{ paddingHorizontal: 15 }}>
                 <Text>
-                    Le gusta a {likes[data.id_post] ? data.num_likes + 1 : data.num_likes} personas más
+                    Le gusta a {numLikes[[data.id_post]]} personas más
                 </Text>
                 <Text
                     style={{
@@ -277,7 +283,7 @@ export default function PostInfo({ data }) {
             >
 
                 <ImageComments
-                    id_post={data.id_post}
+                    id_post={data.id_post} user={user}
                 />
             </BottomSheetModal>
             <Report modalVisible={modalVisible} fModalVisible={setModalVisible} />

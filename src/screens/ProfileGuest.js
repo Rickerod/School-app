@@ -4,10 +4,11 @@ import ProfileStudent from '../components/ProfileStudent';
 import Header from '../components/Header';
 import { ProfileBody, ProfileButtons } from '../components/ProfileBody';
 import BottomTabView  from '../navigators/BottomTabView'
+import { apiUrl } from '../../constants';
 
 export default function ProfileGuest({route}) {
     const [data, setData] = useState([])
-    const apiUrl = process.env.HOST;
+    //const apiUrl = process.env.HOST;
 
     useEffect(() => {
         const fetchData = async () => {
@@ -19,7 +20,6 @@ export default function ProfileGuest({route}) {
 
         fetchData()
     }, [])
-
 
     if (data.length === 0) {
         return (
@@ -39,13 +39,13 @@ export default function ProfileGuest({route}) {
                             id = {1}
                             id_user={route.params.id_user_profile}
                             name="Diterod"
-                            profileImage={require('../storage/images/userProfile.png')}
+                            profileImage={data[0].uri_image_profile}
                         />
                         <ProfileButtons
                             id={1} //Ver perfil como invitado
                             name="Diterod"
                             accountName="ditero_d"
-                            profileImage={require('../storage/images/userProfile.png')}
+                            profileImage= {data[0].uri_image_profile}
                         />
                     </View>
                     <BottomTabView id = {1} id_user={data[0].id_user}/>

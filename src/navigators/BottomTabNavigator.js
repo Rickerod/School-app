@@ -22,9 +22,6 @@ import { useNavigation } from '@react-navigation/native';
 const HomeStack = () => {
     const HomeStack = createNativeStackNavigator()
 
-    const navigation = useNavigation();
-    const user = useUser()
-
     return (
         <HomeStack.Navigator
             screenOptions={{

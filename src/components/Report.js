@@ -2,11 +2,12 @@ import React, {useState} from 'react';
 import { View, Text, TextInput, Pressable, Modal } from 'react-native';
 
 import useUser from '../hooks/useUser';
+import { apiUrl } from '../../constants';
 
 export default function Report({modalVisible, fModalVisible}) {
 
     const user = useUser()
-    const apiUrl = process.env.HOST;
+    //const apiUrl = process.env.HOST;
     const [text, setText] = useState('');
 
     //Insertar reporte
@@ -22,6 +23,7 @@ export default function Report({modalVisible, fModalVisible}) {
         });
 
         const data = await response.json();
+        //console.log(data)
 
         if (data.ok) {
             fModalVisible(!modalVisible)

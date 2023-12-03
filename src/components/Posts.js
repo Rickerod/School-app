@@ -5,22 +5,22 @@ import useUser from '../hooks/useUser';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import { apiUrl } from '../../constants';
 
 export default function Posts({ route, navigation }) {
     const [data, setData] = useState([])
     const { id_user } = route.params
 
     const windowWidth = Dimensions.get('window').width;
-    const windowHeight = Dimensions.get('window').height;
 
-    const apiUrl = process.env.HOST;
+    //const apiUrl = process.env.HOST;
 
     const user = useUser()
 
     useEffect(() => {
 
         const fetchPost = async () => {
-            const response = await fetch(`http://${apiUrl}/profile/post/${user.id_user}/${id_user}`) //(userProfile, id_user)
+            const response = await fetch(`http://${apiUrl}/profile/post/${id_user}/${user.id_user}`) //(userProfile, id_user)
             const dataResponse = await response.json();
             setData(dataResponse)
         }
@@ -28,6 +28,8 @@ export default function Posts({ route, navigation }) {
         fetchPost()
 
     }, [])
+
+    //console.log(data)
 
     if (data == []) {
         return <View></View>

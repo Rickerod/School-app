@@ -14,6 +14,7 @@ import CreateBitacora from '../components/CreateBitacora';
 import BitacoraQuestions from '../components/BitatoraQuestions';
 import NewSurvey from '../components/NewSurvey';
 import BitacoraAnswers from '../screens/BitacoraAnswers';
+import PostInfo from '../components/PostInfo';
 
 import HolaMundo from '../screens/HolaMundo';
 import Register from '../screens/Register'
@@ -30,11 +31,11 @@ export default function LoginNavigator({ route }) {
 
     const Stack = createNativeStackNavigator();
 
-
-
     const userData = {
         id_user: route.params.id_user,
         type_user: route.params.type_user,
+        uri_image_profile: route.params.uri_image_profile,
+        name: route.params.name
     }
     return (
         <UserContext.Provider value={userData}>
@@ -103,6 +104,9 @@ export default function LoginNavigator({ route }) {
                         />
                         <Stack.Screen
                             name="BitacoraAnswers" component={BitacoraAnswers}
+                        />
+                        <Stack.Screen 
+                            name="PostInfo" component={PostInfo}
                         />
                         {/* <Stack.Screen
                     name="ProfileHome" component={Profile}
