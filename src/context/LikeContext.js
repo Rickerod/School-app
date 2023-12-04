@@ -31,6 +31,17 @@ export const LikeProvider = ({ children }) => {
 
   };
 
+  const addLikes = async (likesJson) => {
+    setLikes((prevLikes) =>{
+      return { ...prevLikes, ...likesJson };
+    });
+  }
+
+  const addNumLikes = async (numLikes) => {
+    setNumLikes((prevNumLikes) =>{
+      return { ...prevNumLikes, ...numLikes};
+    });
+  }
 
   const initializeLike = (likesJson, numLikes) => {
     setLikes(likesJson)
@@ -38,7 +49,7 @@ export const LikeProvider = ({ children }) => {
   }
 
   return (
-    <LikeContext.Provider value={{ likes, numLikes, toggleLike, toggleNumLikes, initializeLike }}>
+    <LikeContext.Provider value={{ likes, numLikes, toggleLike, toggleNumLikes, initializeLike, addLikes, addNumLikes }}>
       {children}
     </LikeContext.Provider>
   );

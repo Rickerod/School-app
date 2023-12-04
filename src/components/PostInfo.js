@@ -64,18 +64,6 @@ export default function PostInfo({ data }) {
         setIsShowing(true)
     };
 
-
-    //Cargar comentarios al post
-    const loadComments = async () => {
-        try {
-            const response = await axios.get(`http://${apiUrl}/comments/${data.id_post}`);
-            setComments(response.data)
-
-        } catch (error) {
-            console.log("Error", error);
-        }
-    }
-
     const handleSheetChanges = (index) => {
         //console.log('handleSheetChanges', index)
         if (index >= 0) {
@@ -171,8 +159,6 @@ export default function PostInfo({ data }) {
             <TouchableOpacity onPress={() => navigation.navigate('SingleContentImage', {
                 uri_images: data.images,
                 id_post: data.id_post,
-                islike : likes[data.id_post],
-                num_likes: numLikes[data.id_post],
             })}>
                 <View
                     style={{

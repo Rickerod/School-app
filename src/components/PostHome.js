@@ -13,7 +13,7 @@ import { apiUrl } from '../../constants';
 export default function PostHome() {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
-    const { initializeLike } = useLike();
+    const { numlikes, initializeLike } = useLike();
 
     const user = useUser()
 
@@ -96,7 +96,7 @@ export default function PostHome() {
     if (!loading) {
         return <View></View>
     }
-
+    
     return (
         <FlatList
             scrollEnabled={false}

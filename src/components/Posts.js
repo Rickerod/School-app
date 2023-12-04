@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Image, ScrollView, Dimensions } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import useUser from '../hooks/useUser';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { apiUrl } from '../../constants';
+import useUser from '../hooks/useUser';
+import { useLike } from '../context/LikeContext';
 
 export default function Posts({ route, navigation }) {
     const [data, setData] = useState([])
@@ -13,15 +14,29 @@ export default function Posts({ route, navigation }) {
 
     const windowWidth = Dimensions.get('window').width;
 
+    const user = useUser()
+    const { likes, numlikes, addNumLikes, addLikes } = useLike()
     //const apiUrl = process.env.HOST;
 
-    const user = useUser()
-
     useEffect(() => {
-
         const fetchPost = async () => {
             const response = await fetch(`http://${apiUrl}/profile/post/${id_user}/${user.id_user}`) //(userProfile, id_user)
             const dataResponse = await response.json();
+
+            //console.log(dataResponse)
+             const likes = dataResponse.reduce((result, post) => {
+                result[post.id_post] = post.is_liked;
+                return result;
+            }, {});
+
+            const numLikes = dataResponse.reduce((result, post) => {
+                result[post.id_post] = post.num_likes;
+                return result;
+            }, {});
+
+            
+            addLikes(likes)
+            addNumLikes(numLikes)
             setData(dataResponse)
         }
 
@@ -34,6 +49,7 @@ export default function Posts({ route, navigation }) {
     if (data == []) {
         return <View></View>
     }
+
     return (
         <FlatList
             key={'_'}

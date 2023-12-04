@@ -18,7 +18,6 @@ const BottomTabView = ({id, id_user}) => {
 
   const user = useUser()
 
-  console.log("type_user", user.type_user)
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({

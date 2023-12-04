@@ -21,19 +21,16 @@ import { apiUrl } from '../../constants';
 
 const SingleContentImage = ({ route, navigation }) => {
 
-    const { uri_images, id_post, islike, num_likes } = route.params
-    
+    const { uri_images, id_post} = route.params
+
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
 
-    const { likes, toggleLike, toggleNumLikes} = useLike();
+    const {likes, numLikes, toggleLike, toggleNumLikes, initializeLike, addLikes, addNumLikes} = useLike();
     const user = useUser()
-    const [numLikes, setNumLikes] = useState(num_likes)
-    const [is_like, setLike] = useState(islike)
+    //const [numLikes, setNumLikes] = useState(num_likes)
     const [isShowing, setIsShowing] = useState(false);
     const commentsSheetRef = useRef(null);
-
-   
 
     //const apiUrl = process.env.HOST;
 
@@ -89,13 +86,13 @@ const SingleContentImage = ({ route, navigation }) => {
             });
 
             const response_json = await response.json();
-
+            
         } catch (error) {
             console.error(error);
         }
 
-        if(is_liked) setNumLikes((prev) => prev + 1)
-        else setNumLikes((prev) => prev - 1)
+        /* if (is_liked) setNumLikes((prev) => prev + 1)
+        else setNumLikes((prev) => prev - 1) */
     }
 
     return (
@@ -136,8 +133,8 @@ const SingleContentImage = ({ route, navigation }) => {
             <FlatList
                 data={uri_images}
                 horizontal={true}
-                renderItem={({ item , index}) =>
-                    <View style={{position: 'relative'}}>
+                renderItem={({ item, index }) =>
+                    <View style={{ position: 'relative' }}>
                         <Image
                             source={{ uri: item.url_image }}
                             style={{
@@ -180,22 +177,18 @@ const SingleContentImage = ({ route, navigation }) => {
                     alignItems: 'center',
                 }}>
                 <TouchableOpacity onPress={() => {
-                    insertLike(!is_like)
-                    setLike((prev) => !prev)
-                    console.log("like_id_post", !is_like, likes[id_post])
-                    if(likes[id_post] !== undefined){
-                        toggleLike(id_post)
-                        toggleNumLikes(id_post, !is_like)
-                    }
+                    toggleLike(id_post)
+                    insertLike(!likes[id_post])
+                    toggleNumLikes(id_post, !likes[id_post])
                 }
                 }
                     style={{ paddingTop: 5 }}>
                     <AntDesign
-                        name={is_like ? 'heart' : 'hearto'}
-                        style={{ color: is_like ? 'red' : 'black', fontSize: 25 }}
+                        name={likes[id_post] ? 'heart' : 'hearto'}
+                        style={{ color: likes[id_post] ? 'red' : 'black', fontSize: 25 }}
                     />
                 </TouchableOpacity>
-                <Text> {numLikes} </Text>
+                <Text> {numLikes[id_post]} </Text>
                 <TouchableOpacity onPress={openComments} style={{ padding: 10 }}>
                     <Ionic
                         name="ios-chatbubble-outline"
@@ -213,7 +206,7 @@ const SingleContentImage = ({ route, navigation }) => {
                     <View style={[style, { backgroundColor: "#fff" }]} />
                 )}
             >
-                <ImageComments id_post={id_post} user={user}/>
+                <ImageComments id_post={id_post} user={user} />
             </BottomSheetModal>
         </View>
     );
