@@ -58,7 +58,7 @@ export default function EditPost({ route }) {
 
         var data = ""
         try {
-            const response = await fetch(`http://${apiUrl}/newPost/${user.id_user}`, {
+            const response = await fetch(`http://${apiUrl}/posts/${user.id_user}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -160,7 +160,7 @@ export default function EditPost({ route }) {
         console.log("downloadUrl", downloadURL)
 
         try {
-            const response = await fetch(`http://${apiUrl}/upload`, {
+            const response = await fetch(`http://${apiUrl}/images`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

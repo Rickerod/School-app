@@ -28,7 +28,7 @@ export default function PostHome() {
 
             try {
 
-                const response = await fetch(`http://${apiUrl}/home/${user.id_user}`)
+                const response = await fetch(`http://${apiUrl}/posts/${user.id_user}`)
                 const dataResponse = await response.json();
 
                 setData(dataResponse)

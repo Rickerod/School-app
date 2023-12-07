@@ -19,21 +19,76 @@ import { useLike } from '../context/LikeContext';
 import useUser from '../hooks/useUser';
 import { apiUrl } from '../../constants';
 
+
+const PostImages = ({ item, index, length }) => {
+    const [imageHeight, setImageHeight] = useState(0);
+
+    const windowWidth = Dimensions.get('window').width;
+
+    useEffect(() => {
+
+        Image.getSize(item.url_image, (width, height) => {
+
+            const calculatedHeight = (windowWidth / width) * height;
+            setImageHeight(calculatedHeight);
+
+        }, (error) => {
+            console.error('Error al obtener el tamaño de la imagen:', error);
+        });
+    }, []);
+
+    return (
+        <View style={{ flex: 1, justifyContent: 'center'}}>
+
+            <View style={{alignSelf: 'flex-start'}}>
+                <Image
+                    source={{ uri: item.url_image }}
+                    style={{
+                        resizeMode: "contain",
+                        width: windowWidth,
+                        height: imageHeight,
+                        backgroundColor: 'red'
+
+                    }}
+                />
+                {
+                    length > 1 &&
+                    <View style={{
+                        position: "absolute",
+                        top: 8,
+                        right: 8,
+                        backgroundColor: 'black',
+                        borderRadius: 50,
+                        padding: 5,
+                        opacity: 0.8
+
+
+                    }}>
+
+                        <Text style={{ fontSize: 13, color: 'white' }}> {index + 1}/{length} </Text>
+
+                    </View>
+                }
+            </View>
+        </View>
+    );
+}
+
 const SingleContentImage = ({ route, navigation }) => {
 
     const { uri_images, id_post, islike, num_likes } = route.params
-    
+
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
 
-    const { likes, toggleLike, toggleNumLikes} = useLike();
+    const { likes, toggleLike, toggleNumLikes } = useLike();
     const user = useUser()
     const [numLikes, setNumLikes] = useState(num_likes)
     const [is_like, setLike] = useState(islike)
     const [isShowing, setIsShowing] = useState(false);
     const commentsSheetRef = useRef(null);
 
-   
+
 
     //const apiUrl = process.env.HOST;
 
@@ -94,7 +149,7 @@ const SingleContentImage = ({ route, navigation }) => {
             console.error(error);
         }
 
-        if(is_liked) setNumLikes((prev) => prev + 1)
+        if (is_liked) setNumLikes((prev) => prev + 1)
         else setNumLikes((prev) => prev - 1)
     }
 
@@ -136,38 +191,7 @@ const SingleContentImage = ({ route, navigation }) => {
             <FlatList
                 data={uri_images}
                 horizontal={true}
-                renderItem={({ item , index}) =>
-                    <View style={{position: 'relative'}}>
-                        <Image
-                            source={{ uri: item.url_image }}
-                            style={{
-                                resizeMode: "contain",
-                                width: windowWidth,
-                                height: windowHeight,
-                                alignSelf: 'center'
-
-                            }}
-                        />
-                        {
-                            uri_images.length > 1 &&
-                            <View style={{
-                                position: "absolute",
-                                top: 8,
-                                right: 8,
-                                backgroundColor: 'black',
-                                borderRadius: 50,
-                                padding: 5,
-                                opacity: 0.8
-
-
-                            }}>
-
-                                <Text style={{ fontSize: 13, color: 'white' }}> {index + 1}/{uri_images.length} </Text>
-
-                            </View>
-                        }
-                    </View>
-
+                renderItem={({ item, index }) => <PostImages item={item} index={index} length={uri_images.length} />
                 }
                 pagingEnabled
             />
@@ -183,7 +207,7 @@ const SingleContentImage = ({ route, navigation }) => {
                     insertLike(!is_like)
                     setLike((prev) => !prev)
                     console.log("like_id_post", !is_like, likes[id_post])
-                    if(likes[id_post] !== undefined){
+                    if (likes[id_post] !== undefined) {
                         toggleLike(id_post)
                         toggleNumLikes(id_post, !is_like)
                     }
@@ -213,7 +237,7 @@ const SingleContentImage = ({ route, navigation }) => {
                     <View style={[style, { backgroundColor: "#fff" }]} />
                 )}
             >
-                <ImageComments id_post={id_post} user={user}/>
+                <ImageComments id_post={id_post} user={user} />
             </BottomSheetModal>
         </View>
     );

@@ -47,7 +47,7 @@ const ImageComments = ({ id_post, user }) => {
 
         var data = ""
         try {
-            const response = await fetch(`http://${apiUrl}/comment/${id_post}/${user.id_user}`, {
+            const response = await fetch(`http://${apiUrl}/comments/${id_post}/${user.id_user}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

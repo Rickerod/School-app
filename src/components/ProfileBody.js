@@ -28,7 +28,7 @@ export const ProfileBody = ({
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await fetch(`http://${apiUrl}/profile/numPosts/${id_user}`)
+            const response = await fetch(`http://${apiUrl}/users/profile/numPosts/${id_user}`)
             const dataResponse = await response.json();
             setData(dataResponse)
         }

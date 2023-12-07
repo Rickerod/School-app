@@ -34,9 +34,9 @@ export default function App() {
             {/* <Stack.Screen
               name="NewSurvey" component={NewSurvey}
             />   */}
-            {/*  <Stack.Screen
+            {/*   <Stack.Screen
               name="HolaMundo" component={HolaMundo}
-            />  */}
+            />   */}
             <Stack.Screen
               name="LoginAuth" component={LoginAuth}
             />

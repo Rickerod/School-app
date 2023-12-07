@@ -27,6 +27,59 @@ import { FlatList } from 'react-native-gesture-handler';
 import Report from './Report';
 import { apiUrl } from '../../constants';
 
+
+
+const PostImages = ({item, index, length}) => {
+    const [imageHeight, setImageHeight] = useState(0);
+
+    const windowWidth = Dimensions.get('window').width;
+
+    useEffect(() => {
+
+        Image.getSize(item.url_image, (width, height) => {
+
+            const calculatedHeight = (windowWidth / width) * height;
+            setImageHeight(calculatedHeight);
+
+        }, (error) => {
+            console.error('Error al obtener el tamaño de la imagen:', error);
+        });
+    }, []);
+
+    return (
+        <View style={{ flex: 1 }}>
+            <Image
+                source={{ uri: item.url_image }}
+                style={{
+                    flex: 1,
+                    resizeMode: "contain",
+                    width: windowWidth,
+                    height: imageHeight
+
+                }}
+            />
+            {
+                length > 1 &&
+                <View style={{
+                    position: "absolute",
+                    top: 8,
+                    right: 8,
+                    backgroundColor: 'black',
+                    borderRadius: 50,
+                    padding: 5,
+                    opacity: 0.8
+
+
+                }}>
+
+                    <Text style={{ fontSize: 13, color: 'white' }}> {index + 1}/{length} </Text>
+
+                </View>
+            }
+        </View>
+    );
+}
+
 export default function PostInfo({ data }) {
     const { numLikes, likes, toggleLike, toggleNumLikes } = useLike();
 
@@ -65,17 +118,6 @@ export default function PostInfo({ data }) {
     };
 
 
-    //Cargar comentarios al post
-    const loadComments = async () => {
-        try {
-            const response = await axios.get(`http://${apiUrl}/comments/${data.id_post}`);
-            setComments(response.data)
-
-        } catch (error) {
-            console.log("Error", error);
-        }
-    }
-
     const handleSheetChanges = (index) => {
         //console.log('handleSheetChanges', index)
         if (index >= 0) {
@@ -109,9 +151,6 @@ export default function PostInfo({ data }) {
         } catch (error) {
             console.error(error);
         }
-
-        /* if(is_liked) setNumLikes((prev) => prev + 1)
-        else setNumLikes((prev) => prev - 1) */
     }
 
     return (
@@ -171,55 +210,21 @@ export default function PostInfo({ data }) {
             <TouchableOpacity onPress={() => navigation.navigate('SingleContentImage', {
                 uri_images: data.images,
                 id_post: data.id_post,
-                islike : likes[data.id_post],
+                islike: likes[data.id_post],
                 num_likes: numLikes[data.id_post],
             })}>
                 <View
                     style={{
-                        position: 'relative',
                         justifyContent: 'center',
                         alignItems: 'center',
+                        flex: 1,
                     }}>
 
                     <FlatList
                         data={data.images}
                         horizontal={true}
                         pagingEnabled
-                        renderItem={({ item, index }) => {
-
-                            return (
-                                <View>
-                                    <Image
-                                        source={{ uri: item.url_image }}
-                                        style={{
-                                            resizeMode: "cover",
-                                            width: windowWidth,
-                                            height: 400
-
-                                        }}
-                                    />
-                                    {
-                                        data.images.length > 1 &&
-                                        <View style={{
-                                            position: "absolute",
-                                            top: 8,
-                                            right: 8,
-                                            backgroundColor: 'black',
-                                            borderRadius: 50,
-                                            padding: 5,
-                                            opacity: 0.8
-
-
-                                        }}>
-
-                                            <Text style={{ fontSize: 13, color: 'white' }}> {index + 1}/{data.images.length} </Text>
-
-                                        </View>
-                                    }
-                                </View>
-                            );
-                        }
-                        }
+                        renderItem={({ item, index }) => <PostImages item={item} index={index} length={data.images.length}/>}
                     />
                 </View>
             </TouchableOpacity>
@@ -235,7 +240,7 @@ export default function PostInfo({ data }) {
                     <TouchableOpacity onPress={() => {
                         toggleLike(data.id_post)
                         insertLike(!likes[data.id_post])
-                        toggleNumLikes(data.id_post, !likes[data.id_post]) 
+                        toggleNumLikes(data.id_post, !likes[data.id_post])
                     }}>
                         <AntDesign
                             name={likes[data.id_post] ? 'heart' : 'hearto'}

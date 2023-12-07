@@ -24,7 +24,7 @@ export default function ScreenReport() {
   useEffect(() => {
     async function fetchReports() {
       try {
-        const response = await axios.get(`http://${apiUrl}/reports`);
+        const response = await axios.get(`http://${apiUrl}/report`);
         setReports(response.data)
 
       } catch (error) {
@@ -33,8 +33,6 @@ export default function ScreenReport() {
     }
     fetchReports()
   }, [])
-
-  console.log(reports)
 
   if (reports == []) {
     return <View> </View>

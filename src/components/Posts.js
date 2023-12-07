@@ -20,7 +20,7 @@ export default function Posts({ route, navigation }) {
     useEffect(() => {
 
         const fetchPost = async () => {
-            const response = await fetch(`http://${apiUrl}/profile/post/${id_user}/${user.id_user}`) //(userProfile, id_user)
+            const response = await fetch(`http://${apiUrl}/posts/${id_user}/${user.id_user}`) //(userProfile, id_user)
             const dataResponse = await response.json();
             setData(dataResponse)
         }
@@ -28,8 +28,6 @@ export default function Posts({ route, navigation }) {
         fetchPost()
 
     }, [])
-
-    //console.log(data)
 
     if (data == []) {
         return <View></View>
@@ -41,7 +39,12 @@ export default function Posts({ route, navigation }) {
             numColumns={3}
             //horizontal={true}
             contentcontainerstyle={{ justifyContent: 'space-between', alignItems: 'space-between', flexdirection: 'row', flexwrap: 'wrap' }}
-            renderItem={({ item }) =>
+            renderItem={({ item }) => {
+                if(item.images.length == 0){
+                    return <View></View>
+                }
+
+                return(
                 <TouchableOpacity
                     //key={imgIndex}
                     onPress={() => navigation.navigate('SingleContentImage', {
@@ -51,7 +54,7 @@ export default function Posts({ route, navigation }) {
                         num_likes: item.num_likes
                     })}
                     style={{ paddingBottom: 2, width: '33%' }}>
-
+                    
                     {item.images.length <= 1 ?
                         <Image
                             source={{ uri: item.images[0].url_image }}
@@ -72,10 +75,9 @@ export default function Posts({ route, navigation }) {
                         </View>
 
                     }
-
-
                 </TouchableOpacity>
-            }
+                );
+            }}
         />
     );
 }
