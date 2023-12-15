@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image } from 'react-native';
 import Header from '../components/Header';
 import { FlatList } from 'react-native-gesture-handler';
 import { TouchableOpacity } from '@gorhom/bottom-sheet';
+import { apiUrl } from '../../constants';
 
 const BuserAnswer = ({ data }) => {
     const [viewData, setViewData] = useState(false)
@@ -59,14 +60,14 @@ const BuserAnswer = ({ data }) => {
             {viewData &&
                 <View>
                     <Text style={{ fontSize: 13, fontWeight: 600, paddingVertical: 4 }}>
-                        {answers.questions[0].question}
+                        {data.questions[0].question}
                     </Text>
                     <Text style={{ fontSize: 12, fontWeight: 400, paddingVertical: 4 }}>
-                        {emojis[answers.questions[0].answer]}
+                        {emojis[data.questions[0].answer]}
                     </Text>
 
 
-                    {answers.questions.slice(1).map((value, index) => (
+                    {data.questions.slice(1).map((value, index) => (
                         <View key={index}>
                             <Text style={{ fontSize: 13, fontWeight: 600, paddingVertical: 4 }}>
                                 {value.question}
@@ -96,8 +97,20 @@ const renderSeparator = () => (
 );
 
 export default function BitacoraAnswers({ route }) {
-    const { name } = route.params
-    console.log("name", name)
+    const { name, id_bitacora } = route.params
+
+    const [data, setData] = useState([])
+
+    useEffect(() => {
+        async function fetchData() {
+            const response = await fetch(`http://${apiUrl}/bitacora/answers/${id_bitacora}`)
+            const dataResponse = await response.json();
+
+            setData(dataResponse)
+        }
+
+        fetchData()
+    }, [])
 
     const users = [
         {
@@ -119,13 +132,18 @@ export default function BitacoraAnswers({ route }) {
             type_user: 0
         }
     ]
+
+    if(data == []){
+        return <View></View>
+    }
+
     return (
         <View style={{ flex: 1 }}>
             <Header title="Respuestas encuesta" id={1} wd={0} />
             <View style={{ flex: 1, padding: 4 }}>
-                <Text style={{ fontSize: 17, fontWeight: 500, paddingVertical: 20 }}> {name}.</Text>
+                <Text style={{ fontSize: 17, fontWeight: 500, paddingVertical: 20 }}> {id_bitacora}: {name}.</Text>
                 <FlatList
-                    data={users}
+                    data={data}
                     renderItem={({ item }) => <BuserAnswer data={item}> </BuserAnswer>}
                     ItemSeparatorComponent={renderSeparator}
                 />

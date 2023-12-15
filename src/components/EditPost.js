@@ -8,7 +8,7 @@ import useUser from '../hooks/useUser';
 
 import Ionic from 'react-native-vector-icons/Ionicons';
 
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL, uploadBytes } from "firebase/storage";
 import { addDoc, collection, onSnapshot } from "firebase/firestore";
 import { db, storage } from "../config/firebaseConfig";
 import { apiUrl } from '../../constants';
@@ -18,7 +18,7 @@ import { apiUrl } from '../../constants';
 
 
 export default function EditPost({ route }) {
-    const { assets, fileType } = route.params
+    const { assets, fileType, thumbnail } = route.params
     const [isLoading, setIsLoading] = useState(false);
 
     const windowWidth = Dimensions.get('window').width;
@@ -77,10 +77,73 @@ export default function EditPost({ route }) {
         //text, value, user.id_user, date.time.now(), num_likes = 0
         //Upload images
 
+        if (fileType === "image") {
+            uploadImages(data.report.id)
+        } else {
+            console.log("PASO POR ACA!")
+            uploadVideo(data.report.id)
+        }
+    }
+
+    async function uploadVideo(id_post_upload) {
+        
+        //Video
+        const response = await fetch(assets[0].uri);
+        const blob = await response.blob();
+        const storageRef = ref(storage, "Stuff/" + new Date().getTime());
+        const uploadTask = uploadBytesResumable(storageRef, blob);
+
+        //Miniatura
+        const responseThumbnail = await fetch(thumbnail);
+        const blobThumbnail = await responseThumbnail.blob();
+        const storageRefThumbnail = ref(storage, "Stuff/" + new Date().getTime());
+
+        var downloadURLThumbnail = ""
+        try {
+            // Subir la miniatura sin manejar el progreso
+            await uploadBytes(storageRefThumbnail, blobThumbnail);
+
+            // La subida ha sido completada, ahora puedes obtener la URL de descarga
+            downloadURLThumbnail = await getDownloadURL(storageRefThumbnail);
+            console.log('Miniatura subida con éxito. URL de descarga:', downloadURLThumbnail);
+        } catch (error) {
+            console.error('Error al subir la miniatura:', error);
+        }
+
+        uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log("Upload is " + progress + "% done");
+            },
+            (error) => {
+                reject(error); // Rechazar la promesa en caso de error
+            },
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref)
+                    .then(async (downloadURL) => {
+                        console.log("File available at", downloadURL);
+                        // Guardar registro
 
 
+                        await saveRecord(fileType, downloadURL, new Date().toISOString());
+                        // Insertar imagen en BD MySQL
+                        await saveRecordVideoSQL(id_post_upload, downloadURL, downloadURLThumbnail);
+                    })
+                    .catch((error) => {
+                        console.log("error", error) // Rechazar la promesa en caso de error al obtener la URL de descarga
+                    }).finally(() => {
+                        navigation.reset({
+                            index: 0,
+                            routes: [{ name: "TabScreen" }],
+                        });
+                    });
+            }
+        );
+    }
+    async function uploadImages(id_post_upload) {
         // Crear un array de promesas
-        const uploadPromises = assets.map(async (asset) => {
+        const uploadPromises = assets.map(async (asset, index) => {
             const response = await fetch(asset.uri);
             const blob = await response.blob();
 
@@ -105,7 +168,7 @@ export default function EditPost({ route }) {
                                 // Guardar registro
                                 await saveRecord(fileType, downloadURL, new Date().toISOString());
                                 // Insertar imagen en BD MySQL
-                                await saveRecordSQL(data.report.id, downloadURL);
+                                await saveRecordSQL(id_post_upload, downloadURL, index + 1);
                                 resolve(downloadURL); // Resolver la promesa con la URL de descarga
                             })
                             .catch((error) => {
@@ -133,7 +196,6 @@ export default function EditPost({ route }) {
         } finally {
             setIsLoading(false);
         }
-
     }
 
     async function saveRecord(fileType, url, createdAt) {
@@ -149,18 +211,42 @@ export default function EditPost({ route }) {
         }
     }
 
-    async function saveRecordSQL(id, downloadURL) {
+    async function saveRecordVideoSQL(id, downloadURL, thumbnail_video) {
+
+        console.log("id, url", id, downloadURL)
+        const body = {
+            id_post: id,
+            url_video: downloadURL,
+            thumbnail_video: thumbnail_video
+        }
+
+        try {
+            const response = await fetch(`http://${apiUrl}/upload/video`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            });
+
+            const data = await response.json();
+            console.log(data)
+
+        } catch (error) {
+            console.error("ERROR", error);
+        }
+    }
+
+    async function saveRecordSQL(id, downloadURL, position) {
 
         const body = {
             id_post: id,
-            url_image: downloadURL
+            url_image: downloadURL,
+            position: position
         }
 
-        console.log("id", id)
-        console.log("downloadUrl", downloadURL)
-
         try {
-            const response = await fetch(`http://${apiUrl}/images`, {
+            const response = await fetch(`http://${apiUrl}/upload/images`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

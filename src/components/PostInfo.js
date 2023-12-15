@@ -4,6 +4,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionic from 'react-native-vector-icons/Ionicons';
 import Octicons from 'react-native-vector-icons/Octicons';
+import Loader from 'react-native-modal-loader';
 import axios from "axios"
 
 import {
@@ -26,10 +27,9 @@ import {
 import { FlatList } from 'react-native-gesture-handler';
 import Report from './Report';
 import { apiUrl } from '../../constants';
+import { Video, ResizeMode } from 'expo-av';
 
-
-
-const PostImages = ({item, index, length}) => {
+const PostImages = ({ item, index, length }) => {
     const [imageHeight, setImageHeight] = useState(0);
 
     const windowWidth = Dimensions.get('window').width;
@@ -80,18 +80,21 @@ const PostImages = ({item, index, length}) => {
     );
 }
 
-export default function PostInfo({ data }) {
+export default function PostInfo({ data, updateHome }) {
     const { numLikes, likes, toggleLike, toggleNumLikes } = useLike();
 
-    const windowWidth = Dimensions.get('window').width;
     const commentsSheetRef = useRef(null);
     const [isShowing, setIsShowing] = useState(false);
-    const [comments, setComments] = useState([]);
-    //const [numLikes, setNumLikes ] = useState(data.num_likes)
     const [modalVisible, setModalVisible] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const navigation = useNavigation();
     const user = useUser()
+
+    const videoRef = React.useRef(null)
+    const [status, setStatus] = React.useState({});
+    const windowWidth = Dimensions.get('window').width;
+    const windowHeight = Dimensions.get('window').height;
 
     //const apiUrl = process.env.HOST;
 
@@ -153,20 +156,51 @@ export default function PostInfo({ data }) {
         }
     }
 
+    const removePost = async () => {
+        setIsLoading(true)
+
+        try {
+
+            const response = await fetch(`http://${apiUrl}/posts/${data.id_post}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+
+            const response_json = await response.json();
+
+            updateHome(prev => !prev)
+        } catch (e) {
+            console.log("ERROR", e)
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    const isPlayingVideo = () => {
+        if (status.isPlaying) videoRef.current.pauseAsync()
+        else videoRef.current.playAsync()
+        //setMute(!mute)
+    }
+
     return (
         <View
             //key={index}
             style={{
-                paddingBottom: 10,
+                //paddingBottom: 10,
                 borderBottomColor: 'gray',
+                flex: 1,
                 borderBottomWidth: 0.1,
             }}>
+            <Loader loading={isLoading} color="black" />
             <View
                 style={{
                     flexDirection: 'row',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    padding: 15,
+                    paddingHorizontal: 10,
+                    paddingBottom: 10,
                 }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Image
@@ -186,8 +220,8 @@ export default function PostInfo({ data }) {
                     <MenuOptions style={{ padding: 10 }}>
 
                         {
-                            data.id_author_post === user.id_user ?
-                                <MenuOption onSelect={() => console.log("Eliminar post")} >
+                            data.id_author_post === user.id_user || user.id_user == 1 ?
+                                <MenuOption onSelect={() => removePost()} >
                                     <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                                         <Octicons name="trash" style={{ fontSize: 20, color: 'red', paddingRight: 5 }}></Octicons>
                                         <Text style={{ color: 'red', fontSize: 16 }}> Eliminar </Text>
@@ -207,34 +241,73 @@ export default function PostInfo({ data }) {
                     </MenuOptions>
                 </Menu>
             </View>
-            <TouchableOpacity onPress={() => navigation.navigate('SingleContentImage', {
-                uri_images: data.images,
-                id_post: data.id_post,
-                islike: likes[data.id_post],
-                num_likes: numLikes[data.id_post],
-            })}>
+
+            {data.post_category == "video" ?
                 <View
                     style={{
                         justifyContent: 'center',
                         alignItems: 'center',
                         flex: 1,
                     }}>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate("SingleContentVideo", {
+                            uri_video: data.video_url,
+                            id_post: data.id_post,
+                            islike: likes[data.id_post],
+                            num_likes: numLikes[data.id_post],
+                        })}
+                        style={{ flex: 1}}
+                    >
+                        <Image
+                            source={{
+                                uri: data.thumbnail_video,
+                            }}
+                            style={{ width: windowWidth, height: 400 }}
+                        />
+                        <View style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                            <Ionic name="play-circle-outline" style={{ color: 'black' }} size={70} />
+                        </View>
 
-                    <FlatList
-                        data={data.images}
-                        horizontal={true}
-                        pagingEnabled
-                        renderItem={({ item, index }) => <PostImages item={item} index={index} length={data.images.length}/>}
-                    />
+                    </TouchableOpacity>
                 </View>
-            </TouchableOpacity>
+                :
+                <TouchableOpacity onPress={() => navigation.navigate('SingleContentImage', {
+                    uri_images: data.images,
+                    id_post: data.id_post,
+                    islike: likes[data.id_post],
+                    num_likes: numLikes[data.id_post],
+                })}>
+                    <View
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flex: 1,
+                        }}>
+
+                        <FlatList
+                            data={data.images}
+                            horizontal={true}
+                            pagingEnabled
+                            renderItem={({ item, index }) => <PostImages item={item} index={index} length={data.images.length} />}
+                        />
+                    </View>
+                </TouchableOpacity>
+            }
             <View
                 style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     alignItems: 'center',
                     paddingHorizontal: 12,
-                    paddingVertical: 15,
+                    paddingTop: 10,
                 }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <TouchableOpacity onPress={() => {

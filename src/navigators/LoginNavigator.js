@@ -1,5 +1,4 @@
 import React from 'react';
-import { View, Text } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import EditProfile from '../components/EditProfile';
@@ -10,7 +9,6 @@ import ProfileStudent from '../components/ProfileStudent';
 import Students from '../components/Students';
 import ForoComments from '../components/ForoComments';
 import EditPost from '../components/EditPost';
-import CreateBitacora from '../components/CreateBitacora';
 import BitacoraQuestions from '../components/BitatoraQuestions';
 import NewSurvey from '../components/NewSurvey';
 import BitacoraAnswers from '../screens/BitacoraAnswers';
@@ -92,9 +90,6 @@ export default function LoginNavigator({ route }) {
                         />
                         <Stack.Screen
                             name="EditPost" component={EditPost}
-                        />
-                        <Stack.Screen
-                            name="CreateBitacora" component={CreateBitacora}
                         />
                         <Stack.Screen
                             name="BitacoraQuestions" component={BitacoraQuestions}

@@ -49,7 +49,7 @@ export default function Students() {
                     onPress={() =>
                         navigation.navigate("ProfileGuest", {
                             id_user_profile: item.id_user,
-                            type_user_profile: item.type_user
+                            type_user_profile: item.id_type_user
                         })}
                 >
                     <View

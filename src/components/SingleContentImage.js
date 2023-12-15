@@ -47,7 +47,6 @@ const PostImages = ({ item, index, length }) => {
                         resizeMode: "contain",
                         width: windowWidth,
                         height: imageHeight,
-                        backgroundColor: 'red'
 
                     }}
                 />
@@ -206,7 +205,6 @@ const SingleContentImage = ({ route, navigation }) => {
                 <TouchableOpacity onPress={() => {
                     insertLike(!is_like)
                     setLike((prev) => !prev)
-                    console.log("like_id_post", !is_like, likes[id_post])
                     if (likes[id_post] !== undefined) {
                         toggleLike(id_post)
                         toggleNumLikes(id_post, !is_like)

@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import infoBitacora from '../storage/data/infoBitacora.json'
 import Header from '../components/Header';
+import { apiUrl } from '../../constants';
 
 import { useNavigation } from '@react-navigation/native';
 
@@ -12,10 +13,13 @@ const BitacoraInfoItem = ({ data }) => {
     const navigation = useNavigation()
 
     console.log("titulo", data.titulo)
+
+
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }} >
             <TouchableOpacity onPress={() => navigation.navigate("BitacoraAnswers", {
-                name: data.titulo
+                name: data.name_bitacora,
+                id_bitacora: data.id_bitacora
             })}>
                 <View
                     style={{
@@ -27,12 +31,12 @@ const BitacoraInfoItem = ({ data }) => {
                     }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Image
-                            source={require('../storage/images/userProfile.png')}
+                            source={{uri: data.uri_image_profile}}
                             style={{ width: 40, height: 40, borderRadius: 100 }}
                         />
                         <View style={{ flex: 1, marginLeft: 5 }}>
                             <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
-                                {data.titulo}
+                                Encuesta {data.id_bitacora}: {data.name_bitacora}
                             </Text>
                             <Text style={{ fontSize: 12, color: 'gray' }}>
                                 oct. 05
@@ -56,14 +60,26 @@ const renderSeparator = () => (
 
 export default function InfoBitacora() {
 
+    const [data, setData] = useState([])
 
+    useEffect(() => {
+        async function fetchData() {
+            const response = await fetch(`http://${apiUrl}/bitacora`)
+            const dataResponse = await response.json();
+
+            console.log(dataResponse)
+            setData(dataResponse)
+        }
+
+        fetchData()
+    }, [])
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
             <Header title="Home" id={0} wd={0} />
-            <Text style={{ fontSize: 21, fontWeight: 600, alignSelf: 'center'}}> Encuestas realizadas </Text>
+            <Text style={{ fontSize: 21, fontWeight: 600, alignSelf: 'center' }}> Encuestas realizadas </Text>
             <FlatList
-                data={infoBitacora}
+                data={data}
                 renderItem={({ item }) => <BitacoraInfoItem data={item} />}
                 ItemSeparatorComponent={renderSeparator}
             />

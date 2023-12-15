@@ -13,7 +13,7 @@ import Survey from '../components/Survey';
 import Bitacora from '../components/Bitacora';
 import useUser from '../hooks/useUser';
 
-const BottomTabView = ({id, id_user}) => {
+const BottomTabView = ({ id, id_user }) => {
   const Tab = createMaterialTopTabNavigator();
 
   const user = useUser()
@@ -48,19 +48,18 @@ const BottomTabView = ({id, id_user}) => {
             iconName = focused ? 'megaphone' : 'megaphone-outline';
             colour = focused ? 'black' : 'gray';
           }
-          
+
 
           return <Ionic name={iconName} color={colour} size={22} />;
         },
       })}>
-      <Tab.Screen name="Posts" component={Posts} initialParams={{id_user: id_user}} />
-      <Tab.Screen name="Video" component={Videos} initialParams={{id_user: id_user}}/>
-      <Tab.Screen name="Survey" component={Survey} initialParams={{id: id, id_user: id_user}}/>
+      <Tab.Screen name="Posts" component={Posts} initialParams={{ id_user: id_user }} />
+      <Tab.Screen name="Video" component={Videos} initialParams={{ id_user: id_user }} />
+      <Tab.Screen name="Survey" component={Survey} initialParams={{ id: id, id_user: id_user }} />
 
-      {
-        user.type_user === 1 &&
-        <Tab.Screen name="Bitacora" component={Bitacora} initialParams={{id: id, id_user: id_user}}/>
-      }
+
+      <Tab.Screen name="Bitacora" component={Bitacora} initialParams={{ id: id, id_user: id_user }} />
+
       {/* <Tab.Screen name="Foro" component={Foro} initialParams={{id_user: id_user}}/> */}
     </Tab.Navigator>
   );

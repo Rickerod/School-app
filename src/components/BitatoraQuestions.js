@@ -1,19 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Dimensions, Image, TextInput, Button } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { ScrollView } from 'react-native-gesture-handler';
+import { apiUrl } from '../../constants';
+import useUser from '../hooks/useUser';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 import Header from './Header';
 
 export default function BitacoraQuestions({ route }) {
-    const [value, setValue] = useState(5);
-    const [valueNota, setValueNota] = useState(4);
-    const [text, setText] = useState('');
-    const [textLearn, setTextLearn] = useState('');
+    const [value, setValue] = useState(5); //respuesta 1
+    const [valueNota, setValueNota] = useState(4); // respuesta 2
+    const [text, setText] = useState(''); // respuesta 3
+    const [textLearn, setTextLearn] = useState(''); // respuesta 4 
+    const [data, setData] = useState([])
 
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
-    const { title } = route.params
+    const { title, id_bitacora } = route.params
+
+    const user = useUser()
+    const navigation = useNavigation()
 
     const emojis = [
         "😡",
@@ -24,12 +31,69 @@ export default function BitacoraQuestions({ route }) {
         "😁",
         "🥰"
     ];
+
+     useEffect(() => {
+        async function fetchData(){
+            const response = await fetch(`http://${apiUrl}/bitacora/questions/${id_bitacora}`)
+            const dataResponse = await response.json();
+            
+            console.log(dataResponse)
+            setData(dataResponse)
+        }
+
+        fetchData()
+    }, []) 
+
+    const sendAnswers = async () => {
+        const ans = [
+            {
+                "id_question" : data[0].id_question,
+                "answer" : value
+            },
+            {
+                "id_question" : data[1].id_question,
+                "answer" : valueNota
+            },
+            {
+                "id_question" : data[2].id_question,
+                "answer" : text
+            },
+            {
+                "id_question" : data[3].id_question,
+                "answer" : textLearn
+            },
+        ]
+
+        const body = {
+            answers : ans
+        }
+
+        try {
+
+        const response = await fetch(`http://${apiUrl}/bitacora/answers/${user.id_user}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            });
+
+        const data = await response.json();
+        console.log(data)
+
+        navigation.goBack()
+
+        } catch (e) {
+            console.log("ERROR: ", e)
+        }
+
+    }
     
     return (
         <View style={{ flex: 1 }}>
             <Header title="Bitacora" id={1} wd={0} />
             <ScrollView additionalOffset={30} style={{ flex: 1, backgroundColor: '#fff', paddingHorizontal: 20 }}>
-                <Text style={{ fontSize: 20, fontWeight: 500, paddingTop: 20 }}> {title}</Text>
+                <Text style={{ fontSize: 20, fontWeight: 500, paddingTop: 20 }}> {id_bitacora}: {title}</Text>
                 <Text style={{ fontSize: 15, fontWeight: 400, paddingVertical: 20, }}>
                     ¿Con que nivel de energía te iras de la clase?
                 </Text>
@@ -123,7 +187,7 @@ export default function BitacoraQuestions({ route }) {
                     value={textLearn}
                 />
                 <View style={{ paddingBottom: 20 }}>
-                    <Button borderRadius={20} paddingBottom={10} title="Enviar" color="purple" />
+                    <Button borderRadius={20} paddingBottom={10} title="Enviar" color="purple" onPress={sendAnswers} />
                 </View>
             </ScrollView>
         </View>

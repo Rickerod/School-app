@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, TextInput, BackHandler, Pressable } from 'react-native';
+import { View, Text, Image, TouchableOpacity, TextInput, BackHandler, RefreshControl, Pressable } from 'react-native';
 import axios from 'axios';
 
 import PostInfo from './PostInfo';
@@ -14,6 +14,8 @@ export default function PostHome() {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
     const { initializeLike } = useLike();
+    const [update, setUpdate] = useState(false)
+    const [refreshing, setRefreshing] = useState(false);
 
     const user = useUser()
 
@@ -50,58 +52,29 @@ export default function PostHome() {
 
                 //console.log(initializeLikes)
                 //console.log(initializeNumLikes)
-                
+
                 initializeLike(initializeLikes, initializeNumLikes)
 
                 setLoading(true)
-            } catch(error) {
+            } catch (error) {
                 console.log("Error", error);
             }
         }
 
         fetchPost()
-    }, [])
-
-    //Obtener las 6 publicaciones mas recientes
-    /* useFocusEffect(
-        React.useCallback(() => {
-    
-            async function fetchPost() {
-    
-                //Enviar el id del usuario como query para obtener las publicaciones a las que les dió like...
-                const params = {
-                    id: user.id_user
-                }
-                try {
-                    const response = await axios.get(`http://${apiUrl}/home`, { params: params });
-                    setData(response.data)
-    
-                    const initializeLikes = response.data.reduce((result, post) => {
-                        result[post.id_post] = post.is_liked;
-                        return result;
-                    }, {});
-    
-                    initializeLike(initializeLikes)
-    
-                    setLoading(true)
-                } catch {
-                    console.log("Error", error);
-                }
-            }
-    
-            fetchPost()
-        }, [])
-    ); */
+    }, [update])
 
     if (!loading) {
         return <View></View>
     }
 
     return (
+        <View style={{}}>
         <FlatList
             scrollEnabled={false}
             data={data}
-            renderItem={({ item }) => <PostInfo data={item}></PostInfo>}
+            renderItem={({ item }) => <PostInfo data={item} updateHome={setUpdate}></PostInfo>}
         />
+        </View>
     );
 }

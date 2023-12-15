@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from 'react';
-import { View, Text, Image, Dimensions } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Image, Dimensions, RefreshControl } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import {
   Menu,
   MenuOptions,
@@ -12,34 +13,45 @@ import Feather from 'react-native-vector-icons/Feather';
 
 export default function HolaMundo() {
 
-  const [imageHeight, setImageHeight] = useState(0);
+  const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
-    const imageUrl = 'https://raw.githubusercontent.com/Rickerod/School-app/master/src/storage/images/post1.jpg';
+  
+  const data = [
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13 , 14 , 15,
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13 , 14 , 15,
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13 , 14 , 15,
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13 , 14 , 15,
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13 , 14 , 15,
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13 , 14 , 15,
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13 , 14 , 15,
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13 , 14 , 15,
+  ]
 
-    Image.getSize(imageUrl, (width, height) => {
-      console.log('Ancho:', width);
-      console.log('Alto:', height);
+  const onRefresh = async () => {
+    setRefreshing(true)
 
-      const screenWidth = Dimensions.get('window').width;
-      const calculatedHeight = (screenWidth / width) * height;
-      setImageHeight(calculatedHeight);
+    setTimeout(() => {
+      console.log("Hola a todos")
+    }, 1000)
 
-    }, (error) => {
-      console.error('Error al obtener el tamaño de la imagen:', error);
-    });
-  }, []);
+    setRefreshing(false)
+  }
+
 
   return (
-    <View style={{ flex: 1 }}>
-      <View style={{}}>
-
-      </View>
-      <Image
-        source={{ uri: "https://raw.githubusercontent.com/Rickerod/School-app/master/src/storage/images/post1.jpg" }}
-        style={{ width: '100%', height: imageHeight }}
-        resizeMode="contain"
+    <SafeAreaView style={{ flex: 1 }}>
+      <FlatList
+        scrollEnabled={false}
+        data={data}
+        renderItem={({ item }) => <View>
+          <Text>
+            Numero : {item}
+          </Text>
+        </View>}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={['#FC4C02']} />
+        }
       />
-    </View>
+    </SafeAreaView>
   );
 }

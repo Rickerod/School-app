@@ -8,6 +8,9 @@ import { Video, ResizeMode } from 'expo-av';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ImageComments from './ImageComments';
 import { useNavigation } from '@react-navigation/native';
+import { useLike } from '../context/LikeContext';
+import useUser from '../hooks/useUser';
+import { apiUrl } from '../../constants';
 
 import {
     BottomSheetModal,
@@ -17,20 +20,24 @@ import {
 export default function SingleContentImage({ route }) {
     const videoRef = React.useRef(null);
     const [status, setStatus] = React.useState({});
-    const [like, setLike] = useState(false);
     const navigation = useNavigation()
 
     const commentsSheetRef = React.useRef(null);
     const [isShowing, setIsShowing] = useState(false);
 
-    const {id_post} = route.params
-
+    const { likes, toggleLike, toggleNumLikes } = useLike();
+    const {uri_video, id_post, islike, num_likes} = route.params
+    
+    const [is_like, setLike] = useState(islike)
+    const [numLikes, setNumLikes] = useState(num_likes)
     //Dummy variables
     //const id_post = 1
 
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
 
+    const user = useUser()
+    
     const isPlayingVideo = () => {
         if (status.isPlaying) videoRef.current.pauseAsync()
         else videoRef.current.playAsync()
@@ -70,6 +77,33 @@ export default function SingleContentImage({ route }) {
         }
     }
 
+    const insertLike = async (is_liked) => {
+
+        //console.log("IS_liked", is_liked)
+
+        const body = {
+            is_liked: is_liked,
+        }
+
+        try {
+            const response = await fetch(`http://${apiUrl}/like/${id_post}/${user.id_user}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            });
+
+            const response_json = await response.json();
+
+        } catch (error) {
+            console.error(error);
+        }
+
+        if (is_liked) setNumLikes((prev) => prev + 1)
+        else setNumLikes((prev) => prev - 1)
+    }
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={{ flex: 1 }}>
@@ -98,7 +132,7 @@ export default function SingleContentImage({ route }) {
                     <Video
                         ref={videoRef}
                         source={{
-                            uri: 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
+                            uri: uri_video,
                         }}
                         style={{ position: 'absolute', width: '100%', height: "100%" }}
                         //useNativeControls
@@ -134,13 +168,23 @@ export default function SingleContentImage({ route }) {
                         right: 8,
                         alignItems: 'center',
                     }}>
-                    <TouchableOpacity onPress={() => setLike(!like)} style={{ paddingTop: 5 }}>
+                    <TouchableOpacity onPress={() => {
+                        insertLike(!is_like)
+                        setLike((prev) => !prev)
+                        if (likes[id_post] !== undefined) {
+                            toggleLike(id_post)
+                            toggleNumLikes(id_post, !is_like)
+                        }
+                        
+                    }} 
+                        
+                        style={{ paddingTop: 5 }}>
                         <AntDesign
-                            name={like ? 'heart' : 'hearto'}
-                            style={{ color: like ? 'red' : 'black', fontSize: 25 }}
+                            name={is_like ? 'heart' : 'hearto'}
+                            style={{ color: is_like ? 'red' : 'black', fontSize: 25 }}
                         />
                     </TouchableOpacity>
-                    <Text> 230 </Text>
+                    <Text> {numLikes} </Text>
                     <TouchableOpacity onPress={openComments} style={{ padding: 10 }}>
                         <Ionic
                             name="ios-chatbubble-outline"
@@ -158,7 +202,7 @@ export default function SingleContentImage({ route }) {
                     <View style={[style, { backgroundColor: "#fff" }]} />
                 )}
             >
-                <ImageComments id_post={id_post} />
+                <ImageComments id_post={id_post} user={user}/>
             </BottomSheetModal>
         </SafeAreaView>
     );

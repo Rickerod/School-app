@@ -31,14 +31,22 @@ export const LikeProvider = ({ children }) => {
 
   };
 
+  const initializeLikePage = (likesJson, numLikes) => {
+    setLikes(prevLikesJson => {
+      return {...prevLikesJson, ...likesJson}
+    })
+    setNumLikes(prevNumLikes => {
+      return { ...prevNumLikes, ...numLikes}
+    })
 
+  }
   const initializeLike = (likesJson, numLikes) => {
     setLikes(likesJson)
     setNumLikes(numLikes)
   }
 
   return (
-    <LikeContext.Provider value={{ likes, numLikes, toggleLike, toggleNumLikes, initializeLike }}>
+    <LikeContext.Provider value={{ likes, numLikes, toggleLike, toggleNumLikes, initializeLike, initializeLikePage }}>
       {children}
     </LikeContext.Provider>
   );

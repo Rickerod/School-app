@@ -19,8 +19,12 @@ export default function Posts({ route, navigation }) {
 
     useEffect(() => {
 
+        const type_post = "imagen"
+        
         const fetchPost = async () => {
-            const response = await fetch(`http://${apiUrl}/posts/${id_user}/${user.id_user}`) //(userProfile, id_user)
+            
+            const response = await fetch(`http://${apiUrl}/posts/profile/${type_post}/${id_user}/${user.id_user}`)
+
             const dataResponse = await response.json();
             setData(dataResponse)
         }
@@ -69,6 +73,7 @@ export default function Posts({ route, navigation }) {
                                 <Ionicons
                                     size={20}
                                     style={{opacity: 0.9}}
+                                    color= "white"
                                     name='images'
                                 />
                             </View>
