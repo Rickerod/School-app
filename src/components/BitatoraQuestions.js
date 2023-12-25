@@ -34,7 +34,7 @@ export default function BitacoraQuestions({ route }) {
 
      useEffect(() => {
         async function fetchData(){
-            const response = await fetch(`http://${apiUrl}/bitacora/questions/${id_bitacora}`)
+            const response = await fetch(`http://${apiUrl}/bitacora/questions`)
             const dataResponse = await response.json();
             
             console.log(dataResponse)
@@ -70,7 +70,7 @@ export default function BitacoraQuestions({ route }) {
 
         try {
 
-        const response = await fetch(`http://${apiUrl}/bitacora/answers/${user.id_user}`, {
+        const response = await fetch(`http://${apiUrl}/bitacora/answers/${user.id_user}/${id_bitacora}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

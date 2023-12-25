@@ -1,13 +1,14 @@
 import React, { useMemo, useState } from 'react';
-import { View, Text, Dimensions, TouchableWithoutFeedback, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, Dimensions, TouchableWithoutFeedback, StyleSheet, TouchableOpacity, Image, } from 'react-native';
 import { RadioGroup } from 'react-native-radio-buttons-group';
 import Slider from '@react-native-community/slider';
 import Button from './Button';
 import { FloatingAction } from "react-native-floating-action"
 import { Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native';
+import { FlatList } from 'react-native-gesture-handler';
 
-const RadioButton = ({ label, isSelected, onPress }) => {
+const RadioButton = ({ value, label, isSelected, onPress }) => {
   return (
     <TouchableOpacity style={styles.radioButton} onPress={onPress}>
       <View style={[styles.radioCircle, { backgroundColor: isSelected ? '#C389FF' : '#fff' }]} />
@@ -16,23 +17,135 @@ const RadioButton = ({ label, isSelected, onPress }) => {
   );
 };
 
+const renderSeparator = () => (
+  <View
+      style={{
+          backgroundColor: '#E3E3E3',
+          height: 1,
+          margin: 10,
+      }}
+  />
+);
+
+const SurveySingle = ({pregunta}) => {
+
+  const [selectedIdButton, setSelectedIdButton] = useState(pregunta.user_clicked);
+
+  const createRadioButtons = () => {
+
+    return pregunta.opciones.map(opcion => {
+      return (
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <RadioButton
+            value={opcion.id}
+            label={opcion.texto}
+            isSelected={opcion.id == selectedIdButton}
+            onPress={() => setSelectedIdButton(opcion.id)}
+          />
+          <View style={{ flexDirection: 'row', paddingRight: 40, alignItems: 'center' }}>
+            {opcion.id == selectedIdButton &&
+              <Image
+                source={require('../storage/images/userProfile.png')}
+                style={{ width: 25, height: 25, borderRadius: 100 }}
+              />}
+            <View style={{ paddingLeft: 5 }}>
+              {opcion.id == pregunta.user_clicked && 
+                <Text> 
+                  {opcion.id == selectedIdButton ? opcion.cantidad : opcion.cantidad - 1}
+                </Text>
+
+              }
+              {opcion.id != pregunta.user_clicked && 
+                <Text> 
+                  {opcion.id == selectedIdButton ? opcion.cantidad + 1 : opcion.cantidad }
+                </Text>
+
+              }
+            </View>
+          </View>
+        </View>
+      );
+    });
+  }
+
+  return(
+    <View>
+      <Text style={{ fontSize: 16, fontWeight: 500 }}> {pregunta.enunciado} </Text>
+      <Text style={{ fontSize: 13, fontWeight: 400, color: 'gray' }}> Seleciona una sola opción. </Text>
+      <View>
+         {createRadioButtons()} 
+      </View>
+    </View>
+  )
+}
+
 export default function Survey({ route }) {
+
+  const preguntas = [
+    {
+      user_clicked: 2,
+      enunciado: "¿Donde vamos a comer?",
+      opciones: [
+        {
+          id: '1',
+          texto: 'Mall',
+          cantidad: 3
+        },
+        {
+          id: '2',
+          texto: 'Casino',
+          cantidad: 2
+        },
+      ]
+    }, 
+    {
+      user_clicked: 2,
+      enunciado: "¿Donde vamos a ir",
+      opciones: [
+        {
+          id: '1',
+          texto: 'Corral',
+          cantidad: 3
+        },
+        {
+          id: '2',
+          texto: 'Niebla',
+          cantidad: 2
+        },
+        {
+          id: '3',
+          texto: 'Antilhue',
+          cantidad: 2
+        }
+      ]
+    },
+    {
+      user_clicked: 2,
+      enunciado: "¿Cuanto sería 3x3?",
+      opciones: [
+        {
+          id: '1',
+          texto: '9',
+          cantidad: 3
+        },
+        {
+          id: '2',
+          texto: '8',
+          cantidad: 2
+        },
+        {
+          id: '3',
+          texto: '7',
+          cantidad: 2
+        },
+      ]
+    }
+  ]
+
 
   const { id, id_user } = route.params
 
-
-  console.log("Survey", id)
-
-  const [selectedId, setSelectedId] = useState();
-  const [selectedIdButton, setSelectedIdButton] = useState("1");
-  const [value, setValue] = useState(0);
-  const [value2, setValue2] = useState(0);
-  const [selectedOption, setSelectedOption] = useState(0);
   const navigation = useNavigation()
-
-  const windowWidth = Dimensions.get('window').width;
-  const windowHeight = Dimensions.get('window').height;
-
 
   const actions = [
     {
@@ -57,79 +170,14 @@ export default function Survey({ route }) {
     }
   };
 
-  const handleRadioButtonPress = (value) => {
-    setSelectedOption(value);
-    if (value === 1) {
-      setValue(1)
-      setValue2(0)
-    } else {
-      setValue2(1)
-      setValue(0)
-    }
-  };
 
   return (
-    <View style={{ flex: 1, padding: 10, backgroundColor: 'white' }}>
-      <Text style={{ fontSize: 16, fontWeight: 500 }}> ¿Donde vamos a comer?</Text>
-      <Text style={{ fontSize: 13, fontWeight: 400, color: 'gray' }}> Seleciona una sola opción. </Text>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-        <RadioButton label="Mall" isSelected={selectedOption === 1} onPress={() => handleRadioButtonPress(1)} />
-        <View style={{ flexDirection: 'row', paddingRight: 40, alignItems: 'center' }}>
-          {value == 1 &&
-            <Image
-              source={require('../storage/images/userProfile.png')}
-              style={{ width: 25, height: 25, borderRadius: 100 }}
-            />}
-          <Text style={{ paddingLeft: 5 }}>
-            {value == 1 ? 1 : 0}
-          </Text>
-
-        </View>
-      </View>
-      <View style={{ pointerEvents: 'none' }}>
-        <Slider
-          style={{ width: windowWidth - 40, height: 40, borderRadius: 20, transform: [{ scaleY: 4 }] }}
-          trackStyle={{ height: 80 }}
-          minimumValue={0}
-          maximumValue={1}
-          step={1}
-          value={value}
-          onValueChange={setValue}
-          minimumTrackTintColor="#C389FF"
-          maximumTrackTintColor="#000000"
-          thumbTintColor="transparent"
-          enabled={false}
-        />
-      </View>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-        <RadioButton label="Casino" isSelected={selectedOption === 2} onPress={() => handleRadioButtonPress(2)} />
-        <View style={{ flexDirection: 'row', paddingRight: 40, alignItems: 'center' }}>
-          {value2 == 1 &&
-            <Image
-              source={require('../storage/images/userProfile.png')}
-              style={{ width: 25, height: 25, borderRadius: 100 }}
-            />}
-          <Text style={{ paddingLeft: 5 }}>
-            {value2 == 1 ? 1 : 0}
-          </Text>
-
-        </View>
-      </View>
-      <View style={{ pointerEvents: 'none' }}>
-        <Slider
-          style={{ width: windowWidth - 40, height: 40, borderRadius: 20, transform: [{ scaleY: 4 }] }}
-          trackStyle={{ height: 80 }}
-          minimumValue={0}
-          maximumValue={1}
-          step={1}
-          value={value2}
-          onValueChange={setValue2}
-          minimumTrackTintColor="#C389FF"
-          maximumTrackTintColor="#000000"
-          thumbTintColor="transparent"
-          enabled={false}
-        />
-      </View>
+    <View style={{ flex: 1}}>
+      <FlatList
+        data={preguntas}
+        renderItem={({ item }) => <SurveySingle pregunta={item}/>}
+        ItemSeparatorComponent={renderSeparator}
+      />
       {id === 0 &&
         <FloatingAction
           actions={actions}

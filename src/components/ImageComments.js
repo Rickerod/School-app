@@ -18,6 +18,7 @@ const ImageComments = ({ id_post, user }) => {
     const [loading, setLoading] = useState(true)
     const [loadingFooter, setLoadingFooter] = useState(false)
     const [lastIdComment, setLastIdComment] = useState(0)
+    const [enableComments, setEnableComments] = useState(0)
     //const [comments, setComments] = useState("");
 
     const [commentsPost, setCommentsPost] = useState([])
@@ -32,11 +33,15 @@ const ImageComments = ({ id_post, user }) => {
         const loadComments = async () => {
             try {
                 const response = await axios.get(`http://${apiUrl}/comments/${id_post}`);
+                const disabledComments = await axios.get(`http://${apiUrl}/disableComments`);
 
                 if (response.data.length !== 0) {
                     setCommentsPost(response.data)
                     setLastIdComment(response.data[response.data.length - 1].id_comment)
                 }
+
+                console.log( "disabledComments", disabledComments.data[0].show_comments)
+                setEnableComments(disabledComments.data[0].show_comments)
                 setLoading(false)
 
 
@@ -84,12 +89,14 @@ const ImageComments = ({ id_post, user }) => {
 
     const fetchComments = async () => {
         setLoadingFooter(true)
-        console.log("paso por aca!")
+        console.log("lastIdComment", lastIdComment)
         if (!loadingFooter) {
             setLoadingFooter(true)
 
             const response = await fetch(`http://${apiUrl}/comments/${id_post}/${lastIdComment}`)
             const dataResponse = await response.json();
+
+            console.log(dataResponse)
             //console.log(dataResponse[dataResponse.length-1].id_comment)
             if (dataResponse.length !== 0) {
 
@@ -103,7 +110,6 @@ const ImageComments = ({ id_post, user }) => {
         }
     }
 
-    console.log(lastIdComment)
     return (
         <View style={{ backgroundColor: "#fff", flex: 1 }}>
             <Text style={{ fontSize: 15, alignSelf: 'center', marginVertical: 10, color: 'black' }}> Comentarios </Text>
@@ -119,41 +125,43 @@ const ImageComments = ({ id_post, user }) => {
                         //onEndReached={fetchComments}
                         //onEndReachedThreshold={0} // Ajusta según sea necesario
                         ListFooterComponent={
-                            <View style={{padding: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                                 <TouchableOpacity onPress={fetchComments} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}> 
-                                     <Ionicons name="add-circle-outline" size={40} color="#BDBDBD" /> 
-                                 </TouchableOpacity> 
+                            <View style={{ padding: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                                <TouchableOpacity onPress={fetchComments} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                                    <Ionicons name="add-circle-outline" size={40} color="#BDBDBD" />
+                                </TouchableOpacity>
                             </View>
                         }
                     />
 
                     <View style={{ width: windowWidth, borderWidth: 0.3, borderColor: 'gray', marginBottom: 1 }} />
 
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            justifyContent: "center",
-                            alignItems: "center",
-                        }}
-                    >
-                        <TextInput
-                            placeholder="Agrega un comentario..."
-                            value={newComment}
-                            onChangeText={setNewComment}
-                            placeholderTextColor="grey"
+                    {enableComments == 1 &&
+                        <View
                             style={{
-                                backgroundColor: "#fff",
-                                color: "black",
-                                padding: 10,
-                                flex: 1,
+                                flexDirection: "row",
+                                justifyContent: "center",
+                                alignItems: "center",
                             }}
-                        />
-                        <View style={{ paddingRight: 10 }}>
-                            <Pressable onPress={sendComment}>
-                                <Feather name="send" size={24} color="black" />
-                            </Pressable>
+                        >
+                            <TextInput
+                                placeholder="Agrega un comentario..."
+                                value={newComment}
+                                onChangeText={setNewComment}
+                                placeholderTextColor="grey"
+                                style={{
+                                    backgroundColor: "#fff",
+                                    color: "black",
+                                    padding: 10,
+                                    flex: 1,
+                                }}
+                            />
+                            <View style={{ paddingRight: 10 }}>
+                                <Pressable onPress={sendComment}>
+                                    <Feather name="send" size={24} color="black" />
+                                </Pressable>
+                            </View>
                         </View>
-                    </View>
+                    }
                 </View>
             }
         </View>

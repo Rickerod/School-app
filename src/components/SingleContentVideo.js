@@ -21,15 +21,17 @@ export default function SingleContentImage({ route }) {
     const videoRef = React.useRef(null);
     const [status, setStatus] = React.useState({});
     const navigation = useNavigation()
+    const [showPaused, setShowPaused] = useState(false);
 
     const commentsSheetRef = React.useRef(null);
     const [isShowing, setIsShowing] = useState(false);
 
     const { likes, toggleLike, toggleNumLikes } = useLike();
-    const {uri_video, id_post, islike, num_likes} = route.params
-    
+    const { uri_video, id_post, islike, num_likes, uri_image_profile, username, description } = route.params
+
     const [is_like, setLike] = useState(islike)
     const [numLikes, setNumLikes] = useState(num_likes)
+    const [expanded, setExpanded] = useState(false);
     //Dummy variables
     //const id_post = 1
 
@@ -37,15 +39,23 @@ export default function SingleContentImage({ route }) {
     const windowHeight = Dimensions.get('window').height;
 
     const user = useUser()
-    
+    //console.log(status.isPlaying)
+    //console.log("showPaused", showPaused)
+
     const isPlayingVideo = () => {
+        //console.log("statusIsPlaying", status.isPlaying)
+
         if (status.isPlaying) videoRef.current.pauseAsync()
-        else videoRef.current.playAsync()
+        else {
+            videoRef.current.playAsync()
+            setShowPaused(true);
+        }
         //setMute(!mute)
     }
 
     //Back action of the commentSheetRef for Android
     useEffect(() => {
+        console.log("Paso por back action")
         const backAction = () => {
             if (isShowing) {
                 commentsSheetRef.current.close()
@@ -60,6 +70,17 @@ export default function SingleContentImage({ route }) {
 
         return () => backHandler.remove();
     }, [isShowing]);
+
+    useEffect(() => {
+
+        if (status.isPlaying) {
+            const timeout = setTimeout(() => {
+                setShowPaused(false);
+            }, 1000);
+
+            return () => clearTimeout(timeout);
+        }
+    }, [status.isPlaying]);
 
     const openComments = () => {
         commentsSheetRef.current?.present();
@@ -122,7 +143,7 @@ export default function SingleContentImage({ route }) {
                     <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.goBack()}>
                         <Ionic name="arrow-back" style={{ fontSize: 25, paddingRight: 20 }} />
                     </TouchableOpacity>
-                    <Text style={{ fontSize: 20, fontWeight: 'bold'}}>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
                         Video
                     </Text>
                 </View>
@@ -141,26 +162,74 @@ export default function SingleContentImage({ route }) {
                         onPlaybackStatusUpdate={status => setStatus(() => status)}
                     />
 
+                    {!status.isPlaying ?
+                        <View
+                            style={{
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}
+                        >
+                            <Ionic name="play-circle-outline" style={{ color: 'white' }} size={70} />
+                        </View>
+                        :
+                        <View
+                            style={{
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}>
+                            {showPaused && (
+                                <View>
+                                    <Ionic name="pause" style={{ color: 'white' }} size={40} />
+                                </View>
+                            )}
+                        </View>
+                    }
+
+
                 </TouchableOpacity>
-                {/* <View
+                <View
                     style={{
                         position: 'absolute',
-                        alignSelf: 'flex-start',
-                        //width: windowWidth,
-                        //zIndex: 1,
-                        bottom: 0, //edited
-                        padding: 10,
+                        bottom: windowHeight / 18, //edited
+                        left: 8,
                     }}>
-                    <View style={{}}>
-                        <View style={{ flexDirection: 'row', padding: 10 }}>
-                            <Ionic
-                                name="ios-musical-note"
-                                style={{ color: 'white', fontSize: 16 }}
+
+                    <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                        <View style={{
+                            borderWidth: 1.8,
+                            borderRadius: 100,
+                            borderColor: '#c13584'
+                        }}>
+                            <Image
+                                source={{ uri: uri_image_profile }}
+                                style={{ resizeMode: "contain", width: 40, height: 40, borderRadius: 100 }}
                             />
-                            <Text style={{ color: 'white' }}>Original Audio</Text>
+                        </View>
+                        <View style={{ paddingLeft: 5 }}>
+                            <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
+                                {username}
+                            </Text>
                         </View>
                     </View>
-                </View> */}
+
+                    <TouchableOpacity onPress={() => setExpanded(!expanded)}>
+                        <View>
+                            <Text numberOfLines={expanded ? 0 : 1} style={{ marginTop: 10, width: 3 * windowWidth / 4, fontWeight: 500 }}>
+                                {description} </Text>
+                        </View>
+                    </TouchableOpacity>
+
+                </View>
                 <View
                     style={{
                         position: 'absolute',
@@ -175,9 +244,9 @@ export default function SingleContentImage({ route }) {
                             toggleLike(id_post)
                             toggleNumLikes(id_post, !is_like)
                         }
-                        
-                    }} 
-                        
+
+                    }}
+
                         style={{ paddingTop: 5 }}>
                         <AntDesign
                             name={is_like ? 'heart' : 'hearto'}
@@ -188,7 +257,7 @@ export default function SingleContentImage({ route }) {
                     <TouchableOpacity onPress={openComments} style={{ padding: 10 }}>
                         <Ionic
                             name="ios-chatbubble-outline"
-                            style={{fontSize: 25 }}
+                            style={{ fontSize: 25 }}
                         />
                     </TouchableOpacity>
                 </View>
@@ -202,7 +271,7 @@ export default function SingleContentImage({ route }) {
                     <View style={[style, { backgroundColor: "#fff" }]} />
                 )}
             >
-                <ImageComments id_post={id_post} user={user}/>
+                <ImageComments id_post={id_post} user={user} />
             </BottomSheetModal>
         </SafeAreaView>
     );

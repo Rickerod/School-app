@@ -114,7 +114,6 @@ export default function Bitacora({ route }) {
 
     const user = useUser()
 
-
     /* useEffect(() => {
 
         async function fetchData() {
@@ -138,7 +137,7 @@ export default function Bitacora({ route }) {
     
           // Puedes ejecutar tu lógica de carga de datos nuevamente si es necesario
           async function fetchData(){
-            const response = await fetch(`http://${apiUrl}/bitacora/${user.id_user}`)
+            const response = await fetch(`http://${apiUrl}/bitacora/users/${user.id_user}/${id_user}`) //(user, ProfileUserAdmin)
             const dataResponse = await response.json();
 
             console.log(dataResponse)

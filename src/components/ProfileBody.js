@@ -15,7 +15,7 @@ export const ProfileBody = ({
     id_user,
     name,
     profileImage,
-    post,
+    userDescription
 }) => {
 
     const [modalVisible, setModalVisible] = useState(false);
@@ -62,7 +62,7 @@ export const ProfileBody = ({
                         <Image
                             source={{uri: profileImage}}
                             style={{
-                                resizeMode: 'cover',
+                                resizeMode: 'contain',
                                 width: 80,
                                 height: 80,
                                 borderRadius: 100,
@@ -90,7 +90,7 @@ export const ProfileBody = ({
                 }
             </View>
             <View style={{ width: windowWidth / 1.5 }}>
-                <Text> Septimo Basico B. </Text>
+                <Text> {userDescription} </Text>
             </View>
             
             <Report modalVisible={modalVisible} fModalVisible={setModalVisible}/>
@@ -139,10 +139,9 @@ const styles = StyleSheet.create({
     },
 });
 
-export const ProfileButtons = ({ id, name, accountName, profileImage }) => {
+export const ProfileButtons = ({ id, userDescription, accountName, profileImage }) => {
     const navigation = useNavigation();
     const [follow, setFollow] = useState(follow);
-    const [reported, setReported] = useState(true);
 
     return (
         <>
@@ -158,9 +157,9 @@ export const ProfileButtons = ({ id, name, accountName, profileImage }) => {
                     <TouchableOpacity
                         onPress={() =>
                             navigation.push('EditProfile', {
-                                name: name,
                                 accountName: accountName,
                                 profileImage: profileImage,
+                                userDescription: userDescription
                             })
                         }
                         style={{

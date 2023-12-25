@@ -13,6 +13,8 @@ import BitacoraQuestions from '../components/BitatoraQuestions';
 import NewSurvey from '../components/NewSurvey';
 import BitacoraAnswers from '../screens/BitacoraAnswers';
 import PostInfo from '../components/PostInfo';
+import EditProfileStudent from '../components/EditProfileStudent';
+import StatisticsBitacora from '../screens/StatisticsBitacora';
 
 import HolaMundo from '../screens/HolaMundo';
 import Register from '../screens/Register'
@@ -100,9 +102,17 @@ export default function LoginNavigator({ route }) {
                         <Stack.Screen
                             name="BitacoraAnswers" component={BitacoraAnswers}
                         />
-                        <Stack.Screen 
+                        <Stack.Screen
                             name="PostInfo" component={PostInfo}
                         />
+                        <Stack.Screen
+                            name="EditProfileStudent" component={EditProfileStudent}
+                        />
+
+                        <Stack.Screen
+                            name="StatisticsBitacora" component={StatisticsBitacora}
+                        />
+
                         {/* <Stack.Screen
                     name="ProfileHome" component={Profile}
                 /> */}

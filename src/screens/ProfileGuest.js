@@ -40,11 +40,12 @@ export default function ProfileGuest({route}) {
                             id_user={route.params.id_user_profile}
                             name="Diterod"
                             profileImage={data[0].uri_image_profile}
+                            userDescription= {data[0].user_description}
                         />
                         <ProfileButtons
                             id={1} //Ver perfil como invitado
-                            name="Diterod"
-                            accountName="ditero_d"
+                            userDescription= {data[0].user_description}
+                            accountName={data[0].username}
                             profileImage= {data[0].uri_image_profile}
                         />
                     </View>
@@ -53,6 +54,7 @@ export default function ProfileGuest({route}) {
                 :
                 <View>
                     <ProfileStudent
+                        id = {1}
                         username={data[0].username}
                         firsntame={data[0].firsntame}
                         lastname={data[0].lastname}

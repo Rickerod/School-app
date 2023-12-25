@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { ProfileBody, ProfileButtons } from '../components/ProfileBody';
-import BottomTabView  from '../navigators/BottomTabView'
+import BottomTabView from '../navigators/BottomTabView'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import Header from '../components/Header';
@@ -30,31 +30,33 @@ export default function Profile({ route }) {
             <View></View>
         );
     }
-    
+
     return (
         <View>
-            {route.params.type_user_profile == 1 || route.params.type_user_profile == 2  ?
+            {route.params.type_user_profile == 1 || route.params.type_user_profile == 2 ?
                 <SafeAreaView style={styles.container}>
                     <Header title="ditero_d" id={0} wd={1} />
                     <View style={{ width: '100%', padding: 10 }}>
                         <ProfileBody
                             id={0} //Perfil del usuario
                             id_user={route.params.id_user_profile}
-                            name="Diterod"
+                            name={data[0].username}
                             profileImage={data[0].uri_image_profile}
+                            userDescription={data[0].user_description}
                         />
                         <ProfileButtons
                             id={0} //Perfil del usuario
-                            name="Diterod"
-                            accountName="ditero_d"
+                            userDescription={data[0].user_description}
+                            accountName={data[0].username}
                             profileImage={data[0].uri_image_profile}
                         />
                     </View>
-                    <BottomTabView id={0} id_user={data[0].id_user}/>
+                    <BottomTabView id={0} id_user={data[0].id_user} />
                 </SafeAreaView>
                 :
                 <View>
                     <ProfileStudent
+                        id={0}
                         username={data[0].username}
                         firsntame={data[0].firstname}
                         lastname={data[0].lastname}

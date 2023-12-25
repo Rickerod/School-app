@@ -4,6 +4,8 @@ import Header from '../components/Header';
 import { FlatList } from 'react-native-gesture-handler';
 import { TouchableOpacity } from '@gorhom/bottom-sheet';
 import { apiUrl } from '../../constants';
+import Octicons from 'react-native-vector-icons/Octicons';
+import { useNavigation } from '@react-navigation/native';
 
 const BuserAnswer = ({ data }) => {
     const [viewData, setViewData] = useState(false)
@@ -100,6 +102,8 @@ export default function BitacoraAnswers({ route }) {
     const { name, id_bitacora } = route.params
 
     const [data, setData] = useState([])
+    const navigation = useNavigation()
+
 
     useEffect(() => {
         async function fetchData() {
@@ -112,28 +116,7 @@ export default function BitacoraAnswers({ route }) {
         fetchData()
     }, [])
 
-    const users = [
-        {
-            id_user: 2,
-            username: "Diterod",
-            uri_image_profile: "https://raw.githubusercontent.com/Rickerod/School-app/master/src/storage/images/profile3.jpg",
-            type_user: 0
-        },
-        {
-            id_user: 3,
-            username: "javiermmo98",
-            uri_image_profile: "https://raw.githubusercontent.com/Rickerod/School-app/master/src/storage/images/userProfile.png",
-            type_user: 0
-        },
-        {
-            id_user: 4,
-            username: "Atomic00",
-            uri_image_profile: "https://raw.githubusercontent.com/Rickerod/School-app/master/src/storage/images/profile5.jpg",
-            type_user: 0
-        }
-    ]
-
-    if(data == []){
+    if (data == []) {
         return <View></View>
     }
 
@@ -141,7 +124,15 @@ export default function BitacoraAnswers({ route }) {
         <View style={{ flex: 1 }}>
             <Header title="Respuestas encuesta" id={1} wd={0} />
             <View style={{ flex: 1, padding: 4 }}>
-                <Text style={{ fontSize: 17, fontWeight: 500, paddingVertical: 20 }}> {id_bitacora}: {name}.</Text>
+
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Text style={{ fontSize: 17, fontWeight: 500, paddingVertical: 20 }}> {id_bitacora}: {name}.</Text>
+                    <TouchableOpacity onPress={ () => navigation.navigate("StatisticsBitacora", {
+                        id_bitacora : id_bitacora
+                    })}>
+                        <Octicons name="graph" size={22} style={{ alignSelf: 'flex-end', padding: 20 }} />
+                    </TouchableOpacity>
+                </View>
                 <FlatList
                     data={data}
                     renderItem={({ item }) => <BuserAnswer data={item}> </BuserAnswer>}

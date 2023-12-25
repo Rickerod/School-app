@@ -13,7 +13,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 
 
-const EditProfile = ({ route }) => {
+const EditProfileStudent = ({ route }) => {
     const { accountName, profileImage } = route.params;
     const [isLoading, setIsLoading] = useState(false);
 
@@ -188,4 +188,4 @@ const EditProfile = ({ route }) => {
     );
 };
 
-export default EditProfile;
+export default EditProfileStudent;

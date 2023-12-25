@@ -38,9 +38,9 @@ const PostImages = ({ item, index, length }) => {
     }, []);
 
     return (
-        <View style={{ flex: 1, justifyContent: 'center'}}>
+        <View style={{ flex: 1, justifyContent: 'center' }}>
 
-            <View style={{alignSelf: 'flex-start'}}>
+            <View style={{ alignSelf: 'flex-start' }}>
                 <Image
                     source={{ uri: item.url_image }}
                     style={{
@@ -75,7 +75,7 @@ const PostImages = ({ item, index, length }) => {
 
 const SingleContentImage = ({ route, navigation }) => {
 
-    const { uri_images, id_post, islike, num_likes } = route.params
+    const { uri_images, id_post, islike, num_likes, uri_image_profile, username, description } = route.params
 
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
@@ -85,6 +85,7 @@ const SingleContentImage = ({ route, navigation }) => {
     const [numLikes, setNumLikes] = useState(num_likes)
     const [is_like, setLike] = useState(islike)
     const [isShowing, setIsShowing] = useState(false);
+    const [expanded, setExpanded] = useState(false);
     const commentsSheetRef = useRef(null);
 
 
@@ -194,6 +195,40 @@ const SingleContentImage = ({ route, navigation }) => {
                 }
                 pagingEnabled
             />
+
+            <View
+                style={{
+                    position: 'absolute',
+                    bottom: windowHeight / 18, //edited
+                    left: 8,
+                }}>
+
+                <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                    <View style={{
+                        borderWidth: 1.8,
+                        borderRadius: 100,
+                        borderColor: '#c13584'
+                    }}>
+                        <Image
+                            source={{ uri: uri_image_profile }}
+                            style={{ resizeMode: "contain", width: 40, height: 40, borderRadius: 100 }}
+                        />
+                    </View>
+                    <View style={{ paddingLeft: 5 }}>
+                        <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
+                            {username}
+                        </Text>
+                    </View>
+                </View>
+
+                <TouchableOpacity onPress={() => setExpanded(!expanded)}>
+                    <View>
+                        <Text numberOfLines={expanded ? 0 : 1} style={{ marginTop: 10, width: 3 * windowWidth / 4, fontWeight: 500 }}>
+                            {description} </Text>
+                    </View>
+                </TouchableOpacity>
+
+            </View>
 
             <View
                 style={{

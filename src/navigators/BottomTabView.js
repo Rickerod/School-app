@@ -18,7 +18,8 @@ const BottomTabView = ({ id, id_user }) => {
 
   const user = useUser()
 
-  console.log("type_user", user.type_user)
+  console.log("(id, type_user)", id , user.type_user)
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -57,10 +58,10 @@ const BottomTabView = ({ id, id_user }) => {
       <Tab.Screen name="Video" component={Videos} initialParams={{ id_user: id_user }} />
       <Tab.Screen name="Survey" component={Survey} initialParams={{ id: id, id_user: id_user }} />
 
+      { (id != 0 || user.type_user != 2) &&
+        <Tab.Screen name="Bitacora" component={Bitacora} initialParams={{ id: id, id_user: id_user }} />
+      }
 
-      <Tab.Screen name="Bitacora" component={Bitacora} initialParams={{ id: id, id_user: id_user }} />
-
-      {/* <Tab.Screen name="Foro" component={Foro} initialParams={{id_user: id_user}}/> */}
     </Tab.Navigator>
   );
 };

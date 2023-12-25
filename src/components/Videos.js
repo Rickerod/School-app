@@ -1,5 +1,5 @@
-import React, {useState, useEffect}from 'react';
-import { View, Text, TouchableOpacity, Image, ScrollView, Dimensions} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, Image, ScrollView, Dimensions } from 'react-native';
 //import Video from 'react-native-video';
 //import vd from '../storage/videos/video1.mp4'
 import { Video, ResizeMode } from 'expo-av';
@@ -26,11 +26,11 @@ export default function Videos({ route }) {
     const navigation = useNavigation()
 
     useEffect(() => {
-    
+
         const fetchPost = async () => {
 
             const type_post = "video"
-            
+
             const response = await fetch(`http://${apiUrl}/posts/profile/${type_post}/${id_user}/${user.id_user}`)
 
             const dataResponse = await response.json();
@@ -83,19 +83,22 @@ export default function Videos({ route }) {
                         uri_video: item.video_url,
                         id_post: item.id_post,
                         islike: item.is_liked,
-                        num_likes: item.num_likes
+                        num_likes: item.num_likes,
+                        uri_image_profile: item.uri_image_profile,
+                        username: item.username,
+                        description: item.post_description
                     })}
                     style={{ paddingBottom: 2, width: '33%' }}>
                     <View style={{ flex: 1 }}>
                         <Image
-                            source={{uri: item.thumbnail_video}}
+                            source={{ uri: item.thumbnail_video }}
                             style={{ width: '100%', height: 150 }}
                         />
                         <View style={{ position: "absolute", top: 5, left: windowWidth / 3 - 30, right: 0 }}>
                             <Octicons
                                 name="video"
                                 color="white"
-                                style={{opacity: 0.8, fontSize: 18}}
+                                style={{ opacity: 0.8, fontSize: 18 }}
                             />
                         </View>
                     </View>

@@ -205,7 +205,7 @@ export default function PostInfo({ data, updateHome }) {
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Image
                         source={{ uri: data.uri_image_profile }}
-                        style={{ width: 40, height: 40, borderRadius: 100 }}
+                        style={{ resizeMode: "contain", width: 40, height: 40, borderRadius: 100 }}
                     />
                     <View style={{ paddingLeft: 5 }}>
                         <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
@@ -255,8 +255,11 @@ export default function PostInfo({ data, updateHome }) {
                             id_post: data.id_post,
                             islike: likes[data.id_post],
                             num_likes: numLikes[data.id_post],
+                            uri_image_profile: data.uri_image_profile,
+                            username: data.username,
+                            description: data.post_description
                         })}
-                        style={{ flex: 1}}
+                        style={{ flex: 1 }}
                     >
                         <Image
                             source={{
@@ -273,7 +276,7 @@ export default function PostInfo({ data, updateHome }) {
                             justifyContent: 'center',
                             alignItems: 'center'
                         }}>
-                            <Ionic name="play-circle-outline" style={{ color: 'black' }} size={70} />
+                            <Ionic name="play-circle-outline" style={{ color: 'white' }} size={70} />
                         </View>
 
                     </TouchableOpacity>
@@ -284,6 +287,10 @@ export default function PostInfo({ data, updateHome }) {
                     id_post: data.id_post,
                     islike: likes[data.id_post],
                     num_likes: numLikes[data.id_post],
+                    uri_image_profile: data.uri_image_profile,
+                    username: data.username,
+                    description: data.post_description
+
                 })}>
                     <View
                         style={{

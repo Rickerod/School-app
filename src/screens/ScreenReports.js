@@ -41,6 +41,7 @@ export default function ScreenReport() {
   return (
     <SafeAreaView style={styles.container}>
       <Header title="Home" id={0} wd={0} />
+      <Text style={{ fontSize: 22, fontWeight: 500, paddingVertical: 20, alignSelf: 'center' }}> Reportes estudiantes </Text>
       <FlatList
         contentContainerStyle={styles.list}
         data={reports}
@@ -89,7 +90,9 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5
+    elevation: 5,
+    borderColor: '#fff',
+    borderWidth: 5
   },
   header: {
     flexDirection: 'row',

@@ -20,9 +20,9 @@ export default function Posts({ route, navigation }) {
     useEffect(() => {
 
         const type_post = "imagen"
-        
+
         const fetchPost = async () => {
-            
+
             const response = await fetch(`http://${apiUrl}/posts/profile/${type_post}/${id_user}/${user.id_user}`)
 
             const dataResponse = await response.json();
@@ -44,43 +44,46 @@ export default function Posts({ route, navigation }) {
             //horizontal={true}
             contentcontainerstyle={{ justifyContent: 'space-between', alignItems: 'space-between', flexdirection: 'row', flexwrap: 'wrap' }}
             renderItem={({ item }) => {
-                if(item.images.length == 0){
+                if (item.images.length == 0) {
                     return <View></View>
                 }
 
-                return(
-                <TouchableOpacity
-                    //key={imgIndex}
-                    onPress={() => navigation.navigate('SingleContentImage', {
-                        uri_images: item.images,
-                        id_post: item.id_post,
-                        islike: item.is_liked,
-                        num_likes: item.num_likes
-                    })}
-                    style={{ paddingBottom: 2, width: '33%' }}>
-                    
-                    {item.images.length <= 1 ?
-                        <Image
-                            source={{ uri: item.images[0].url_image }}
-                            style={{ width: '100%', height: 150 }}
-                        /> :
-                        <View style= {{ flex : 1 }}>
+                return (
+                    <TouchableOpacity
+                        //key={imgIndex}
+                        onPress={() => navigation.navigate('SingleContentImage', {
+                            uri_images: item.images,
+                            id_post: item.id_post,
+                            islike: item.is_liked,
+                            num_likes: item.num_likes,
+                            uri_image_profile: item.uri_image_profile,
+                            username: item.username,
+                            description: item.post_description
+                        })}
+                        style={{ paddingBottom: 2, width: '33%' }}>
+
+                        {item.images.length <= 1 ?
                             <Image
                                 source={{ uri: item.images[0].url_image }}
                                 style={{ width: '100%', height: 150 }}
-                            />
-                            <View style= {{position: "absolute", top: 5, left: windowWidth/3 - 30, right: 0}}>
-                                <Ionicons
-                                    size={20}
-                                    style={{opacity: 0.9}}
-                                    color= "white"
-                                    name='images'
+                            /> :
+                            <View style={{ flex: 1 }}>
+                                <Image
+                                    source={{ uri: item.images[0].url_image }}
+                                    style={{ width: '100%', height: 150 }}
                                 />
+                                <View style={{ position: "absolute", top: 5, left: windowWidth / 3 - 30, right: 0 }}>
+                                    <Ionicons
+                                        size={20}
+                                        style={{ opacity: 0.9 }}
+                                        color="white"
+                                        name='images'
+                                    />
+                                </View>
                             </View>
-                        </View>
 
-                    }
-                </TouchableOpacity>
+                        }
+                    </TouchableOpacity>
                 );
             }}
         />
