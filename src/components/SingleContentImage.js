@@ -237,8 +237,8 @@ const SingleContentImage = ({ route, navigation }) => {
                     right: 8,
                     alignItems: 'center',
                 }}>
-                <TouchableOpacity onPress={() => {
-                    insertLike(!is_like)
+                <TouchableOpacity onPress={async () => {
+                    await insertLike(!is_like)
                     setLike((prev) => !prev)
                     if (likes[id_post] !== undefined) {
                         toggleLike(id_post)

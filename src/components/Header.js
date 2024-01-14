@@ -9,6 +9,12 @@ import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import { apiUrl } from '../../constants';
 import useUser from '../hooks/useUser';
+import {
+    Menu,
+    MenuOptions,
+    MenuOption,
+    MenuTrigger,
+} from 'react-native-popup-menu';
 
 
 export default function Header({ title, id, wd }) {
@@ -59,9 +65,9 @@ export default function Header({ title, id, wd }) {
     }
 
     return (
-        <View backgroundColor={id === 0 ? "white" : "purple"}>
+        <View backgroundColor={"white"}>
             <StatusBar
-                backgroundColor={id === 0 ? "white" : "purple"}
+                backgroundColor={"white"}
                 barStyle="dark-content"
                 animated={true}
             />
@@ -115,12 +121,23 @@ export default function Header({ title, id, wd }) {
                     >
                         <Fontisto name="bell" style={{ fontSize: 24, paddingLeft: 20, color: id !== 0 ? "white" : undefined }} />
                     </TouchableOpacity>
-                    <TouchableOpacity
-                        activeOpacity={0.5}
-                        onPress={() => console.log("Click on cog...")}
-                    >
-                        <Entypo name="cog" style={{ fontSize: 24, paddingLeft: 20, color: id !== 0 ? "white" : undefined }} />
-                    </TouchableOpacity>
+                    <Menu>
+                        <MenuTrigger>
+                            <Entypo name="cog" style={{ fontSize: 24, paddingLeft: 20, color: id !== 0 ? "white" : undefined }} />
+                        </MenuTrigger>
+                        <MenuOptions style={{ padding: 10 }}>
+                            <MenuOption onSelect={() =>
+                                navigation.reset({
+                                    index: 0,
+                                    routes: [{ name: "Login" }],
+                                })} >
+                                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                                    <MaterialCommunityIcons name="exit-to-app" style={{ fontSize: 20, paddingRight: 5 }}></MaterialCommunityIcons>
+                                    <Text style={{ fontSize: 16 }}> Cerrar sesión </Text>
+                                </View>
+                            </MenuOption>
+                        </MenuOptions>
+                    </Menu>
                 </View>
             </SafeAreaView>
             <View style={{

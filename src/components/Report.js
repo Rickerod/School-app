@@ -62,8 +62,7 @@ export default function Report({modalVisible, fModalVisible}) {
                             fontWeight: 'bold',
                             fontSize: 16,
                         }}> ¿Porque quieres reportar? </Text>
-                        <Text style={{ color: 'gray' }}> Tu reporte es anonimo. Si alguien se encuentra en peligro
-                            inminente, llama a los servicios de emergencia locales. No esperes. </Text>
+                        <Text style={{ color: 'gray' }}> Indica al usuario o a la publicación.</Text>
                         <TextInput
                             style={{
                                 paddingBottom: 20,

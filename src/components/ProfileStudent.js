@@ -118,19 +118,19 @@ export default function ProfileStudent({ id, username, firstname, lastname, uri_
             </Text>
           </View>
           <View>
-            <Text style={{
+            {/* <Text style={{
               paddingTop: 10,
               opacity: 0.7
             }}>
               Edad
-            </Text>
-            <Text style={{
+            </Text> */}
+           {/*  <Text style={{
               opacity: 0.5
             }}>
               15
-            </Text>
+            </Text> */}
           </View>
-          <View>
+          {/* <View>
             <Text style={{
               paddingTop: 10,
               opacity: 0.7
@@ -142,7 +142,7 @@ export default function ProfileStudent({ id, username, firstname, lastname, uri_
             }}>
               23 de mayo
             </Text>
-          </View>
+          </View> */}
 
         </View>
       </View >

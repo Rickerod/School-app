@@ -51,7 +51,7 @@ export default function Profile({ route }) {
                             profileImage={data[0].uri_image_profile}
                         />
                     </View>
-                    <BottomTabView id={0} id_user={data[0].id_user} />
+                    <BottomTabView id={0} type_user={route.params.type_user_profile} id_user={data[0].id_user} />
                 </SafeAreaView>
                 :
                 <View>

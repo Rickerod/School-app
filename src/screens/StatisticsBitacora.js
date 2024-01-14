@@ -97,6 +97,7 @@ export default function StatisticsBitacora({route}) {
     strokeWidth: 2, // optional, default 3
     barPercentage: 0.7,
     fillShadowGradient: `#9700FF`,
+    yAxisLabel: () => ''
   };
 
   return (
@@ -112,21 +113,23 @@ export default function StatisticsBitacora({route}) {
           showBarTops
           showValuesOnTopOfBars
           withCustomBarColorFromData
-          yAxisInterval={1}
+          withHorizontalLabels={false}
+          //yAxisInterval={1}
           withInnerLines={false}
-          style={{ margin: 8, borderRadius: 16, alignSelf: 'center' }}
+          style={{ margin: 8, borderRadius: 16, alignSelf: 'center', paddingRight: 5 }}
         />
         <Text style={{ fontSize: 17, fontWeight: 500, padding: 10 }}> 2. Notas de la Actividad 📝</Text>
         <BarChart
           data={data_nota}
           width={windowWidth - 8}
+          withHorizontalLabels={false}
           height={220}
           chartConfig={chartConfig}
           showBarTops
           showValuesOnTopOfBars
           withInnerLines={false}
           withCustomBarColorFromData
-          style={{ margin: 8, borderRadius: 16, alignSelf: 'center' }}
+          style={{ margin: 8, borderRadius: 16, alignSelf: 'center' , paddingRight: 5 }}
         />
       </View>
     </View>

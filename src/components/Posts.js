@@ -7,6 +7,10 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { apiUrl } from '../../constants';
 
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback } from 'react';
+
+
 export default function Posts({ route, navigation }) {
     const [data, setData] = useState([])
     const { id_user } = route.params
@@ -17,21 +21,22 @@ export default function Posts({ route, navigation }) {
 
     const user = useUser()
 
-    useEffect(() => {
-
-        const type_post = "imagen"
-
-        const fetchPost = async () => {
-
-            const response = await fetch(`http://${apiUrl}/posts/profile/${type_post}/${id_user}/${user.id_user}`)
-
-            const dataResponse = await response.json();
-            setData(dataResponse)
-        }
-
-        fetchPost()
-
-    }, [])
+    useFocusEffect(
+        useCallback(() => {
+            const type_post = "imagen";
+    
+            const fetchPost = async () => {
+                console.log("id's", id_user, user.id_user);
+                const response = await fetch(`http://${apiUrl}/posts/profile/${type_post}/${id_user}/${user.id_user}`);
+    
+                const dataResponse = await response.json();
+                console.log("dataResponse", dataResponse);
+                setData(dataResponse);
+            };
+    
+            fetchPost();
+        }, []) // Incluye todas las dependencias aquí
+    );
 
     if (data == []) {
         return <View></View>

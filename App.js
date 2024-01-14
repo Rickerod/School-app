@@ -6,6 +6,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import LoginNavigator from './src/navigators/LoginNavigator';
 import HolaMundo from './src/screens/HolaMundo';
 import LoginAuth from './src/screens/LoginAuth';
+import Login from './src/screens/Login';
 import NewSurvey from './src/components/NewSurvey';
 import SingleContentVideo from './src/components/SingleContentVideo';
 
@@ -37,6 +38,9 @@ export default function App() {
             {/*    <Stack.Screen
               name="HolaMundo" component={HolaMundo}
             />    */}
+            <Stack.Screen
+              name="Login" component={Login}
+            />
             <Stack.Screen
               name="LoginAuth" component={LoginAuth}
             />

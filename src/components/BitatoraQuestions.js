@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Dimensions, Image, TextInput, Button } from 'react-native';
+import { View, Text, Dimensions, Image, TextInput, Button, Modal, TouchableOpacity } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { ScrollView } from 'react-native-gesture-handler';
 import { apiUrl } from '../../constants';
 import useUser from '../hooks/useUser';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 import Header from './Header';
 
@@ -14,6 +15,7 @@ export default function BitacoraQuestions({ route }) {
     const [text, setText] = useState(''); // respuesta 3
     const [textLearn, setTextLearn] = useState(''); // respuesta 4 
     const [data, setData] = useState([])
+    const [modalVisible, setModalVisible] = useState(false)
 
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
@@ -32,45 +34,45 @@ export default function BitacoraQuestions({ route }) {
         "🥰"
     ];
 
-     useEffect(() => {
-        async function fetchData(){
+    useEffect(() => {
+        async function fetchData() {
             const response = await fetch(`http://${apiUrl}/bitacora/questions`)
             const dataResponse = await response.json();
-            
+
             console.log(dataResponse)
             setData(dataResponse)
         }
 
         fetchData()
-    }, []) 
+    }, [])
 
     const sendAnswers = async () => {
         const ans = [
             {
-                "id_question" : data[0].id_question,
-                "answer" : value
+                "id_question": data[0].id_question,
+                "answer": value
             },
             {
-                "id_question" : data[1].id_question,
-                "answer" : valueNota
+                "id_question": data[1].id_question,
+                "answer": valueNota
             },
             {
-                "id_question" : data[2].id_question,
-                "answer" : text
+                "id_question": data[2].id_question,
+                "answer": text
             },
             {
-                "id_question" : data[3].id_question,
-                "answer" : textLearn
+                "id_question": data[3].id_question,
+                "answer": textLearn
             },
         ]
 
         const body = {
-            answers : ans
+            answers: ans
         }
 
         try {
 
-        const response = await fetch(`http://${apiUrl}/bitacora/answers/${user.id_user}/${id_bitacora}`, {
+            const response = await fetch(`http://${apiUrl}/bitacora/answers/${user.id_user}/${id_bitacora}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -78,17 +80,23 @@ export default function BitacoraQuestions({ route }) {
                 body: JSON.stringify(body)
             });
 
-        const data = await response.json();
-        console.log(data)
+            const data = await response.json();
+            console.log(data)
 
-        navigation.goBack()
+            navigation.goBack()
 
         } catch (e) {
             console.log("ERROR: ", e)
         }
 
     }
-    
+
+    const images = [{
+        props: {
+            source: require('../storage/images/emotions.jpg')
+        }
+    }]
+
     return (
         <View style={{ flex: 1 }}>
             <Header title="Bitacora" id={1} wd={0} />
@@ -147,15 +155,24 @@ export default function BitacoraQuestions({ route }) {
                 <Text style={{ fontSize: 15, fontWeight: 400, paddingVertical: 20, }}>
                     ¿Como te vas de la clase?, menciona una emoción de la imagen
                 </Text>
-                <Image
-                    source={require("../storage/images/emotions.jpg")}
-                    style={{
-                        resizeMode: "contain",
-                        width: windowWidth - 40,
-                        height: 250
+                <TouchableOpacity onPress={() => setModalVisible(true)}>
+                    <Image
+                        source={require("../storage/images/emotions.jpg")}
+                        style={{
+                            resizeMode: "contain",
+                            width: windowWidth - 40,
+                            height: 250
 
-                    }}
-                />
+                        }}
+                    />
+                </TouchableOpacity>
+                <Modal
+                    visible={modalVisible}
+                    transparent={true}
+                    onRequestClose={() => setModalVisible(false)}
+                >
+                    <ImageViewer imageUrls={images} />
+                </Modal>
                 <TextInput
                     style={{
                         width: windowWidth - 40,

@@ -13,7 +13,7 @@ import Survey from '../components/Survey';
 import Bitacora from '../components/Bitacora';
 import useUser from '../hooks/useUser';
 
-const BottomTabView = ({ id, id_user }) => {
+const BottomTabView = ({ id, type_user, id_user }) => {
   const Tab = createMaterialTopTabNavigator();
 
   const user = useUser()
@@ -58,7 +58,7 @@ const BottomTabView = ({ id, id_user }) => {
       <Tab.Screen name="Video" component={Videos} initialParams={{ id_user: id_user }} />
       <Tab.Screen name="Survey" component={Survey} initialParams={{ id: id, id_user: id_user }} />
 
-      { (id != 0 || user.type_user != 2) &&
+      { (type_user == 1) &&
         <Tab.Screen name="Bitacora" component={Bitacora} initialParams={{ id: id, id_user: id_user }} />
       }
 

@@ -31,6 +31,8 @@ export default function LoginNavigator({ route }) {
 
     const Stack = createNativeStackNavigator();
 
+    console.log(route.params.id_user, route.params.type_user, route.params.uri_image_profile, route.params.name)
+    
     const userData = {
         id_user: route.params.id_user,
         type_user: route.params.type_user,

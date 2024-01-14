@@ -178,12 +178,6 @@ export default function PostInfo({ data, updateHome }) {
         }
     }
 
-    const isPlayingVideo = () => {
-        if (status.isPlaying) videoRef.current.pauseAsync()
-        else videoRef.current.playAsync()
-        //setMute(!mute)
-    }
-
     return (
         <View
             //key={index}

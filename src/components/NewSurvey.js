@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Dimensions, Button, Switch } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, Dimensions, Button, Switch, Alert } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { apiUrl } from '../../constants';
 import Header from './Header';
+import { useNavigation } from '@react-navigation/native';
+import useUser from '../hooks/useUser';
 
 export default function NewSurvey() {
     const [text, setText] = useState("")
@@ -11,19 +14,63 @@ export default function NewSurvey() {
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
     console.log(opciones)
-    const agregarOpcion = () => {
-        if (opciones.length < 10) {
-            setOpciones(prev => [...prev, ""])
+    const navigation = useNavigation()
+    const user = useUser();
+
+    const insertSurvey = async () => {
+
+        var sendOptions = opciones
+        console.log("text", text)
+        console.log("opciones", opciones.length)
+        if (text.length != "" && opciones.length > 2) {
+
+            if (opciones.length < 10) {
+                sendOptions = sendOptions.slice(0, -1)
+                console.log(sendOptions)
+            }
+
+            const body = {
+                pregunta: text,
+                alternatives: sendOptions
+            }
+
+            try {
+
+                const response = await fetch(`http://${apiUrl}/survey/insertSurvey/${user.id_user}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                });
+
+                const data = await response.json();
+
+                //navigation.goBack()
+
+            } catch (e) {
+                console.log("ERROR: ", e)
+            } finally {
+                Alert.alert("¡Encuenta creada!")
+                navigation.goBack()
+            }
+        } else {
+            if(text == ""){
+                Alert.alert("Se debe ingresar una pregunta")
+            }else{
+                Alert.alert("Se debe ingresar más de 2 opciones")
+            }
         }
+
     }
 
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
 
     return (
-        <SafeAreaView style={{ flex: 1}}>
+        <SafeAreaView style={{ flex: 1 }}>
             <Header title="Encuesta" id={1} wd={0} />
-            <ScrollView style={{padding: 20}}>
+            <ScrollView style={{ padding: 20 }}>
                 <Text style={{ paddingTop: 40, fontWeight: 500 }}> Pregunta </Text>
                 {/* Pregunta */}
                 <TextInput
@@ -73,20 +120,8 @@ export default function NewSurvey() {
                         />
                     </View>
                 ))}
-                <View style={{ flexDirection: "row", alignItems: 'center', justifyContent: 'space-between' }}>
-                    <Text style={{}}> Permitir varias respuestas </Text>
-                    <Switch
-                        style={{}}
-                        trackColor={{ false: '#767577', true: '#C389FF' }}
-                        thumbColor={isEnabled ? 'purple' : '#f4f3f4'}
-                        ios_backgroundColor="#3e3e3e"
-                        onValueChange={toggleSwitch}
-                        value={isEnabled}
-                    />
-
-                </View>
                 <View style={{ paddingBottom: 20 }}>
-                    <Button borderRadius={20} paddingBottom={10} title="Crear encuesta" color="purple" />
+                    <Button borderRadius={20} paddingBottom={10} onPress={insertSurvey} title="Crear encuesta" color="purple" />
                 </View>
 
                 {/* <Button

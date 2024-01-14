@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Dimensions, Image, BackHandler } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, Image, BackHandler, Alert } from 'react-native';
 import Ionic from 'react-native-vector-icons/Ionicons';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -214,14 +214,14 @@ export default function NewPost() {
               borderStyle: 'dotted', borderWidth: 1, borderColor: '#ccc'
             }}>
               <TouchableOpacity
-                onPress={() => setOpenVideo(true)}
+                onPress={() => Alert.alert("En mantenimiento...")}
                 style={{
                   flex: 1,
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
                 <Octicons name="video" style={{ fontSize: 50 }} />
-                <Text> Añadir video </Text>
+                <Text style={{paddingBottom: 30}}> Añadir video </Text>
               </TouchableOpacity>
             </View>
           </View>

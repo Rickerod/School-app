@@ -28,7 +28,8 @@ export default function HomeScreen({ navigation }) {
     //Enviar el id del usuario como query para obtener las publicaciones a las que les dió like...
     async function fetchPost() {
       try {
-        const response = await fetch(`http://${apiUrl}/posts/${user.id_user}`)
+        const idSchool = 1
+        const response = await fetch(`http://${apiUrl}/posts/${user.id_user}/${idSchool}`)
         const dataResponse = await response.json();
 
         setData(dataResponse)
@@ -78,9 +79,9 @@ export default function HomeScreen({ navigation }) {
       setLoadingPosts(true)
 
       try {
+        const id_school = 1
         const start1 = performance.now();
-
-        const response = await fetch(`http://${apiUrl}/posts/${user.id_user}/${idPostOld}/${idPostNew}`)
+        const response = await fetch(`http://${apiUrl}/posts/${user.id_user}/${idPostOld}/${idPostNew}/${id_school}`)
         const dataResponse = await response.json();
 
         const end1 = performance.now();

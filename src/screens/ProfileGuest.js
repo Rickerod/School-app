@@ -31,14 +31,14 @@ export default function ProfileGuest({route}) {
         <View>
             
             {/* {1 == 1 ? */}
-            {route.params.type_user_profile == 1 ?
+            {route.params.type_user_profile == 1 ||  route.params.type_user_profile == 2?
                 <SafeAreaView style={styles.container}>
                     <Header title={data[0].username} id={1} wd={0} />
                     <View style={{ width: '100%', padding: 10 }}>
                         <ProfileBody
                             id = {1}
                             id_user={route.params.id_user_profile}
-                            name="Diterod"
+                            name={data[0].username}
                             profileImage={data[0].uri_image_profile}
                             userDescription= {data[0].user_description}
                         />
@@ -49,7 +49,7 @@ export default function ProfileGuest({route}) {
                             profileImage= {data[0].uri_image_profile}
                         />
                     </View>
-                    <BottomTabView id = {1} id_user={data[0].id_user}/>
+                    <BottomTabView id = {1} type_user={route.params.type_user_profile} id_user={data[0].id_user}/>
                 </SafeAreaView>
                 :
                 <View>

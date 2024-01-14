@@ -1,21 +1,54 @@
-import { View, Text, Image , Pressable, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, Image , Pressable, TextInput, TouchableOpacity, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox"
 import Button from '../components/Button';
 import Register from './Register'
+import { apiUrl } from '../../constants';
+import { useNavigation } from '@react-navigation/native';
 
-
-
-const Login = ({ navigation }) => {
+const Login = ({}) => {
     const [isPasswordShown, setIsPasswordShown] = useState(true);
     const [isChecked, setIsChecked] = useState(false);
     const [email, setChangeEmail] = useState("");
     const [password, setChangePassword] = useState("");
 
-    const Logearse = () => {
-        if(email === 'prob@prob.com' && password === '123456') navigation.navigate("TabScreen")
+    const navigation = useNavigation()
+
+    const Logearse = async () => {
+        /* if(email === 'prob@prob.com' && password === '123456') navigation.navigate("TabScreen") */
+
+        const body = {
+            username : email,
+            password : password
+        }
+
+        try {
+            const response = await fetch(`http://${apiUrl}/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            });
+
+            const data = await response.json();
+            console.log(data)
+            if(data["ok"]){
+                navigation.navigate("LoginStack", {
+                    id_user : data.user.id,
+                    type_user: data.user.type_user,
+                    uri_image_profile: data.user.uri_image_profile,
+                    name: data.user.username
+                })
+            }else{
+                Alert.alert("Credenciales incorrectas")
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     const COLORS = {
@@ -45,7 +78,7 @@ const Login = ({ navigation }) => {
                         fontSize: 16,
                         fontWeight: 400,
                         marginVertical: 8
-                    }}>Email</Text>
+                    }}>Usuario</Text>
 
                     <View style={{
                         width: "100%",
@@ -61,7 +94,7 @@ const Login = ({ navigation }) => {
                             autoCapitalize='none'
                             caretHidden={false}
                             autoFocus={true}
-                            placeholder='Ingrese su email'
+                            placeholder='Ingrese su usuario'
                             onChangeText={setChangeEmail}
                             placeholderTextColor={COLORS.black}
                             keyboardType='email-address'
@@ -162,7 +195,7 @@ const Login = ({ navigation }) => {
                     />
                 </View>
 
-                <View style={{
+                {/* <View style={{
                     flexDirection: "row",
                     justifyContent: "center",
                     marginVertical: 22
@@ -178,7 +211,7 @@ const Login = ({ navigation }) => {
                             marginLeft: 6
                         }}>Register</Text>
                     </Pressable>
-                </View>
+                </View> */}
             </View>
         </SafeAreaView>
     )
