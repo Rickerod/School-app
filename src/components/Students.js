@@ -71,8 +71,6 @@ export default function Students() {
                     );
                 }
 
-                console.log("type_user_profile", item.id_type_user)
-
                 return (
                     <TouchableOpacity
                         onPress={() =>

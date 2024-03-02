@@ -44,8 +44,6 @@ const BuserAnswer = ({ data }) => {
         }]
     }
 
-    console.log(viewData)
-
     return (
         <View style={{ flex: 1 }}>
             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 20 }}>

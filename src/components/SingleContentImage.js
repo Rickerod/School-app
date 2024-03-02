@@ -116,7 +116,6 @@ const SingleContentImage = ({ route, navigation }) => {
     };
 
     const handleSheetChanges = (index) => {
-        //console.log('handleSheetChanges', index)
         if (index >= 0) {
             //loadComments()
             setIsShowing(true)
@@ -127,8 +126,6 @@ const SingleContentImage = ({ route, navigation }) => {
     }
 
     const insertLike = async (is_liked) => {
-
-        //console.log("IS_liked", is_liked)
 
         const body = {
             is_liked: is_liked,

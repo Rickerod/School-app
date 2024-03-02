@@ -53,7 +53,7 @@ export default function EditPost({ route }) {
 
         const body = {
             post_description: text,
-            post_category: value,
+            post_category: 'imagen',
         }
 
         var data = ""
@@ -72,15 +72,12 @@ export default function EditPost({ route }) {
             console.error(error);
         }
 
-        //console.log(data)
-
         //text, value, user.id_user, date.time.now(), num_likes = 0
         //Upload images
 
         if (fileType === "image") {
             uploadImages(data.report.id)
         } else {
-            console.log("PASO POR ACA!")
             uploadVideo(data.report.id)
         }
     }
@@ -230,7 +227,6 @@ export default function EditPost({ route }) {
             });
 
             const data = await response.json();
-            console.log(data)
 
         } catch (error) {
             console.error("ERROR", error);
@@ -255,15 +251,11 @@ export default function EditPost({ route }) {
             });
 
             const data = await response.json();
-            console.log(data)
 
         } catch (error) {
             console.error("ERROR", error);
         }
     }
-
-
-    //console.log(isLoading)
 
     return (
         <View style={{ flex: 1 }}>
@@ -300,7 +292,7 @@ export default function EditPost({ route }) {
                 onChangeText={handleTextChange}
                 value={text}
             />
-            <Text style={{
+            {/* <Text style={{
                 fontSize: 14,
                 fontWeight: 500,
                 marginTop: 30,
@@ -324,7 +316,7 @@ export default function EditPost({ route }) {
                         color: '#525151'
                     }}
                 />
-            </View>
+            </View> */}
 
         </View>
     );

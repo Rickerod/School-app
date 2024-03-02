@@ -11,7 +11,6 @@ export default function ProfileStudent({ id, username, firstname, lastname, uri_
   const windowHeight = Dimensions.get('window').height;
   const navigation = useNavigation()
   //const { username, firstname, lastname, uri_image_profile, user_description } = route.params
-  console.log(username)
 
   return (
     <View>
@@ -82,7 +81,7 @@ export default function ProfileStudent({ id, username, firstname, lastname, uri_
                       letterSpacing: 1,
                       opacity: 0.8,
                     }}>
-                    Edit Profile
+                    Editar Perfil
                   </Text>
                 </View>
               </TouchableOpacity>

@@ -39,8 +39,6 @@ export default function HomeScreen({ navigation }) {
         /* const response = await axios.get(`http://${apiUrl}/home`, { params: params });
         setData(response.data) */
 
-        //console.log(dataResponse)
-
         const initializeLikes = dataResponse.reduce((result, post) => {
           result[post.id_post] = post.is_liked;
           return result;
@@ -50,9 +48,6 @@ export default function HomeScreen({ navigation }) {
           result[post.id_post] = post.num_likes;
           return result;
         }, {});
-
-        //console.log(initializeLikes)
-        //console.log(initializeNumLikes)
 
         initializeLike(initializeLikes, initializeNumLikes)
 
@@ -85,10 +80,8 @@ export default function HomeScreen({ navigation }) {
         const dataResponse = await response.json();
 
         const end1 = performance.now();
-        console.log(`Tiempo fetch: ${end1 - start1} ms`)
 
         if (dataResponse.length !== 0) {
-          //console.log(idPostOld, idPostNew)
           /* setData(prevData => {
             return [...prevData, ...dataResponse]
           }) */
@@ -106,7 +99,6 @@ export default function HomeScreen({ navigation }) {
               : null;
 
           const end3 = performance.now();
-          console.log(`Tiempo setIdPost: ${end3 - start3} ms`)
 
           const start4 = performance.now();
           const initializeLikes = dataResponse.reduce((result, post) => {
@@ -120,25 +112,19 @@ export default function HomeScreen({ navigation }) {
           }, {});
 
           const end4 = performance.now();
-          console.log(`Tiempo initializeLike: ${end4 - start4} ms`)
 
 
           const start6 = performance.now();
           const newData = data.concat(dataResponse)
           const end6 = performance.now();
-          
-          console.log(`Tiempo newData: ${end6 - start6} ms`)
 
           const start7 = performance.now();
           initializeLikePage(initializeLikes, initializeNumLikes)
           const end7 = performance.now();
-          console.log(`Tiempo initializeLikePage: ${end7 - start7} ms`)
 
           const start8 = performance.now();
           setData(newData)
           const end8 = performance.now();
-
-          console.log(`Tiempo SetData: ${end8 - start8} ms`)
         }
 
 
@@ -150,15 +136,13 @@ export default function HomeScreen({ navigation }) {
     }
   };
 
-  //console.log("loading", loadingPosts)
-
   if (!loading) {
     return <View></View>
   }
 
   return (
     <SafeAreaView style={{ backgroundColor: 'white', height: '100%' }}>
-      <Header title="Home" id={0} wd={0} />
+      <Header title="Inicio" id={0} wd={0} />
       <ScrollView
         onScroll={handleScroll}
         refreshControl={

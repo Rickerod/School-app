@@ -39,7 +39,6 @@ export default function BitacoraQuestions({ route }) {
             const response = await fetch(`http://${apiUrl}/bitacora/questions`)
             const dataResponse = await response.json();
 
-            console.log(dataResponse)
             setData(dataResponse)
         }
 
@@ -81,7 +80,6 @@ export default function BitacoraQuestions({ route }) {
             });
 
             const data = await response.json();
-            console.log(data)
 
             navigation.goBack()
 

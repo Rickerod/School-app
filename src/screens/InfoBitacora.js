@@ -12,9 +12,6 @@ const BitacoraInfoItem = ({ data }) => {
 
     const navigation = useNavigation()
 
-    console.log("titulo", data.titulo)
-
-
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }} >
             <TouchableOpacity onPress={() => navigation.navigate("BitacoraAnswers", {
@@ -67,7 +64,6 @@ export default function InfoBitacora() {
             const response = await fetch(`http://${apiUrl}/bitacora`)
             const dataResponse = await response.json();
 
-            console.log(dataResponse)
             setData(dataResponse)
         }
 
@@ -76,7 +72,7 @@ export default function InfoBitacora() {
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
-            <Header title="Home" id={0} wd={0} />
+            <Header title="Encuestas" id={0} wd={0} />
             <Text style={{ fontSize: 21, fontWeight: 600, alignSelf: 'center' }}> Encuestas realizadas </Text>
             <FlatList
                 data={data}

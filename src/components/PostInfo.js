@@ -12,6 +12,7 @@ import {
     MenuOptions,
     MenuOption,
     MenuTrigger,
+    MenuProvider,
 } from 'react-native-popup-menu';
 
 import { useNavigation } from '@react-navigation/native';
@@ -122,7 +123,6 @@ export default function PostInfo({ data, updateHome }) {
 
 
     const handleSheetChanges = (index) => {
-        //console.log('handleSheetChanges', index)
         if (index >= 0) {
             //loadComments()
             setIsShowing(true)
@@ -132,8 +132,6 @@ export default function PostInfo({ data, updateHome }) {
     }
 
     const insertLike = async (is_liked) => {
-
-        //console.log("IS_liked", is_liked, data.id_post, user.id_user)
 
         const body = {
             is_liked: is_liked,
@@ -149,7 +147,6 @@ export default function PostInfo({ data, updateHome }) {
             });
 
             const response_json = await response.json();
-            //console.log(response_json)
 
         } catch (error) {
             console.error(error);
@@ -351,20 +348,20 @@ export default function PostInfo({ data, updateHome }) {
                     </Text>
                 </TouchableOpacity>
             </View>
-            <BottomSheetModal
-                ref={commentsSheetRef}
-                snapPoints={["100%"]}
-                index={0}
-                onChange={handleSheetChanges}
-                backgroundComponent={({ style }) => (
-                    <View style={[style, { backgroundColor: "#fff" }]} />
-                )}
-            >
+                <BottomSheetModal
+                    ref={commentsSheetRef}
+                    snapPoints={["100%"]}
+                    index={0}
+                    onChange={handleSheetChanges}
+                    backgroundComponent={({ style }) => (
+                        <View style={[style, { backgroundColor: "#fff" }]} />
+                    )}
+                >
 
-                <ImageComments
-                    id_post={data.id_post} user={user}
-                />
-            </BottomSheetModal>
+                    <ImageComments
+                        id_post={data.id_post} user={user}
+                    />
+                </BottomSheetModal>
             <Report modalVisible={modalVisible} fModalVisible={setModalVisible} />
         </View >
     );

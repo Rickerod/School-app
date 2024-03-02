@@ -52,7 +52,6 @@ export default function Header({ title, id, wd }) {
             });
 
             const data = await response.json();
-            console.log("data", data)
 
         } catch (error) {
             console.error("ERROR", error);
@@ -117,7 +116,6 @@ export default function Header({ title, id, wd }) {
                     }
                     <TouchableOpacity
                         activeOpacity={0.5}
-                        onPress={() => console.log("Click on bell...")}
                     >
                         <Fontisto name="bell" style={{ fontSize: 24, paddingLeft: 20, color: id !== 0 ? "white" : undefined }} />
                     </TouchableOpacity>

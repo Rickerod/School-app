@@ -40,7 +40,7 @@ export default function ScreenReport() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="Home" id={0} wd={0} />
+      <Header title="Reportes" id={0} wd={0} />
       <Text style={{ fontSize: 22, fontWeight: 500, paddingVertical: 20, alignSelf: 'center' }}> Reportes estudiantes </Text>
       <FlatList
         contentContainerStyle={styles.list}

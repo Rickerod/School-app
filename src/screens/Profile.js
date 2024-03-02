@@ -16,7 +16,6 @@ export default function Profile({ route }) {
 
     useEffect(() => {
         const fetchData = async () => {
-            //console.log(route.params['type_user_profile'])
             const response = await fetch(`http://${apiUrl}/users/profile/${route.params.id_user_profile}`)
             const dataResponse = await response.json();
             setData(dataResponse)
@@ -35,7 +34,7 @@ export default function Profile({ route }) {
         <View>
             {route.params.type_user_profile == 1 || route.params.type_user_profile == 2 ?
                 <SafeAreaView style={styles.container}>
-                    <Header title="ditero_d" id={0} wd={1} />
+                    <Header title="Perfil" id={0} wd={1} />
                     <View style={{ width: '100%', padding: 10 }}>
                         <ProfileBody
                             id={0} //Perfil del usuario

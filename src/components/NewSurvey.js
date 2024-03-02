@@ -13,20 +13,16 @@ export default function NewSurvey() {
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
-    console.log(opciones)
     const navigation = useNavigation()
     const user = useUser();
 
     const insertSurvey = async () => {
 
         var sendOptions = opciones
-        console.log("text", text)
-        console.log("opciones", opciones.length)
         if (text.length != "" && opciones.length > 2) {
 
             if (opciones.length < 10) {
                 sendOptions = sendOptions.slice(0, -1)
-                console.log(sendOptions)
             }
 
             const body = {
@@ -107,7 +103,6 @@ export default function NewSurvey() {
                                     setOpciones(prev => [...prev, ""])
                                 } else if (tempOpciones[index] !== "" && text === "" && index !== 9) {
                                     const spliceArray = tempOpciones.filter((v, i) => i != index)
-                                    console.log(spliceArray)
                                     setOpciones(spliceArray);
                                 } else {
                                     tempOpciones[index] = text

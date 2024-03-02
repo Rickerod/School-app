@@ -39,11 +39,8 @@ export default function SingleContentImage({ route }) {
     const windowHeight = Dimensions.get('window').height;
 
     const user = useUser()
-    //console.log(status.isPlaying)
-    //console.log("showPaused", showPaused)
 
     const isPlayingVideo = () => {
-        //console.log("statusIsPlaying", status.isPlaying)
 
         if (status.isPlaying) videoRef.current.pauseAsync()
         else {
@@ -55,7 +52,6 @@ export default function SingleContentImage({ route }) {
 
     //Back action of the commentSheetRef for Android
     useEffect(() => {
-        console.log("Paso por back action")
         const backAction = () => {
             if (isShowing) {
                 commentsSheetRef.current.close()
@@ -88,7 +84,6 @@ export default function SingleContentImage({ route }) {
     };
 
     const handleSheetChanges = (index) => {
-        //console.log('handleSheetChanges', index)
         if (index >= 0) {
             //loadComments()
             setIsShowing(true)
@@ -99,8 +94,6 @@ export default function SingleContentImage({ route }) {
     }
 
     const insertLike = async (is_liked) => {
-
-        //console.log("IS_liked", is_liked)
 
         const body = {
             is_liked: is_liked,

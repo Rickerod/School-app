@@ -36,8 +36,6 @@ export const ProfileBody = ({
         fetchData()
     }, [])
 
-    //console.log(data)
-
     if (data.length === 0) {
         return (
             <View></View>
@@ -182,7 +180,7 @@ export const ProfileButtons = ({ id, userDescription, accountName, profileImage 
                                     letterSpacing: 1,
                                     opacity: 0.8,
                                 }}>
-                                Edit Profile
+                                Editar perfil
                             </Text>
                         </View>
                     </TouchableOpacity>

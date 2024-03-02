@@ -12,7 +12,6 @@ export default function ProfileGuest({route}) {
 
     useEffect(() => {
         const fetchData = async () => {
-            //console.log(route.params['type_user_profile'])
             const response = await fetch(`http://${apiUrl}/users/profile/${route.params.id_user_profile}`)
             const dataResponse = await response.json();
             setData(dataResponse)

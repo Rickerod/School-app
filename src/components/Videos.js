@@ -64,8 +64,6 @@ export default function Videos({ route }) {
         }
     ];
 
-    console.log("data", data)
-
     if (data == []) {
         return <View></View>
     }

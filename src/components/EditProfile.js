@@ -25,8 +25,6 @@ const EditProfile = ({ route }) => {
     const user = useUser()
     const navigation = useNavigation()
 
-    console.log(user.id_user)
-
     //Android
     const TostMessage = () => {
         ToastAndroid.show('Edited Sucessfully !', ToastAndroid.SHORT);
@@ -50,8 +48,6 @@ const EditProfile = ({ route }) => {
         setIsLoading(true)
         const downloadURLImageProfile = await uploadImageProfile()
 
-        console.log("downloadURLImageProfile", downloadURLImageProfile)
-
         const body = {
             user_name: userName,
             uri_image_profile: downloadURLImageProfile,
@@ -68,7 +64,6 @@ const EditProfile = ({ route }) => {
             });
 
             const data = await response.json();
-            console.log("data", data)
 
         } catch (error) {
             console.error("ERROR", error);
@@ -150,7 +145,7 @@ const EditProfile = ({ route }) => {
                         style={{
                             opacity: 0.5,
                         }}>
-                        Username
+                        Nombre de usuario
                     </Text>
                     <TextInput
                         placeholder="Nombre de usuario"

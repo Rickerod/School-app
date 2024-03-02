@@ -28,17 +28,17 @@ export default function NewPost() {
 
   const [open, setOpen] = useState(false)
   const [assets, setAssets] = useState([])
-  
+
   const [openVideo, setOpenVideo] = useState(false)
   const [video, setVideo] = useState([])
-  
+
   const videoRef = React.useRef(null);
 
   const [status, setStatus] = React.useState({});
   const [thumbnail, setThumbnail] = useState(null);
 
+
   const generateThumbnail = async (video) => {
-    console.log("generateThumbnail", video)
     try {
       // Ruta del video
 
@@ -79,7 +79,7 @@ export default function NewPost() {
   if (openVideo) {
     return (
       <ImagePicker
-        onSave={async (video) =>{
+        onSave={async (video) => {
           setVideo(video)
           generateThumbnail(video)
           setOpenVideo(false)
@@ -101,8 +101,6 @@ export default function NewPost() {
     //setMute(!mute)
   }
 
-  console.log("video", video)
-  console.log("thumbail", thumbnail)
   return (
     <View style={{ flex: 1, justifyContent: 'center', backgroundColor: 'white' }}>
       {
@@ -221,7 +219,7 @@ export default function NewPost() {
                   alignItems: 'center',
                 }}>
                 <Octicons name="video" style={{ fontSize: 50 }} />
-                <Text style={{paddingBottom: 30}}> Añadir video </Text>
+                <Text style={{ paddingBottom: 30 }}> Añadir video </Text>
               </TouchableOpacity>
             </View>
           </View>

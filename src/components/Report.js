@@ -23,7 +23,6 @@ export default function Report({modalVisible, fModalVisible}) {
         });
 
         const data = await response.json();
-        //console.log(data)
 
         if (data.ok) {
             fModalVisible(!modalVisible)

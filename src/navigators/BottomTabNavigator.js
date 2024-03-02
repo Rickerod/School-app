@@ -87,6 +87,7 @@ export default function TabNavigator() {
             <Tab.Screen
                 name="Home"
                 component={HomeStack}
+                options={{ title: 'Inicio' }}
             />
 
             {(user.type_user == 1 || user.type_user == 2) &&

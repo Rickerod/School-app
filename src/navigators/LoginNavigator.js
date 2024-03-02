@@ -13,8 +13,10 @@ import BitacoraQuestions from '../components/BitatoraQuestions';
 import NewSurvey from '../components/NewSurvey';
 import BitacoraAnswers from '../screens/BitacoraAnswers';
 import PostInfo from '../components/PostInfo';
+import HomeScreen from '../screens/HomeScreen';
 import EditProfileStudent from '../components/EditProfileStudent';
 import StatisticsBitacora from '../screens/StatisticsBitacora';
+import ImageComment from '../components/ImageComment';
 
 import HolaMundo from '../screens/HolaMundo';
 import Register from '../screens/Register'
@@ -30,8 +32,6 @@ import { MenuProvider } from 'react-native-popup-menu';
 export default function LoginNavigator({ route }) {
 
     const Stack = createNativeStackNavigator();
-
-    console.log(route.params.id_user, route.params.type_user, route.params.uri_image_profile, route.params.name)
     
     const userData = {
         id_user: route.params.id_user,
@@ -64,6 +64,9 @@ export default function LoginNavigator({ route }) {
                         <Stack.Screen
                             name="EditProfile" component={EditProfile}
                         />
+                        <Stack.Screen
+                            name="HomeScreen" component={HomeScreen}
+                        />
 
                         <Stack.Screen
                             name="ProfileStudent" component={ProfileStudent}
@@ -78,6 +81,9 @@ export default function LoginNavigator({ route }) {
                         />
                         <Stack.Screen
                             name="ImageComments" component={ImageComments}
+                        />
+                        <Stack.Screen
+                            name="ImageComment" component={ImageComment}
                         />
                         <Stack.Screen
                             name="BottomTabView" component={BottomTabView}

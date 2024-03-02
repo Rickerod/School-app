@@ -25,8 +25,6 @@ const EditProfileStudent = ({ route }) => {
     const user = useUser()
     const navigation = useNavigation()
 
-    console.log(user.id_user)
-
     //Android
     const TostMessage = () => {
         ToastAndroid.show('Edited Sucessfully !', ToastAndroid.SHORT);
@@ -50,8 +48,6 @@ const EditProfileStudent = ({ route }) => {
         setIsLoading(true)
         const downloadURLImageProfile = await uploadImageProfile()
 
-        console.log("downloadURLImageProfile", downloadURLImageProfile)
-
         const body = {
             user_name: userName,
             uri_image_profile: downloadURLImageProfile,
@@ -68,7 +64,6 @@ const EditProfileStudent = ({ route }) => {
             });
 
             const data = await response.json();
-            console.log("data", data)
 
         } catch (error) {
             console.error("ERROR", error);
@@ -94,7 +89,6 @@ const EditProfileStudent = ({ route }) => {
         });
 
         if (!result.canceled) {
-            console.log("Tipo de datos", result.assets[0].type)
             if (result.assets[0].type === "image") {
                 //Logica agregar imagen en el dispositivo y en la nube
                 setImage(result.assets[0].uri);

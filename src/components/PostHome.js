@@ -21,8 +21,6 @@ export default function PostHome() {
 
     //const apiUrl = process.env.HOST;
 
-    //console.log("apiUrl", apiUrl)
-
     //Obtener las 6 publicaciones mas recientes
     useEffect(() => {
         //Enviar el id del usuario como query para obtener las publicaciones a las que les dió like...
@@ -38,8 +36,6 @@ export default function PostHome() {
                 /* const response = await axios.get(`http://${apiUrl}/home`, { params: params });
                 setData(response.data) */
 
-                //console.log(dataResponse)
-
                 const initializeLikes = dataResponse.reduce((result, post) => {
                     result[post.id_post] = post.is_liked;
                     return result;
@@ -49,9 +45,6 @@ export default function PostHome() {
                     result[post.id_post] = post.num_likes;
                     return result;
                 }, {});
-
-                //console.log(initializeLikes)
-                //console.log(initializeNumLikes)
 
                 initializeLike(initializeLikes, initializeNumLikes)
 

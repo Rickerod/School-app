@@ -34,7 +34,6 @@ const Login = ({}) => {
             });
 
             const data = await response.json();
-            console.log(data)
             if(data["ok"]){
                 navigation.navigate("LoginStack", {
                     id_user : data.user.id,
@@ -150,21 +149,6 @@ const Login = ({}) => {
                         </TouchableOpacity>
                     </View>
                 </View>
-
-                <View style={{
-                    flexDirection: 'row',
-                    marginVertical: 6
-                }}>
-                    <Checkbox
-                        style={{ marginRight: 8 }}
-                        value={isChecked}
-                        onValueChange={setIsChecked}
-                        color={isChecked ? COLORS.primary : undefined}
-                    />
-
-                    <Text>Recuerdame</Text>
-                </View>
-
                 <Button
                     title="Ingresar"
                     filled

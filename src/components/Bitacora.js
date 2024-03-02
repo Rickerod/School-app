@@ -13,8 +13,6 @@ import { useNavigation } from '@react-navigation/native';
 
 const BitacoraItem = ({ data }) => {
     const navigation = useNavigation()
-
-    console.log(data.made_bitacora)
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }} >
             {!data.made_bitacora ?
@@ -133,14 +131,11 @@ export default function Bitacora({ route }) {
         React.useCallback(() => {
           // Coloca aquí la lógica que deseas ejecutar al obtener el foco nuevamente
           // Puede ser la recarga de datos, etc.
-          console.log('La pantalla FlatListScreen ha obtenido el foco.');
     
           // Puedes ejecutar tu lógica de carga de datos nuevamente si es necesario
           async function fetchData(){
             const response = await fetch(`http://${apiUrl}/bitacora/users/${user.id_user}/${id_user}`) //(user, ProfileUserAdmin)
             const dataResponse = await response.json();
-
-            console.log(dataResponse)
             setData(dataResponse)
         }
     
@@ -159,7 +154,6 @@ export default function Bitacora({ route }) {
     ];
 
     const onPressAction = (name) => {
-        console.log(`Botón presionado: ${name}`);
         setModalVisible(true)
     };
 
@@ -180,8 +174,6 @@ export default function Bitacora({ route }) {
         setModalVisible(!modalVisible)
         setUpdate(!update)
     }
-
-    console.log("data", user.id_user,  data)
 
     return (
 
