@@ -174,7 +174,7 @@ export default function PostInfo({ data, updateHome }) {
             setIsLoading(false);
         }
     }
-
+    
     return (
         <View
             //key={index}
@@ -211,7 +211,7 @@ export default function PostInfo({ data, updateHome }) {
                     <MenuOptions style={{ padding: 10 }}>
 
                         {
-                            data.id_author_post === user.id_user || user.id_user == 1 ?
+                            data.id_author_post === user.id_user || user.type_user == 1 ?
                                 <MenuOption onSelect={() => removePost()} >
                                     <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                                         <Octicons name="trash" style={{ fontSize: 20, color: 'red', paddingRight: 5 }}></Octicons>

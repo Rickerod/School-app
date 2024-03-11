@@ -1,4 +1,4 @@
-import { View, Text, Image , Pressable, TextInput, TouchableOpacity, Alert } from 'react-native'
+import { View, Text, Image, Pressable, TextInput, TouchableOpacity, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
@@ -8,7 +8,7 @@ import Register from './Register'
 import { apiUrl } from '../../constants';
 import { useNavigation } from '@react-navigation/native';
 
-const Login = ({}) => {
+const Login = ({ }) => {
     const [isPasswordShown, setIsPasswordShown] = useState(true);
     const [isChecked, setIsChecked] = useState(false);
     const [email, setChangeEmail] = useState("");
@@ -20,8 +20,8 @@ const Login = ({}) => {
         /* if(email === 'prob@prob.com' && password === '123456') navigation.navigate("TabScreen") */
 
         const body = {
-            username : email,
-            password : password
+            username: email,
+            password: password
         }
 
         try {
@@ -32,16 +32,16 @@ const Login = ({}) => {
                 },
                 body: JSON.stringify(body)
             });
-
             const data = await response.json();
-            if(data["ok"]){
+            if (data["ok"]) {
                 navigation.navigate("LoginStack", {
-                    id_user : data.user.id,
+                    id_user: data.user.id,
                     type_user: data.user.type_user,
                     uri_image_profile: data.user.uri_image_profile,
-                    name: data.user.username
+                    name: data.user.username,
+                    school_id: data.user.school_id
                 })
-            }else{
+            } else {
                 Alert.alert("Credenciales incorrectas")
             }
 
@@ -51,25 +51,25 @@ const Login = ({}) => {
     }
 
     const COLORS = {
-      white: "#FFFFFF",
-      black: "#222222",
-      primary: "#007260",
-      secondary: "#39B68D",
-      grey: "#CCCCCC"
+        white: "#FFFFFF",
+        black: "#222222",
+        primary: "#007260",
+        secondary: "#39B68D",
+        grey: "#CCCCCC"
     }
-    
+
     return (
         <SafeAreaView style={{ flex: 1, justifyContent: 'center', backgroundColor: COLORS.white }}>
             <View style={{ marginHorizontal: 22 }}>
-                <View style={{marginVertical: 22, alignItems: 'center'}}>
+                <View style={{ alignItems: 'center', marginVertical: 40}}>
                     <Text style={{
                         fontSize: 22,
                         fontWeight: 'bold',
-                        marginVertical: 12,
+                        marginVertical: 0,
                         color: COLORS.black
                     }}>
-                        Bienvenido !
-                  </Text>
+                        Apprendiendo a convivir
+                    </Text>
                 </View>
 
                 <View style={{ marginBottom: 12 }}>

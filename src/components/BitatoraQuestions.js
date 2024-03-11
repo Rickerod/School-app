@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Dimensions, Image, TextInput, Button, Modal, TouchableOpacity } from 'react-native';
+import { View, Text, Dimensions, Image, TextInput, Button, Modal, TouchableOpacity, ToastAndroid } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { ScrollView } from 'react-native-gesture-handler';
 import { apiUrl } from '../../constants';
@@ -69,22 +69,32 @@ export default function BitacoraQuestions({ route }) {
             answers: ans
         }
 
-        try {
+        if (!text.trim() || !textLearn.trim()) {
+            if (!text.trim()) {
+                ToastAndroid.show('Por favor, escribe tu emoción en el campo correspondiente!', ToastAndroid.SHORT);
+            } else {
+                ToastAndroid.show('Por favor, escribe que lograste aprender hoy!', ToastAndroid.SHORT);
+            }
+        }
 
-            const response = await fetch(`http://${apiUrl}/bitacora/answers/${user.id_user}/${id_bitacora}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(body)
-            });
+        else {
+            try {
 
-            const data = await response.json();
+                const response = await fetch(`http://${apiUrl}/bitacora/answers/${user.id_user}/${id_bitacora}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                });
 
-            navigation.goBack()
+                const data = await response.json();
 
-        } catch (e) {
-            console.log("ERROR: ", e)
+                navigation.goBack()
+
+            } catch (e) {
+                console.log("ERROR: ", e)
+            }
         }
 
     }

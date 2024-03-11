@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { View, Text, Image, StyleSheet, SafeAreaView } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Feather from 'react-native-vector-icons/Feather';
 import axios from "axios"
 import Header from '../components/Header';
 import { apiUrl } from '../../constants';
+import useUser from '../hooks/useUser';
+import { useFocusEffect } from '@react-navigation/native';
 
 const renderSeparator = () => (
   <View
@@ -20,19 +22,22 @@ export default function ScreenReport() {
 
   const [reports, setReports] = useState([])
   //const apiUrl = process.env.HOST;
+  const user = useUser();
 
-  useEffect(() => {
-    async function fetchReports() {
-      try {
-        const response = await axios.get(`http://${apiUrl}/report`);
-        setReports(response.data)
+  useFocusEffect(
+    useCallback(() => {
+      async function fetchReports() {
+        try {
+          const response = await axios.get(`http://${apiUrl}/report/report/${user.school_id}`);
+          setReports(response.data)
 
-      } catch (error) {
-        console.log("Error", error);
+        } catch (error) {
+          console.log("Error", error);
+        }
       }
-    }
-    fetchReports()
-  }, [])
+      fetchReports()
+    }, []) // Incluye todas las dependencias aquí
+  );
 
   if (reports == []) {
     return <View> </View>
@@ -57,7 +62,7 @@ export default function ScreenReport() {
               />
               <View>
                 <Text style={styles.name}>{item.username}</Text>
-                <Text style={styles.date}>Oct. 05</Text>
+                <Text style={styles.date}></Text>
               </View>
             </View>
 

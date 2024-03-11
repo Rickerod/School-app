@@ -82,7 +82,7 @@ export default function Header({ title, id, wd }) {
                 <View style={{ flexDirection: 'row', paddingLeft: 5 }}>
                     {id !== 0 ?
                         <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.goBack()}>
-                            <Ionic name="arrow-back" style={{ fontSize: 25, color: 'white', paddingRight: 20 }} />
+                            <Ionic name="arrow-back" style={{ fontSize: 25, paddingRight: 20 }} />
                         </TouchableOpacity>
                         : null}
                     <Text
@@ -90,7 +90,7 @@ export default function Header({ title, id, wd }) {
                             //fontFamily: 'Cochin',
                             fontSize: 20,
                             fontWeight: '500',
-                            color: id !== 0 ? "white" : undefined
+                            //color: id !== 0 ? "white" : undefined
                         }}>
                         {title}
                     </Text>
@@ -98,12 +98,12 @@ export default function Header({ title, id, wd }) {
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     {wd === 1 &&
                         <View style={{ flexDirection: 'row' }}>
-                            <TouchableOpacity
+                            {/* <TouchableOpacity
                                 activeOpacity={0.5}
                                 onPress={() => navigation.navigate("Post")}
                             >
                                 <Feather name="plus-square" style={{ fontSize: 28, borderRadius: 30 }} />
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                             {user.type_user === 1 &&
                                 <TouchableOpacity
                                     activeOpacity={0.5}
@@ -116,12 +116,18 @@ export default function Header({ title, id, wd }) {
                     }
                     <TouchableOpacity
                         activeOpacity={0.5}
+                        style={{ paddingLeft: 20 }}
+                        onPress={() =>
+                            navigation.reset({
+                                index: 0,
+                                routes: [{ name: "Login" }],
+                            })}
                     >
-                        <Fontisto name="bell" style={{ fontSize: 24, paddingLeft: 20, color: id !== 0 ? "white" : undefined }} />
+                        <MaterialCommunityIcons name="exit-to-app" style={{ fontSize: 27, paddingRight: 5 }}></MaterialCommunityIcons>
                     </TouchableOpacity>
-                    <Menu>
+                    {/* <Menu>
                         <MenuTrigger>
-                            <Entypo name="cog" style={{ fontSize: 24, paddingLeft: 20, color: id !== 0 ? "white" : undefined }} />
+                            <Entypo name="cog" style={{ fontSize: 24, paddingLeft: 20 }} />
                         </MenuTrigger>
                         <MenuOptions style={{ padding: 10 }}>
                             <MenuOption onSelect={() =>
@@ -135,7 +141,7 @@ export default function Header({ title, id, wd }) {
                                 </View>
                             </MenuOption>
                         </MenuOptions>
-                    </Menu>
+                    </Menu> */}
                 </View>
             </SafeAreaView>
             <View style={{

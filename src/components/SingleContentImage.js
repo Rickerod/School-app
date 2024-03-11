@@ -173,7 +173,7 @@ const SingleContentImage = ({ route, navigation }) => {
                     <Ionic name="arrow-back" style={{ fontSize: 25, paddingRight: 20 }} />
                 </TouchableOpacity>
                 <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
-                    Image
+                    Imagen
                 </Text>
             </View>
             {/* <Image

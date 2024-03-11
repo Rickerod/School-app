@@ -16,6 +16,7 @@ import ImageComments from './ImageComments';
 import comments from '../storage/data/comments.json'
 import { FlatList } from 'react-native-gesture-handler';
 import { ImagePicker } from 'expo-image-multiple-picker'
+import * as MediaLibrary from 'expo-media-library';
 
 import { Video, ResizeMode } from 'expo-av';
 import * as VideoThumbnails from 'expo-video-thumbnails';
@@ -57,8 +58,18 @@ export default function NewPost() {
     }
   };
 
+  async function loadAssets() {
+    const { status } = await MediaLibrary.requestPermissionsAsync();
+    if (status !== 'granted') {
+      alert('Se necesitan permisos para acceder a los medios.');
+      return;
+    }
+
+  }
+
 
   if (open) {
+    loadAssets()
     return (
       <ImagePicker
         onSave={(assets) => {
@@ -203,7 +214,7 @@ export default function NewPost() {
                   alignItems: 'center',
                 }}>
                 <Ionic name="images-outline" style={{ fontSize: 50 }} />
-                <Text> Añadir publicación </Text>
+                <Text> Añadir imagen </Text>
               </TouchableOpacity>
 
             </View>

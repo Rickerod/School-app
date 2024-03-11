@@ -101,19 +101,19 @@ export default function ProfileStudent({ id, username, firstname, lastname, uri_
               textAlign: 'center',
               paddingBottom: 40,
               //marginHorizontal: 20,
-            }}> {user_description}
+            }}> {username}
           </Text>
 
           <View>
             <Text style={{
               opacity: 0.7
             }}>
-              Nombre de usuario:
+              Descripción del usuario:
             </Text>
             <Text style={{
               opacity: 0.5
             }}>
-              {username}
+              {user_description}
             </Text>
           </View>
           <View>

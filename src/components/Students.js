@@ -16,7 +16,7 @@ export default function Students() {
     useEffect(() => {
         const fetchUsers = async () => {
             const idSchool = 1
-            const response = await fetch(`http://${apiUrl}/users/${idSchool}`)
+            const response = await fetch(`http://${apiUrl}/users/${user.school_id}`)
             /* [
                 {
                   "id_user": 2,

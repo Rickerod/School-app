@@ -36,10 +36,7 @@ const BitacoraItem = ({ data }) => {
                                 />
                                 <View style={{ flex: 1, marginLeft: 5 }}>
                                     <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
-                                        Encuesta {data.id_bitacora}: {data.name_bitacora}
-                                    </Text>
-                                    <Text style={{ fontSize: 12, color: 'gray' }}>
-                                        oct. 05
+                                        {data.name_bitacora}
                                     </Text>
                                 </View>
                             </View>

@@ -37,7 +37,8 @@ export default function LoginNavigator({ route }) {
         id_user: route.params.id_user,
         type_user: route.params.type_user,
         uri_image_profile: route.params.uri_image_profile,
-        name: route.params.name
+        name: route.params.name,
+        school_id: route.params.school_id
     }
     return (
         <UserContext.Provider value={userData}>

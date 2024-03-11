@@ -5,7 +5,10 @@ import infoBitacora from '../storage/data/infoBitacora.json'
 import Header from '../components/Header';
 import { apiUrl } from '../../constants';
 
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import useUser from '../hooks/useUser';
 
 
 const BitacoraInfoItem = ({ data }) => {
@@ -33,7 +36,7 @@ const BitacoraInfoItem = ({ data }) => {
                         />
                         <View style={{ flex: 1, marginLeft: 5 }}>
                             <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
-                                Encuesta {data.id_bitacora}: {data.name_bitacora}
+                                {data.name_bitacora}
                             </Text>
                             <Text style={{ fontSize: 12, color: 'gray' }}>
                                 oct. 05
@@ -58,22 +61,25 @@ const renderSeparator = () => (
 export default function InfoBitacora() {
 
     const [data, setData] = useState([])
+    const user = useUser();
 
-    useEffect(() => {
-        async function fetchData() {
-            const response = await fetch(`http://${apiUrl}/bitacora`)
-            const dataResponse = await response.json();
-
-            setData(dataResponse)
-        }
-
-        fetchData()
-    }, [])
+    useFocusEffect(
+        useCallback(() => {
+            async function fetchData() {
+                const response = await fetch(`http://${apiUrl}/bitacora/bitacora/${user.school_id}`)
+                const dataResponse = await response.json();
+    
+                setData(dataResponse)
+            }
+    
+            fetchData()
+        }, []) // Incluye todas las dependencias aquí
+    );
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
-            <Header title="Encuestas" id={0} wd={0} />
-            <Text style={{ fontSize: 21, fontWeight: 600, alignSelf: 'center' }}> Encuestas realizadas </Text>
+            <Header title="Bitacoras" id={0} wd={0} />
+            <Text style={{ fontSize: 21, fontWeight: 600, alignSelf: 'center' }}> Bitacoras realizadas </Text>
             <FlatList
                 data={data}
                 renderItem={({ item }) => <BitacoraInfoItem data={item} />}
